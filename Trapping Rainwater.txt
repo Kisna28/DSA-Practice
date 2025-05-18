@@ -1,0 +1,35 @@
+fun trappedRainwater(height:Array<Int>):Int{    //TC: O(n)
+    //  (4,2,0,6,3,2,5)
+    val n= height.size
+    //calculate left max boundry
+    val leftMax = Array(n){0}
+    leftMax[0] = height[0]
+    for(i in 1 until n){
+        leftMax[i]=maxOf(height[i],leftMax[i-1])
+    }  
+    //calculate right max boundry
+       //  (4,2,0,6,3,2,5)
+       val rightMax = Array(n){0}
+      rightMax[n-1] = height[n-1]
+       for(i in n-2 downTo 0){
+        rightMax[i]=maxOf(height[i],rightMax[i+1])
+    }
+    
+    //loop
+    var trappedWater = 0
+      for(i in 0 until n){
+     //waterLavel = min(leftmax boundery,rightmax boundry)
+         val waterLevel = minOf(leftMax[i],rightMax[i])
+    
+    //trapped water = waterLevel - height[i]
+          trappedWater += waterLevel - height[i]
+      }
+      return trappedWater
+}
+
+fun main() {
+    val arr = arrayOf(4,2,0,6,3,2,5)
+     println("Total water Trapped is : ${trappedRainwater(arr)}")
+  
+}
+
