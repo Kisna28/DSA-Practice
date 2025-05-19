@@ -1,0 +1,22 @@
+fun maxpriceStock(day:Array<Int>):Int{
+    //  7,1,5,3,6,4
+    var buyingPrice = day[0]
+    var maxProfit = 0  
+    val len = day.size
+  for(i in 0 until len){  //Tc: O(n)
+      if(buyingPrice < day[i]){
+        val profit = day[i] - buyingPrice  //today profit
+          maxProfit = maxOf(maxProfit,profit)
+      }else{
+          buyingPrice = day[i]
+      }
+    
+  }
+  return maxProfit
+}
+
+fun main() {
+    val arr = arrayOf(7,1,5,3,6,4)
+     println("Total Earned Profit is : ${maxpriceStock(arr)}")
+  
+}
