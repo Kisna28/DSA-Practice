@@ -1,10 +1,9 @@
 fun unique(num:Array<Int>):Boolean{
     val len = num.size
-    var num2 = Array(len){0}
-    for(i in num){
+    var num2 = Array(len){0}  
       if(i in num2){ // here it check conditions(true and false) not whole loop
         return true
-    }else{
+    }else{                        
         num2+=i
     }
 }
@@ -14,3 +13,20 @@ fun main() {
     val arr = arrayOf(1,2,3,1)
      println(unique(arr))
 }
+
+
+//second methode is 
+/*
+fun unique(num:Array<Int>):Boolean{
+    val mutableList = mutableListOf<Int>()
+    for(i in num){
+        if(mutableList.contains(i)){
+            return true
+        }else{
+            mutableList.add(i)
+        }
+     }
+return false
+}
+
+*/
