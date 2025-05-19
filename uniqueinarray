@@ -1,0 +1,16 @@
+fun unique(num:Array<Int>):Boolean{
+    val len = num.size
+    var num2 = Array(len){0}
+    for(i in num){
+      if(i in num2){ // here it check conditions(true and false) not whole loop
+        return true
+    }else{
+        num2+=i
+    }
+}
+return false
+}
+fun main() {
+    val arr = arrayOf(1,2,3,1)
+     println(unique(arr))
+}
