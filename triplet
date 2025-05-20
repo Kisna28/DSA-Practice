@@ -1,0 +1,24 @@
+fun main() {
+    val arr= arrayOf(-1, 0,  1, 2, -1, -4)
+  //  val arr= arrayOf(-1, 0, 1, 2, -1, -4, 0, 1)  for this using i get many duplicate so use 
+  //  list with Set so remove duplicates.
+    val len = arr.size
+      val resultSet = mutableSetOf<List<Int>>() // To avoid duplicates
+    println(arr.joinToString(", "))
+    for(i in 0 until len){
+       for(j in i+1 until len){
+           for(k in j+1 until len){
+                   if((arr[i]+arr[j]+arr[k])==0){
+                        val triplet = listOf(arr[i], arr[j], arr[k]).sorted() // Sort to detect duplicates
+                   resultSet.add(triplet)
+
+                   
+               }
+           }
+       }
+    }
+    
+    for (triplet in resultSet) {
+        println(triplet)
+    }
+}
