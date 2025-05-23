@@ -10,9 +10,42 @@ val n = arr.size
      }
     }
  }
+fun selectionSort(arr:Array<Int>){ 
+    val n = arr.size
+    for(i in 0 until n-1){
+         var smallest = i
+        for( j in i+1 until n){
+             if(arr[smallest] > arr[j]){
+                 smallest  = j
+                 // println("Smallest = $smallest")
+             }
+        }
+        //swapping
+        var temp = arr[smallest]
+        arr[smallest] = arr[i]
+        arr[i] = temp
+ 
+    }
+}
+fun insertionSort(arr:Array<Int>){  //O(n^2)
+  val n = arr.size
+    for(i in 1 until n){
+        var current = arr[i] // current value to insert
+        var pre = i-1
+        //finding out the correct position
+        while(pre>=0 && arr[pre]> current){
+            arr[pre+1] = arr[pre]
+            pre--
+        }
+      // insert the current value into the correct position   
+     arr[pre+1] = current
+    }
+}
 fun main() {
      var ar r= arrayOf(5,4,1,8,2) // 1 2 4 5 8
-     bubbleSort(arr)
+   //  bubbleSort(arr)
+   //  selectionSort(arr)
+   //  insertionSort(arr)
      println(arr.joinToString(", "))
 
 }
