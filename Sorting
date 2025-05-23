@@ -1,0 +1,18 @@
+fun bubbleSort(arr:Array<Int>){  //o(n^2)
+val n = arr.size
+    for(i in 0 until n-1){
+        for(j in 0 until n-i-1){
+          if(arr[j]> arr[j+1]){
+          var temp = arr[j]
+          arr[j] = arr[j+1]
+          arr[j+1] = temp
+       } 
+     }
+    }
+ }
+fun main() {
+     var ar r= arrayOf(5,4,1,8,2) // 1 2 4 5 8
+     bubbleSort(arr)
+     println(arr.joinToString(", "))
+
+}
