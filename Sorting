@@ -41,11 +41,34 @@ fun insertionSort(arr:Array<Int>){  //O(n^2)
      arr[pre+1] = current
     }
 }
+fun countingSort(arr:Array<Int>){  //o(n + range of arr)
+       val n = arr.size
+       var largest = 0
+       for(i in 0 until n){
+        largest=maxOf(largest,arr[i])
+    }
+        // println(largest)
+    //origanal array
+    var count = IntArray(largest+1)
+    for(i in 0 until n){
+        count[arr[i]]++
+    }
+  //sorting(frequ array)
+  var j = 0
+  for(i in 0 until count.size){
+      while(count[i]>0){
+          arr[j]=i
+          j++
+          count[i]--
+      }
+  }
+}
 fun main() {
      var ar r= arrayOf(5,4,1,8,2) // 1 2 4 5 8
    //  bubbleSort(arr)
    //  selectionSort(arr)
    //  insertionSort(arr)
+   countingSort(arr)
      println(arr.joinToString(", "))
 
 }
