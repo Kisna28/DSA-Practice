@@ -1,0 +1,74 @@
+//Search Element in 2D-Array
+fun search(arr : Array<Array<Int>>,key : Int){
+    for(i in 0 until arr.size){
+    for(j in 0 until arr[0].size){  //arr[0].size is for finding a cloumn size
+      if(arr[i][j]==key){
+            print("$i and $j")
+            return
+      }
+    }
+    println()
+}
+    println("key not found")
+}
+//Spiral Matrix
+fun spiral(arr : Array<Array<Int>>){
+    var startRow = 0
+    var endRow = arr.size - 1
+    var startColumn = 0
+    var endColumn = arr[0].size - 1
+    while(startRow <= endRow && startColumn <= endColumn ){
+        //Top
+        for(j in startRow until endColumn){
+            print("${arr[startRow][j]} ")
+        }
+        //Right
+        for(i in startRow+1 until endRow ){
+             if(startRow == endRow){
+                 break
+             }
+             print("${arr[i][endColumn]} ")
+        }
+        //bottom
+         for(j in endColumn-1 downTo startColumn ){
+             if(startColumn == endColumn){
+                 break
+             }
+             print("${arr[endRow][j]} ")
+        }
+         //left
+         for(i in endRow-1 downTo startColumn+1 ){
+             print("${arr[i][startColumn]} ")
+        }
+        startColumn++
+        startRow++
+        endRow--
+        endColumn--
+         
+    }
+}
+fun diagonalSum(arr:Array<Array<Int>>){
+    var left = 0
+    var right = 0
+    val size = arr.size
+    for(i in arr.indices){//indices direct check index also we write (i in 0 until arr.size).
+        // println("i = $i") 
+        left+=arr[i][i]  //it printl [0,0] [1,1]...
+        // println(left)
+         val column = size-1-i
+         right+= arr[i][column]
+    }
+    val sum = Math.abs(right-left)
+    println(sum)
+}
+
+fun main() {
+// Creates a two-dimensional array
+val arr = arrayOf(arrayOf(1,2,3,4),arrayOf(5,6,7,8),arrayOf(9,10,11,12),arrayOf(13,14,15,16))
+//arr.forEach { println(it.joinToString()) }  //printing all the 2D array also use 
+//arr.matrix.contentDeepToString()           //use for printing 2D array without foreach keyword
+//search(arr,2)
+//spiral(arr)
+diagonalSum(arr)
+
+}
