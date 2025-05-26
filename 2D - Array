@@ -84,14 +84,78 @@ fun diagonalSum(arr:Array<Array<Int>>){ //O(n^2)
     }
     println(sum)
 }
+fun sortedSearch(arr:Array<Array<Int>>,key:Int){  //TC is less  O(n)
+    var row =0 
+    var col = arr[0].size-1
+    while(row<arr.size && col>=0){
+        if(arr[row][col]==key){
+            println("Key find at $row and $col")
+            return
+        }else if( key< arr[row][col]){
+            col--
+        }else{
+            row++
+        }
+    }
+    
+    println("key not found")
+}
+fun freqCount(arr:Array<Array<Int>>,num : Int){
+    var count = 0
+    for(i in arr.indices){
+        for(j in arr.indices){  // Also write as (j in 0 until arr.size)
+            if(arr[i][j]==num){
+                count++
+                println("$i and $j")
+            }
+        }
+    }
+    println("count = $count")
+}
+fun sumOfRow(arr:Array<Array<Int>>, row : Int){ //here we do a sum of special given row
+    var sum = 0
+    val row = row -1
+    for(i in 0 until arr.size){ //if we manual write a row which we sum so this loop not required 
+        for(j in 0 until arr.size){
+            if(row == i){
+                sum+=arr[i][j]  //in here [i] we write row num for manual 
+            }
+        }
+    }
+    println("Sum of Row ${row+1} is : $sum")
+}
+fun transposeMatrix(arr:Array<Array<Int>>) {
+    val rows = arr.size
+    val cols = arr[0].size
+    val transposed = Array(cols) { Array(rows) { 0 } }
 
+    for (i in 0 until rows) {
+        for (j in 0 until cols) {
+            transposed[j][i] = arr[i][j]
+        }
+    }
+    println("Transposed Matrix:")
+    transposed.forEach { row ->
+        println(row.joinToString(" "))
+    }    
+}
 fun main() {
 // Creates a two-dimensional array
 val arr = arrayOf(arrayOf(1,2,3,4),arrayOf(5,6,7,8),arrayOf(9,10,11,12),arrayOf(13,14,15,16))
+val arrTranspose = arrayOf(  arrayOf(2, 2, 3),arrayOf(5, 6, 2))
 //arr.forEach { println(it.joinToString()) }  //printing all the 2D array also use 
 //arr.matrix.contentDeepToString()           //use for printing 2D array without foreach keyword
 //search(arr,2)
 //spiral(arr)
 //diagonalDiff(arr)
-diagonalSum(arr)
+//diagonalSum(arr)
+//sortedSearch(arr,3)
+//freqCount(arr,2)
+//sumOfRow(arr,3) //we want to sum of 2nd row(actual 3rd row sum print because we start from 0 So I minus -1 into row)
+transposeMatrix(arrTranspose)//Transpose of a matrix is the process of swapping therows to columns. For a 2x3 matrix
+/*   Matrix: a11    a12    a13 
+             a21    a22    a23
+Transposed Matrix: a11    a21
+                   a12    a22
+                   a13    a23  */
 }
