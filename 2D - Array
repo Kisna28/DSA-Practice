@@ -47,7 +47,7 @@ fun spiral(arr : Array<Array<Int>>){
          
     }
 }
-fun diagonalSum(arr:Array<Array<Int>>){
+fun diagonalDiff(arr:Array<Array<Int>>){
     var left = 0
     var right = 0
     val size = arr.size
@@ -61,6 +61,29 @@ fun diagonalSum(arr:Array<Array<Int>>){
     val sum = Math.abs(right-left)
     println(sum)
 }
+fun diagonalSum(arr:Array<Array<Int>>){ //O(n^2)
+    var sum = 0
+   /* for(i in 0 until arr.size){
+        for(j in 0 until arr[0].size){
+            if(i==j){
+                sum+=arr[i][j]
+            }
+            else if(i + j == arr.size-1){
+                sum+=arr[i][j]
+            }
+        }
+    }
+    println(sum) */
+    
+    //Optimize code
+    for(i in 0 until arr.size){
+        sum+=arr[i][i]
+        if(i != arr.size-1-i){
+        sum+=arr[i][arr.size-i-1]
+        }
+    }
+    println(sum)
+}
 
 fun main() {
 // Creates a two-dimensional array
@@ -69,6 +92,6 @@ val arr = arrayOf(arrayOf(1,2,3,4),arrayOf(5,6,7,8),arrayOf(9,10,11,12),arrayOf(
 //arr.matrix.contentDeepToString()           //use for printing 2D array without foreach keyword
 //search(arr,2)
 //spiral(arr)
+//diagonalDiff(arr)
 diagonalSum(arr)
-
 }
