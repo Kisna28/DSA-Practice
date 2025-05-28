@@ -1,0 +1,53 @@
+//Palindrome in String  (noon,madam,racecar)
+fun isPalindrome(str:String):Boolean{
+    val n = str.length
+    for(i in 0 until n/2){
+        if(str.get(i)!=str.get(n-1-i)){
+            return false
+        }
+    }
+    return true
+}
+fun shoretestPath(str:String){
+    var x = 0 
+    var y  = 0 
+    for(i in str){
+       when(i){
+           'N','n'->y++
+           'S','s'->y--
+           'E','e'->x++
+           else -> x--
+       }
+    }
+    val result = Math.sqrt(((x*x)+(y*y)).toDouble()).toInt()
+    println("shoretestPath is : $result")
+}
+fun subString(str:String,startIndex:Int,endIndex:Int):String{
+    var subString = ""
+    for(i in startIndex until endIndex){
+        subString+= str.get(i)
+    }
+    return subString
+}
+fun largestString(arr:Array<String>){ //comapreTo is check a lectography comaprision
+    var largest = arr[0]
+    for(i in 1 until arr.size){
+        if(largest.compareTo(arr[i]) < 0){
+           largest = arr[i]
+        }
+    }
+    println(largest)
+}
+fun main() {
+//String is Immutable
+val str = "noon"
+val arrOfString = arrayOf("apple","mango","banana")
+val rev = str.reversed()
+if(str == rev) println("Palindrome")
+else println("Not Palindrome")
+println(isPalindrome(str)) // This call function
+shoretestPath("WNEENESENNN") //here W is west and according it..
+println(subString(str,0,3))
+largestString(arrOfString)
+
+}
