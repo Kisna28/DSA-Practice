@@ -38,6 +38,86 @@ fun largestString(arr:Array<String>){ //comapreTo is check a lectography comapri
     }
     println(largest)
 }
+fun uppercaseConvert(str: String) {
+    // Ex: "hello, i am kisna" -> "Hello, I Am Kisna"
+    val sb = StringBuilder()
+
+    if (str.isNotEmpty()) {
+        sb.append(str[0].uppercaseChar())
+    }
+
+    var i = 1
+    while (i < str.length) {
+        if (str[i] == ' ' && i + 1 < str.length) {
+            sb.append(str[i]) // append space
+            i++
+            sb.append(str[i].uppercaseChar()) // capitalize next char
+        } else {
+            sb.append(str[i])
+        }
+        i++
+    }
+
+    println(sb.toString())
+}
+fun stringCompression(str:String){ //O(n)->When order matters ,Best for this problem
+    //aaabbcccdd  => a3b2c3d2
+    val sb = StringBuilder()
+    var count = 1 
+    var i = 0
+      // Count consecutive repeating characters
+   while(i < str.length){
+       count = 1
+        while(i < str.length-1 && str.get(i) == str.get(i+1)){
+            count ++
+            i++
+        }
+        sb.append(str.get(i))  //or str[i]
+        if(count>1){
+            sb.append(count)
+        }
+        i++
+    }
+    val map = mutableMapOf<Char,Int>() //O(n)-> When total counts matter, not position,
+    //Best for non-consecutive character frequency problems
+    for(ch in str){
+        map[ch]=map.getOrDefault(ch,0)+1
+    }
+    val sb2 = StringBuilder()
+    for((ch,count) in map){
+        sb2.append(ch).append(count)
+    }
+   println(sb.toString())
+    
+}
+fun loweCaseCount(str:String){
+    //Kisna  ->o/p = 4
+    var count = 0
+    for(i in str){
+     //Also we write using If->   if(i in 'a'..'z'){count++}
+       when(i){
+           in 'a'..'z'-> count++
+           else->continue   //if we write a "return" then it not print any o/p becuse exits loop
+       }
+    }
+    println(count)
+}
+fun anagrams(str1:String,str2:String){
+   /* An anagram is a word or phrase formed by rearranging the letters of another,
+    *  using all original letters exactly once.
+       Example: "listen" → "silent"*/
+    //Also we solve using grouped and compare string ex(val freq1 = str1.groupingBy{ it }.eachCount())
+    //also done by map add into map and count each char how many time and compare map and got it.
+    if(str1.length!=str2.length){
+    	println("Not anagrams")
+        return
+    }
+  if(str1.toCharArray().sorted()==str2.toCharArray().sorted()){
+       println("Anagrams")
+    } else {
+        println("Not anagrams")
+    }
+}
 fun main() {
 //String is Immutable
 val str = "noon"
@@ -49,5 +129,17 @@ println(isPalindrome(str)) // This call function
 shoretestPath("WNEENESENNN") //here W is west and according it..
 println(subString(str,0,3))
 largestString(arrOfString)
+//String Builder
+var sb = StringBuilder()
+for(char in 'a'..'z'){
+    sb.append(char)
+    //if we use string so it takes O(n * m) where n = 26 and m = n*2
+    //but using string builde it only run 26 times
+}
+println(sb)
+uppercaseConvert("hello, my name is kisna")
+stringCompression("aaabbcccdd")  //if here give ("abaaccbdd") unoreder then we use Hashmap   
+loweCaseCount("Kisna")
+anagrams("race","care") 
 
 }
