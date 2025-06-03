@@ -1,0 +1,94 @@
+fun getIthBit(n:Int,i:Int){
+    val bitMask = 1 shl i
+    if(n and bitMask == 0){
+        println("Zero")
+    }else{
+        println("One")
+    }
+    
+}
+fun setIthBit(n:Int,i:Int):Int{
+     val bitMask = 1 shl i
+    return n or bitMask
+}
+fun clearIthBit(n:Int,i:Int):Int{
+     val bitMask = (1 shl i).inv()// or ~number
+    return n and bitMask
+}
+fun updateIthBit(n:Int,i:Int,newBit:Int):Int{
+    if(newBit==0){return clearIthBit(n,i)}
+    else{return setIthBit(i,n)}
+    
+    //OR Second Methode
+  /*  n = clearIthBit(n,i)
+    val bitMask = newBit shl i
+    return n or bitMask  */
+}
+fun clearLastIthBit(n:Int,i:Int){
+         val bitMask =  0.inv() shl i
+         println("${n and bitMask}")
+}
+fun clearRangeOfBits(n:Int,i:Int,j:Int){ //clere i to j (i..j) bits
+         val a =  0.inv() shl j+1
+         val b = (1 shl i)-1
+    val bitMask = a or b
+         println("${n and bitMask}")
+}
+fun powerOf2(n:Int){
+    if(n and (n-1) == 0){
+        println("Power of 2")
+    }else{println("Not Power of 2")}
+}
+fun countSetBits(n: Int): Int {
+    var count = 0
+    var num = n
+
+    while (num > 0) {
+        if ((num and 1) != 0) {
+            count++
+        }
+        num = num shr 1
+    }
+
+    return count
+}
+fun fastExpo(a:Int,num:Int){
+    var n = num
+    var a = a
+    var ans = 1
+    while(n>0){
+         if ((num and 1) != 0) {//check lSB
+            ans = ans * a
+        }
+         a = a*a
+        n = n shr 1
+    }
+    println(ans)
+}
+fun swap(a:Int,b:Int){
+    println("Befor swap: $a  and $b")
+    var x = a
+    var y = b
+    x = x xor y
+    y = x xor y
+    x = x xor y
+    println("After swap: $x  and $y")
+}
+fun upCaseTolowerCase(){
+    for(ch in 'A'..'Z'){
+       print((ch.code or ' '.code).toChar())
+    }
+}
+fun main() {
+  getIthBit(10,2)
+  println(setIthBit(10,2))
+  println(clearIthBit(10,1))
+  println(updateIthBit(10,1,0))
+  clearLastIthBit(15,2)
+  clearRangeOfBits(10,2,4)
+  powerOf2(2)
+  println(countSetBits(15))
+  fastExpo(5,3) 
+  swap(10,3)
+  upCaseTolowerCase()
+}
