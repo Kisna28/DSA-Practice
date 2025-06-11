@@ -1,0 +1,35 @@
+fun main() {
+val intervals = arrayOf(intArrayOf(1, 3), intArrayOf(6, 9)) 
+val newInterval = arrayOf(2,5)
+// intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+// Output: [[1,2],[3,10],[12,16]]
+val result = mutableListOf<IntArray>()
+var i = 0
+val n = intervals.size
+ var start = newInterval[0]
+ var end = newInterval[1]
+    // 1. Add all intervals that come before the new interval (no overlap)
+    while(i < n  && intervals[i][1]<start){
+        result.add(intervals[i])
+        i++
+    }
+// 2. Merge all overlapping intervals with the new interval
+while(i < n && intervals[i][0]<=end){
+    start=minOf(start,intervals[i][0])
+    end=maxOf(end,intervals[i][1])
+     i++  
+}
+result.add(intArrayOf(start,end))
+    // 3. Add all the remaining intervals
+while(i < n ){
+    result.add(intervals[i])
+    i++
+}
+
+for (interval in result) {
+    println(interval.joinToString(", ", "[", "]"))
+}    
+}
+
+
+//https://leetcode.com/problems/insert-interval/description/
