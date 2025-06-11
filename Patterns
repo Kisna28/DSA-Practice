@@ -1,0 +1,292 @@
+fun main() {
+    //Squre patttern 
+    for (i in 1..5){     //i = row( i iteration 1,2,3,4,5)
+        for(j in 1..5){   //j = column
+            print("*")
+        }
+        println()
+    }
+ //Half tringle 
+ /*
+     *
+     **
+     ***
+     ****
+     *****
+ */
+    for( i in 1..5){
+        for(j in 1..i){
+            print("*")
+        }
+        println()
+    } 
+    
+    
+    println("Inverted-Star")
+    
+    //Inverted-Star
+/*
+     *****
+     ****
+     ***
+     **
+     *
+*/
+   for(line in 5 downTo 1){
+       for(star in 1..line){  //Or We write "for(star in line downTo 1)""
+           print("*")
+       }
+       println()
+   }
+   println("Half-Pyramid(number)")
+     //Half-pyramid
+/*
+    1
+    12
+    123
+    123
+*/
+     for(line in 1..5){
+         for(num in 1..line){
+             print(num)
+         }
+         println()
+     }
+     println("Half-Pyramid(character)")
+     //Half-pyramid
+/*
+    A
+    BC
+    DEF
+    GHIJ
+    KLMN
+*/
+
+    var char = 'A'
+    for(i in 1..5){
+        for(j in 1..i){
+            print(char)
+            char++
+        }
+        println()
+    }
+    
+     println("Hollow_Rectangle")
+     //Hollow_Rectangle
+/*
+   *****
+   *   *
+   *   *
+   *****
+*/
+
+  val totalRows = 5
+    val totalCol = 5
+    for(i in 1..totalRows){
+        for(j in 1..totalCol){
+			if(i == 1 ||i == totalRows || j==1 || j == totalCol){
+                print("*")
+            }else{
+            print(" ")
+            }
+        }
+        println()
+    }
+    
+ println("Inverted-Rotated half")
+     //Inverted-Rotated half
+/*
+            *
+          * *
+        * * *
+      * * * *
+*/
+
+ val n = 5
+    for(i in 1..n){
+        //(loop is for space)
+        for(j in 1..(n-i)){
+			print(" ")
+        }
+        //(Loop is  for star)
+        for(j in 1..i){
+            print("*")
+        }
+        println()
+    }
+
+println("Inverted-Half")
+     //Inverted-Half
+/*
+    1 2 3 4 5
+    1 2 3 4
+    1 2 3 
+    1 2 
+    1
+*/
+
+for(line in 5 downTo 1){
+    for(num in 1..line){
+        print(num)
+    }
+    println()
+}
+
+println("floyd's")
+     //floyd's
+/*
+    1
+    2 3
+    4 5 6 
+    7 8 9 10
+    
+*/
+
+var num = 1
+    for(i in 1..5){
+        for(j in 1..i){
+        print("$num ")
+        num++
+    }
+    println()
+    }
+}
+println("0-1 triangle")
+/*
+    1
+    0 1
+    1 0 1 
+    0 1 0 1
+    
+*/
+ for(i in 1..4){
+    for(j in 1..i){
+       if((i+j)%2==0){
+           print(1)
+       }
+       else{
+           print(0)
+       }
+        
+    }
+    println()
+}
+println("Butterfly")
+     //Butterfly
+/*
+*      *       
+**    **
+***  ***
+********
+********
+***  ***
+**    **
+*      *
+*/
+ for(i in 1..4){
+         for(j in 1..i){
+           print("*")
+       }
+       for(j in 1..(2*(4-i))){
+           print(" ")
+       }
+       for(j in 1..i){
+           print("*")
+       }
+       println()
+   }
+       for(i in 4 downTo 1){
+              for(j in 1..i){
+           print("*")
+       }
+       for(j in 1..(2*(4-i))){
+           print(" ")
+       }
+       for(j in 1..i){
+           print("*")
+       }
+              println()
+   }
+
+println("solid rhombus")
+
+/*
+    *****
+   *****
+  *****
+ *****
+*****
+
+*/
+
+for(i in 1..5){
+       for(j in 1..5-i){
+           print(" ")
+       }
+       for(j in 1..5){
+           print("*")
+       }
+       println()
+   }
+
+
+println("hollow rhombus")
+/*
+    *****
+   *   *
+  *   *
+ *   *
+*****
+*/
+
+ for(i in 1..5){
+       for(j in 1..5-i){
+           print(" ")
+       }
+       for(j in 1..5){
+        if(i == 1 ||i == 5 || j==1 || j == 5){
+                print("*")
+            }else{
+            print(" ")
+            }
+       }
+       println()
+   }
+
+println("diamond")
+
+/*
+    *
+   ***
+  *****
+ *******
+*********
+*********
+ *******
+  *****
+   ***
+    *
+  
+
+*/
+
+ for(i in 1..5){
+       for(j in 1..5-i){
+           print(" ")
+       }
+       for(j in 1..(2*i-1)){
+          
+          print("*")
+       }
+       println()
+}
+   for(i in 5 downTo 1){
+       for(j in 1..5-i){
+           print(" ")
+       }
+       for(j in 1..(2*i-1)){
+          
+          print("*")
+       }
+       println()
+}
