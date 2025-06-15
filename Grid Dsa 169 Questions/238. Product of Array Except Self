@@ -1,0 +1,36 @@
+fun main() {  TM : O(n^2)
+    val arr = arrayOf(1,2,3,4)
+    val n = arr.size
+    val result = mutableListOf<Int>()
+    for (i in 0 until n) {
+        var product = 1
+        for (j in 0 until n) {
+            if (i != j) {
+                product *= arr[j]
+            }
+        }
+        result.add(product)
+    }
+
+    println(result)
+}
+fun main() {
+    val arr = arrayOf(1,2,3,4)
+    val n = arr.size
+    val answer = IntArray(n){1}
+    val result = mutableListOf<Int>()
+  //left to right
+  var prefix  =1 
+    for(i in 0 until n){
+        answer[i]=prefix           // 1  1  2  6
+        prefix = prefix * arr[i]   // 1  2  6  24
+     }
+    
+    //right to left 
+    var suffix= 1
+    for(i in n-1 downTo 0){
+        answer[i]= answer[i] * suffix   // 6 8 12 24
+        suffix = suffix * arr[i]       // 4 12 24 24
+    }
+    println(answer.joinToString(" ,"))
+}
