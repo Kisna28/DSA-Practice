@@ -1,0 +1,43 @@
+fun main() {
+    val arr = arrayOf(2,2,1,1,1,2,2)
+    val count =arr.groupingBy { it }.eachCount()
+    val maxFrequency = count.maxByOrNull { it.value }?.key
+    println(maxFrequency)
+    
+    //HashMap
+    
+val freqMap = mutableMapOf<Int, Int>()
+ for (num in arr) {
+    freqMap[num] = freqMap.getOrDefault(num, 0) + 1
+       }
+val maxFreq = freqMap.keys.maxOrNull()
+println(maxFreq)
+    
+    
+    // Reduce keyword
+    
+val countreduce = arr.groupingBy { it }.eachCount()
+val maxFrequencyReduce = countreduce.entries.reduce { acc,entry ->
+    if (entry.value > acc.value) entry else acc
+}.key
+println(maxFrequencyReduce)
+     
+     
+  //sorted loop
+  
+arr.sort()
+var current = arr[0]
+var maxCount = 1
+var count2 = 1
+for (i in 1 until arr.size) {
+    if (arr[i] == current) {
+        count2++
+    } else {
+        maxCount = maxOf(maxCount, count2)
+        current = arr[i]
+        count2 = 1
+    }
+}
+maxCount = maxOf(maxCount, count2)
+println(maxCount)
+    }
