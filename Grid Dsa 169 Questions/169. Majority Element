@@ -41,3 +41,14 @@ for (i in 1 until arr.size) {
 maxCount = maxOf(maxCount, count2)
 println(maxCount)
     }
+//checkout this solution  amezing
+  val nums =arrayOf(1,1,2,3,3,3,3,2,1)
+    var count = 0
+    var candidate = 0
+    for (num in nums) {
+        if (count == 0) {
+            candidate = num  //2
+        }
+        count += if (num == candidate) 1 else -1  
+    }
+    println(candidate) 
