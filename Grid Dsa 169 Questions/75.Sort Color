@@ -1,0 +1,25 @@
+class Solution {  TM: o(n)
+    fun sortColors(nums: IntArray): Unit {
+    var count0 = 0 
+       var count1 = 0 
+       var count2 = 0 
+        for (i in nums.indices) {
+        when (nums[i]) {
+            0 -> count0++
+            1 -> count1++
+            2 -> count2++
+        }
+    }
+       var j = 0
+    while (count0-- > 0) {
+        nums[j++] = 0
+    }
+    while (count1-- > 0) {
+        nums[j++] = 1
+    }
+    while (count2-- > 0) {
+        nums[j++] = 2
+    }
+    }
+}
+//We direct use nums.sort() for answer 
