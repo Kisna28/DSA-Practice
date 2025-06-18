@@ -1,0 +1,47 @@
+ val set = mutableSetOf<Int>()
+        for(i in nums){
+            if(i in set)  {
+                return true
+            }
+            set.add(i)
+        }
+         return false
+            }
+
+1. Using .toSet() and compare sizes
+Simple one-liner
+
+Time Complexity: O(n)
+
+Space Complexity: O(n)
+
+kotlin
+Copy
+Edit
+fun containsDuplicate(nums: IntArray): Boolean {
+    return nums.toSet().size != nums.size
+}
+✅ 3. Using .distinct()
+Converts to a list of unique elements.
+
+kotlin
+Copy
+Edit
+fun containsDuplicate(nums: IntArray): Boolean {
+    return nums.distinct().size != nums.size
+}
+✅ 4. Sorting first and checking neighbors
+Time Complexity: O(n log n)
+
+Space Complexity: O(1) if done in-place
+
+kotlin
+Copy
+Edit
+fun containsDuplicate(nums: IntArray): Boolean {
+    nums.sort()
+    for (i in 1 until nums.size) {
+        if (nums[i] == nums[i - 1]) return true
+    }
+    return false
+}
