@@ -1,0 +1,13 @@
+fun canAttendMeetings(intervals: Array<IntArray>): Boolean {
+    // Step 1: Sort intervals by start time
+    intervals.sortBy { it[0] }
+
+    // Step 2: Check for any overlapping intervals
+    for (i in 1 until intervals.size) {
+        if (intervals[i][0] < intervals[i - 1][1]) {
+            return false // Overlapping meeting
+        }
+    }
+
+    return true // No overlaps, all meetings can be attended
+}
