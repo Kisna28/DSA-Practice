@@ -1,4 +1,4 @@
-fun main() {
+fun main() {   TM: O(N)  THIS IS GREEDY APPROCH
 val gas  =  arrayOf(1, 2, 3, 4, 5)
 val cost = arrayOf(3, 4, 5, 1, 2)
 var tank = 0
@@ -20,3 +20,47 @@ var start =0
     }
     println(start)
    }
+//  OR   
+           //TM : O(N)
+  var total = 0   
+    var tank = 0
+    var startIndex = 0
+
+    for (i in gas.indices) {
+        val gain = gas[i] - cost[i]
+        tank += gain
+        total += gain
+
+        if (tank < 0) {
+            tank = 0
+            startIndex = i + 1
+        }
+    }
+
+    return if (total < 0) -1 else startIndex
+
+//OR
+
+         //TM : O(N^2)
+
+fun canCompleteCircuit(gas: IntArray, cost: IntArray): Int {
+    val n = gas.size
+
+    for (start in 0 until n) {
+        var fuel = 0
+        var completed = true
+
+        for (i in 0 until n) {
+            val index = (start + i) % n
+            fuel += gas[index] - cost[index]
+            if (fuel < 0) {
+                completed = false
+                break
+            }
+        }
+
+        if (completed) return start
+    }
+
+    return -1
+}
