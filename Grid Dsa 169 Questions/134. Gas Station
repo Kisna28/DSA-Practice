@@ -1,0 +1,22 @@
+fun main() {
+val gas  =  arrayOf(1, 2, 3, 4, 5)
+val cost = arrayOf(3, 4, 5, 1, 2)
+var tank = 0
+var total_gas = 0
+var total_cost = 0
+var start =0
+    for(i in 0 until gas.size){
+            total_gas += gas[i]
+         println("Total Gas: $total_gas")
+            total_cost += cost[i]
+        println("Total Cost: $total_cost")
+             tank += gas[i]-cost[i]
+        println(tank)
+        if(tank < 0){
+            start = i +  1
+            println("Start: $start")
+            tank = 0
+        }
+    }
+    println(start)
+   }
