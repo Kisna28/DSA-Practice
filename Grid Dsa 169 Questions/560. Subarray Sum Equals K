@@ -42,3 +42,20 @@ class Solution { //Tm: O(n^2)  but this is fail when negative values are come al
     println("Total subarrays with sum = $key: $count")
         
     }
+
+
+//  In leetcode this code is less runtime
+{
+val sumCounts = hashMapOf<Int,Int>()
+       var curr = 0
+       sumCounts[0] = 1
+       var ans = 0
+
+       for(num in nums){
+        curr += num
+        ans += sumCounts[curr - k]?: 0
+        sumCounts[curr] = (sumCounts[curr]?:0) + 1
+       }
+
+       return ans
+}
