@@ -1,0 +1,186 @@
+fun fact(n:Int):Int{
+     if (n == 0) {
+        return 1
+    }
+    val factnm1 = fact(n - 1)
+    val result = n * factnm1
+    println("fact($n) = $n * fact(${n-1}) = $result")
+    return result 
+}
+fun sum(n:Int):Int{
+    if(n==1){
+        return 1
+    }
+    val sumnm1=sum(n-1)
+    val sum = n + sumnm1
+    println("sum($n) = $n + sum(${n-1}) = $sum")
+    return sum 
+}
+fun fib(n:Int):Int{
+    if(n==0  || n == 1){return n}
+    val fibnm1=fib(n-1)
+    val fibnm2=fib(n-2)
+    val fib=fibnm1+fibnm2
+    return fib
+}
+fun arrSort(arr:Array<Int>,i:Int):Boolean{
+    if(i == arr.size-1) return true
+    if(arr[i]>arr[i+1]) return false
+    return arrSort(arr,i+1)
+}
+fun firstOcc(arr:Array<Int>,i:Int,key:Int):Int{
+    if(i== arr.size){return -1}
+    if(arr[i]==key){return i}
+    return firstOcc(arr,i+1,key)
+}
+fun lastOcc(arr:Array<Int>,i:Int,key:Int):Int{
+   if(i== arr.size){return -1}
+   val isFound=lastOcc(arr,i+1,key)
+   if(isFound != -1){
+       return isFound
+   }
+   if(arr[i]==key){ return i }
+   return isFound
+    
+}
+fun occurrences(arr:Array<Int>,i:Int,key:Int){
+        if(i== arr.size){return }
+        if(arr[i]==key){ print("$i ")}
+        return occurrences(arr,i+1,key)
+}
+fun power(x:Int,n:Int):Int{ //Tm : O(n)
+    if(n==0){return 1}
+    val xnm1 = power(x,n-1)
+    val xn = x * xnm1
+    return xn
+}
+fun pow(x:Int,n:Int):Int{ //Tm : O(logn)
+    if(n==0){return 1}
+    var halfPower = pow(x,n/2)
+    var halfPowSqure = halfPower * halfPower
+    if(n %2 !=0){halfPowSqure = x* halfPowSqure}
+    return halfPowSqure
+}
+fun tilingProblem(n : Int):Int{ //2 * n
+    if(n==0 || n==1){return 1}
+     //work
+    //vertical choice	
+    val fnm1 = tilingProblem(n-1)
+    //horizontal choice
+    val fnm2 = tilingProblem(n-2)
+    val totalways = fnm1 + fnm2
+    return totalways
+}
+fun removeDuplicates(str:String, idx :Int,newstr : StringBuilder,map :Array<Boolean>){
+    if(idx  == str.length){
+        println(newstr)
+        return
+    }
+    val currchar = str[idx]
+    if(map[currchar -'a']==true){
+       removeDuplicates(str,idx+1,newstr,map) 
+    }else{
+        map[currchar - 'a'] = true       
+        removeDuplicates(str,idx+1,newstr.append(currchar),map) 
+    }    
+}
+fun pairing(n : Int):Int{ //2 * n
+    if(n==1 || n==2){return n}
+     //work
+    val fnm1 = pairing(n-1)
+    val fnm2 = (n-1)  * pairing(n-2) 
+    val totalways = fnm1 + fnm2
+    return totalways
+}
+fun printBinaryString(n:Int,lastPlace:Int,str:String){
+    
+    if(n==0){
+        println(str)
+        return
+    }
+    
+    /*if(lastPlace ==0){
+        //sit 0 on chair  n
+        printBinaryString(n-1,0,str.append("0"))
+        printBinaryString(n-1,1,str.append("1"))
+    }else{
+          printBinaryString(n-1,0,str.append("0"))
+    }*/   //Or
+    
+            printBinaryString(n-1,0,str+"0")
+              if(lastPlace ==0){
+             printBinaryString(n-1,1,str+"1")
+               }    
+    }
+
+fun digitToString(num:String,i:Int,str:String){
+    
+    if(i==num.length){
+        println(str) 
+        return
+    }
+    val word = when(num[i]){
+        '1'->"One"
+        '2'->"Two"
+        '3'->"Three"
+        '4'->"Four"
+        '5'->"Five"
+        '6'->"Six"
+        '7'->"Seven"
+        '8'->"Eight"
+        '9'->"Nine"
+        else-> "Zero"
+       }
+     digitToString(num,i+1,str+word+" ")
+}
+tailrec fun lengthOfString(str:String,i:Int,count:Int):Int{   //this is better
+    if(i==str.length){
+        return count
+    }
+    return lengthOfString(str,i+1,count+1)
+    
+/*  fun findLength(str: String, i: Int = 0): Int {    this is a better readble 
+    if (i == str.length) return 0
+    return 1 + findLength(str, i + 1)
+} */
+}
+fun countSubstrs(str: String, start: Int, end: Int){
+      if (start == str.length) return
+    if (end == str.length) {
+        countSubstrs(str, start + 1, start + 1)
+        return
+    }
+
+    val substr = str.substring(start, end + 1)
+    if (substr.first() == substr.last()) {
+        println(substr)
+    }
+
+    countSubstrs(str, start, end + 1)
+
+    
+}
+fun main() {
+    val result = fact(5)
+    println("Factorial is: $result")
+    val sum = sum(5)
+    println("Sum is: $sum")
+    val fib = fib(8)
+    println("Fibonachi is : $fib")
+    println(arrSort(arrayOf(1,2,3,4,5,6),0))
+    println(firstOcc(arrayOf(1,2,4,5,7,3,5,1,3),0,3))
+    println(lastOcc(arrayOf(1,2,4,5,7,3,5,1,3),0,5))
+    println(occurrences(arrayOf(3, 2, 4, 5, 6, 2, 7, 2, 2),0,2))
+    println(power(2,10))
+    println(pow(2,10))
+    println(tilingProblem(4))
+    val str = "appnacollege"
+    val map = Array(26) { false } // Initialize all to false
+    removeDuplicates(str, 0, StringBuilder(), map)
+    println(pairing(3))
+    printBinaryString(3,0,"")
+    println(digitToString("2019",0,""))
+    println(lengthOfString("Kisna",0,0))
+    countSubstrs("aba",0,0)
+    
+}
