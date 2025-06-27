@@ -157,8 +157,15 @@ fun countSubstrs(str: String, start: Int, end: Int){
     }
 
     countSubstrs(str, start, end + 1)
-
-    
+}
+fun solveHanoi(n: Int, source: String, destination: String, auxiliary: String) {
+    if (n == 1) {
+        println("Move disk 1 from $source to $destination")
+        return
+    }
+    solveHanoi(n - 1, source, auxiliary, destination)
+    println("Move disk $n from $source to $destination")
+    solveHanoi(n - 1, auxiliary, destination, source)
 }
 fun main() {
     val result = fact(5)
@@ -182,5 +189,7 @@ fun main() {
     println(digitToString("2019",0,""))
     println(lengthOfString("Kisna",0,0))
     countSubstrs("aba",0,0)
+    val n = 3
+    solveHanoi(n,"A","C","B")
     
 }
