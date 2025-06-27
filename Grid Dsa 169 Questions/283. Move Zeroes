@@ -1,0 +1,53 @@
+class Solution {
+    fun moveZeroes(nums: IntArray): Unit {
+        var insertPos = 0
+        for(num in nums){
+            if(num !=0){
+                nums[insertPos] = num
+                insertPos++
+            }
+        }
+        for(i in insertPos until nums.size){
+            nums[i] = 0
+        }
+    }
+}
+//Or
+fun moveZeroes(nums: IntArray) {
+    var left = 0
+    for (right in nums.indices) {
+        if (nums[right] != 0) {
+            val temp = nums[left]
+            nums[left] = nums[right]
+            nums[right] = temp
+            left++
+        }
+    }
+}
+
+//Or
+ fun moveZeroesNewArray(nums: IntArray): IntArray {
+    val result = mutableListOf<Int>()
+    var zeroCount = 0
+
+    for (num in nums) {
+        if (num != 0) {
+            result.add(num)
+        } else {
+            zeroCount++
+        }
+    }
+
+    repeat(zeroCount) {
+        result.add(0)
+    }
+
+    return result.toIntArray()
+}
+
+//Or
+fun moveZeroesFunctional(nums: IntArray): IntArray {
+    val nonZeros = nums.filter { it != 0 }
+    val zeros = List(nums.size - nonZeros.size) { 0 }
+    return (nonZeros + zeros).toIntArray()
+}
