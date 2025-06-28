@@ -1,0 +1,20 @@
+fun main() {
+    val intervals = arrayOf(arrayOf(0, 40), arrayOf(5, 10), arrayOf(15, 20))
+    val n = intervals.size
+    val startTime = IntArray(n){intervals[it][0]}
+    val endTime = IntArray(n){intervals[it][1]}
+     startTime.sort()
+    endTime.sort()
+    var rooms = 0
+    var endPointer =0 
+    for(i in 0 until n){
+        if (startTime[i] < endTime[endPointer]) {
+            rooms++ // need new room
+        } else {
+            endPointer++ // one meeting ended, reuse room
+        }
+    }
+    println(rooms)
+
+  
+}
