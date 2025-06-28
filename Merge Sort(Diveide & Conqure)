@@ -1,0 +1,55 @@
+fun printArray(arr:Array<Int>){
+    for(num in arr){
+        print("$num ")
+    }
+}
+fun mergeSort(arr:Array<Int>,si:Int,ei:Int){  //si=Start Index ,ei= Ending Index
+    if(si>=ei){return}
+    var mid = si +(ei-si) /2  //or (si-ei)/2
+    mergeSort(arr,si,mid)  //left
+    mergeSort(arr,mid+1,ei)  //right
+    merge(arr,si,mid,ei)  //make new function
+    
+}
+fun merge(arr:Array<Int>,si:Int,mid:Int,ei:Int){
+    //left(0,3)= 4   right(4,6)  = 3  ->last Index 6-0+1 = 7(because we required 7 size array)
+    val tempArray = Array<Int>(ei-si+1){0}  
+    var i = si  // left part itreator
+    var j = mid+1  // right part itreator
+    var k = 0  // itreator  for tempArray
+    
+    while(i<=mid && j<=ei){
+        if(arr[i]<arr[j]){
+            tempArray[k]=arr[i]
+            i++
+            // k++  both condition k is plus so write outside loop is good
+        }else{
+            tempArray[k]=arr[j]
+            j++
+           // k++  both condition k is plus so write outside loop is good
+        }
+        k++
+    }
+//In upper while loop if left part is sorted and right part not then while stop because we use "And(&&)" Operator
+    //-----Vice-versa----//
+    //left part
+     while(i<=mid){
+         tempArray[k++]=arr[i++] // <- combine ++ inside arr (uniory operator)
+     }
+     //left part
+     while(j<=ei){
+         tempArray[k++]=arr[j++] 
+     }
+     //copy tempArray into Orignal Array
+     var s = si
+     for (k in 0 until tempArray.size) {
+            arr[s] = tempArray[k]
+            s++
+     }
+    
+}
+fun main() {
+    val arr= arrayOf(6,3,9,5,2,8,-2)
+    mergeSort(arr,0,arr.size-1)  //TM : O(nlogn)  we not use this sort method for extra space.also call depth first search
+    printArray(arr)
+}
