@@ -35,5 +35,6 @@ fun main() {
     val target = 0
     val targetIndex = rotatedArray(arr,target,0,arr.size-1)
     println(targetIndex)
+//Also we do same code using for loop and found.but it complexty is O(n) and this gove sol is O(nlogn)
 
 }
