@@ -1,0 +1,38 @@
+
+fun quickSort(arr:Array<Int>,si:Int,ei:Int){ //si = Starting Index , ei= Ending Index
+    //Base case
+    if(si>=ei){return}
+    //last element
+    val pind = partition(arr,si,ei)  //it's give a pivot index 
+    quickSort(arr,si,pind-1)  //left part
+    quickSort(arr,pind+1,ei)  //right part
+}
+fun partition(arr:Array<Int>,si:Int,ei:Int):Int{
+    val pivot = arr[ei]
+    var i = si-1 //to make place for elements smaller then pivot
+    for(j in si until ei){
+        if(arr[j]<=pivot){
+            i++
+            //swap
+            val temp = arr[j]
+              arr[j] = arr[i]
+              arr[i] = temp
+        }
+    }
+            i++
+            //swap,we store pivot index in "i" so return i
+            val temp = pivot
+             arr[ei] = arr[i]  //pivot = arr[i] <-not write this 
+              arr[i] = temp
+      return i
+}
+fun printArray(arr:Array<Int>){
+    for(num in arr){
+        print("$num ")
+    }
+}
+fun main() {
+    val arr = arrayOf(6,3,9,8,2,5,-5)
+    quickSort(arr,0,arr.size-1)
+    printArray(arr)
+}
