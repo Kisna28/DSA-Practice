@@ -1,1 +1,39 @@
+fun rotatedArray(arr:Array<Int>,target:Int,si:Int,ei:Int):Int{
+    //base case 
+    if(si>ei){return -1}
+      val mid = si + (ei-si) / 2  //or  (si+ei)/2
+      //case found here
+    if(arr[mid]==target){
+        return mid
+    }
+    
+    //mid on Line 1
+    if(arr[si]<= arr[mid]){
+        //case a: Left
+        if(arr[si]<=target && target<=arr[mid]){
+            return rotatedArray(arr,target,si,mid-1)
+           }else{
+            //case b :right
+        return rotatedArray(arr,target,mid+1,ei)
 
+        }
+         }//else mid on Line 2
+    else{
+        //case c: right
+         if(arr[mid]<=target && target<=arr[ei]){
+            return rotatedArray(arr,target,mid+1,ei)
+           }else{
+            //case d :left
+          return rotatedArray(arr,target,si,mid-1)
+
+        }
+    }    
+}
+
+fun main() {
+    val arr = arrayOf(4,5,6,7,0,1,2)
+    val target = 0
+    val targetIndex = rotatedArray(arr,target,0,arr.size-1)
+    println(targetIndex)
+
+}
