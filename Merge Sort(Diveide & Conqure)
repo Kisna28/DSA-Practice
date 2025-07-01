@@ -97,6 +97,60 @@ fun majorityElement(arr: IntArray, left: Int, right: Int): Int {
 
     return if (leftCount > rightCount) leftMajor else rightMajor
 }
+fun mergeSortCount(arr:Array<Int>,si:Int,ei:Int): Int{  //si=Start Index ,ei= Ending Index
+    if(si>=ei){return 0}
+   var count = 0
+    var mid = si +(ei-si) /2  //or (si-ei)/2
+     count += mergeSortCount(arr,si,mid)  //left
+     count += mergeSortCount(arr,mid+1,ei)  //right
+     count += mergeCount(arr,si,mid,ei)  //make new function
+    return count
+}
+fun mergeCount(arr:Array<Int>,si:Int,mid:Int,ei:Int):Int{
+    //left(0,3)= 4   right(4,6)  = 3  ->last Index 6-0+1 = 7(because we required 7 size array)
+    val tempArray = Array<Int>(ei-si+1){0}  
+    var i = si  // left part itreator
+    var j = mid+1  // right part itreator
+    var k = 0  // itreator  for tempArray
+    var inversions = 0
+    
+    while(i<=mid && j<=ei){
+        if(arr[i]<arr[j]){
+            tempArray[k]=arr[i]
+            i++
+            // k++  both condition k is plus so write outside loop is good
+        }else{
+            tempArray[k]=arr[j]
+            j++
+            inversions += (mid-i+1)  // count inversions here
+        }
+        k++
+    }
+    while(i<=mid ){
+            tempArray[k++]=arr[i++] 
+       }
+        while(j<=ei ){
+            tempArray[k++]=arr[j++] 
+       }
+        var s = si
+    for(k in 0 until tempArray.size){
+        arr[s] = tempArray[k]
+        s++   
+    }
+     while(i<=mid ){
+            tempArray[k++]=arr[i++] 
+       }
+        while(j<=ei ){
+            tempArray[k++]=arr[j++] 
+       }
+        var s = si
+    for(k in 0 until tempArray.size){
+        arr[s] = tempArray[k]
+        s++   
+    }
+     return inversions
+}
+
 fun main() {
     val arr= arrayOf(6,3,9,5,2,8,-2)
     mergeSort(arr,0,arr.size-1)  //TM : O(nlogn)  we not use this sort method for extra space.also call depth first search
@@ -168,7 +222,9 @@ val arr= arrayOf(2,2,1,1,1,2,2) // O/p: 2 because more time
         println("No majority element")
     }
 //We solve majority element using a sort methode.
-
+//------------------//
+ val count = mergeSortCount(arr,0,arr.size-1)  
+    println("Count = $count")
 
 
 }
