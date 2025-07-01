@@ -48,8 +48,130 @@ fun merge(arr:Array<Int>,si:Int,mid:Int,ei:Int){
      }
     
 }
+//For String
+fun mergeSortString(arr:Array<String>,si:Int,ei:Int){
+    if(si>=ei){return}
+    var mid = si + (ei-si) / 2
+    mergeSortString(arr,si,mid)
+    mergeSortString(arr,mid+1,ei)
+    merge(arr,si,mid,ei)
+}
+fun merge(arr:Array<String>,si:Int,mid:Int,ei:Int){
+    val tempArray = Array<String>(ei-si+1){""}
+    var i = si
+    var j = mid+1
+    var k = 0
+    while(i<=mid && j<=ei){
+        if(arr[i]<arr[j]){
+            tempArray[k]=arr[i]
+            i++
+        }else{
+            tempArray[k]=arr[j]
+            j++
+        }
+        k++
+    }
+       while(i<=mid ){
+            tempArray[k++]=arr[i++] 
+       }
+        while(j<=ei ){
+            tempArray[k++]=arr[j++] 
+       }
+        var s = si
+    for(k in 0 until tempArray.size){
+        arr[s] = tempArray[k]
+        s++   
+    }
+}
+fun majorityElement(arr: IntArray, left: Int, right: Int): Int {
+    if (left == right) return arr[left]
+
+    val mid = left + (right - left) / 2
+    val leftMajor = majorityElement(arr, left, mid)
+    val rightMajor = majorityElement(arr, mid + 1, right)
+
+    if (leftMajor == rightMajor) return leftMajor
+
+    val leftCount = (left..right).count { arr[it] == leftMajor }
+    val rightCount = (left..right).count { arr[it] == rightMajor }
+
+    return if (leftCount > rightCount) leftMajor else rightMajor
+}
 fun main() {
     val arr= arrayOf(6,3,9,5,2,8,-2)
     mergeSort(arr,0,arr.size-1)  //TM : O(nlogn)  we not use this sort method for extra space.also call depth first search
     printArray(arr)
+    val arrString = arrayOf("sun", "earth", "mars", "mercury")  //same as Int Merge sort just change in Array is String.
+    //O/P : earth ,mars ,mercury ,sun
+     mergeSortString(arrString,0,arrString.size-1)
+     println(arrString.joinToString(" ,"))
+
+
+//----solve using divide and conqare Methode----
+
+val result = majorityElement(arr, 0, arr.size - 1)
+
+    // Verify
+    val count = arr.count { it == result }
+    if (count > arr.size / 2) {
+        println("Majority Element: $result")
+    } else {
+        println("No Majority Element")
+    }
+
+//----Finding Majority Elements----  TM : O(n), SC : O(1) (average)
+//we use hash map to store value and return max value .
+val map = mutableMapOf<Int,Int>()
+for(num in arr){
+    if(num in map){
+        map[num] = map[num]!!+1
+    }else{
+        map[num] = 1
+    }
 }
+  for((num,count) in map){
+      println("$num: $count")
+  }
+  val majority = arr.size /2
+    for((num,count) in map){
+        if(count > majority){
+              println("Majority Element: $num")
+              break
+        }
+    }
+// Boyer-Moore Voting Algorithm (Most Optimal)
+val arr= arrayOf(2,2,1,1,1,2,2) // O/p: 2 because more time
+  // Phase 1: Find candidate
+  var candidate = arr[0] 
+    var count = 1
+    for(i in 1 until arr.size){
+        if(arr[i]==candidate){
+            count++  
+        }else{
+            count--  
+            if(count == 0){
+                candidate = arr[i]   
+                count = 1
+            }
+        }
+        
+    }
+      // Phase 2: Confirm it's majority
+    count = 0
+    for (num in arr) {
+        if (num == candidate) count++ 
+    }
+
+    if (count > arr.size / 2) {  
+        println("Majority element: $candidate")
+    } else {
+        println("No majority element")
+    }
+//We solve majority element using a sort methode.
+
+
+
+}
+
+
+
