@@ -1,0 +1,17 @@
+fun main() {
+ val arr = IntArray(5)
+ changeArray(arr,0,1)
+ println("Final : ${arr.joinToString(", ")}")
+}
+ fun changeArray(arr:IntArray,i:Int,value:Int){
+    //base case
+    if(i == arr.size){
+        println("Base Case : ${arr.joinToString(", ")}")
+        println()
+        return
+    }
+    //recursion(work)
+    arr[i]  = value
+    changeArray(arr,i+1,value+1)
+    arr[i] = arr[i] - 2
+}
