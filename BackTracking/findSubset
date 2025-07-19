@@ -1,0 +1,18 @@
+fun main() {  //TC : O(n * 2^n)
+    val str = "abc"
+        findSubset(str," ",0)
+}
+fun findSubset(str:String,ans:String,i:Int){
+    //base case
+    if(i==str.length){
+        if(ans.length==0){println("null")}
+        else{ println(ans)}
+        return
+    }
+    //recursion
+    //Yes
+    findSubset(str,ans+str[i],i+1)
+    //No choice
+     findSubset(str,ans,i+1)
+
+}
