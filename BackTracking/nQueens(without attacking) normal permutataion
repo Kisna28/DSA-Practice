@@ -1,0 +1,34 @@
+fun main() {
+   val n = 2
+   val board = Array(n) { CharArray(n) { '.' } }
+   //initlization
+   for(i in 0 until n){
+       for(j in 0 until n){
+           board[i][j]='x'
+       }
+   }
+   nQueens(board,0)
+}
+fun nQueens(board: Array<CharArray>,row:Int){
+    //base case
+        if(row==board.size){
+            printBoard(board)
+            return
+        }
+    
+    //recursion
+   for(j in 0 until board.size){
+       board[row][j]='Q'
+       nQueens(board,row+1)
+       board[row][j] = 'x'
+   }
+}
+fun printBoard(board: Array<CharArray>){
+    println("---------")
+     for(i in 0 until board.size){
+          for(j in 0 until board.size){
+              print("${board[i][j]} ")
+          }   
+          println()
+     }
+}
