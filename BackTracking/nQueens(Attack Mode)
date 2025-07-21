@@ -1,0 +1,69 @@
+fun main() {
+   val n = 4
+   val board = Array(n) { CharArray(n) }
+   //initlization
+   for(i in 0 until n){
+       for(j in 0 until n){
+           board[i][j]='x'
+       }
+   }
+   nQueens(board,0)
+}
+fun nQueens(board: Array<CharArray>,row:Int){
+    //base case
+        if(row==board.size){
+            printBoard(board)
+            return
+        }
+    
+    //recursion
+   for(j in 0 until board.size){
+       if(isSafe(board,row,j)){
+       board[row][j]='Q'
+       nQueens(board,row+1)
+       board[row][j] = 'x'
+       }
+   }
+}
+fun printBoard(board: Array<CharArray>){
+    println("---------")
+     for(i in 0 until board.size){
+          for(j in 0 until board.size){
+              print("${board[i][j]} ")
+          }   
+          println()
+     }
+}
+fun isSafe(board: Array<CharArray>,row:Int,col:Int):Boolean{
+    //vertically up
+    for(i in row-1 downTo 0){
+        if(board[i][col] == 'Q'){
+            return false
+        }
+    }
+    //diag left up
+    run{
+    var i = row - 1
+    var j = col - 1
+    while (i >= 0 && j >= 0) {
+       if(board[i][j] == 'Q'){
+          return false
+     }
+    i--
+    j--
+}
+    }
+    run{
+    //diag right up
+    var i = row - 1
+    var j = col + 1
+    while (i >= 0 && j < board.size) {
+       if(board[i][j] == 'Q'){
+          return false
+     }
+    i--
+    j++
+}
+    }
+    return true
+}
