@@ -1,0 +1,34 @@
+fun main() {
+    val list = ArrayList<Int>()
+    list.add(2)
+    list.add(2)
+    list.add(2)
+    list.add(2)
+    list.add(3)
+ println("most frequent number: ${mostfrequentnumber(list,2)}")
+}
+// Tm : O(n)
+fun mostfrequentnumber(list: ArrayList<Int>, key : Int): Int {
+    val freq = HashMap<Int, Int>()
+    // val freq = IntArray(1001)   // because values are up to 1000
+    var maxCount = 0
+    var result = 0
+
+    for(i in 0 until list.size -1 ){
+        if(list[i] == key){
+            val target = list[i + 1]
+            freq[target] = (freq[target] ?: 0) + 1
+//              freq[target]++
+
+//             if (freq[target] > maxCount) {
+//                 maxCount = freq[target]
+//                 result = target
+//             }
+            if (freq[target]!! > maxCount) {
+                maxCount = freq[target]!!
+                result = target
+            }
+        }   
+    }
+    return result
+}
