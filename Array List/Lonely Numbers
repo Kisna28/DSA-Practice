@@ -1,0 +1,68 @@
+fun main() {
+    val list = ArrayList<Int>()
+    list.add(1)
+    list.add(3)
+    list.add(5)
+    list.add(3)
+ println("lonelyNumbers Brute Force: ${lonelyNumbersBF(list)}")
+ println("lonelyNumbers Soreted: ${lonelyNumbersSort(list)}")
+ println("lonelyNumbers Hash map: ${lonelyNumbersHashmap(list)}")
+}
+// Brute Force : O(n ^ 2)
+fun lonelyNumbersBF(list: ArrayList<Int>): ArrayList<Int> {
+    val lonelyNumbers = ArrayList<Int>()
+    for(i in 0 until list.size){
+        val before = list[i] -1
+        val after = list[i] +1
+        var isLonely = true
+        for(j in 0 until list.size){
+            if(i != j && (list[i] == list[j] || before == list[j] || after == list[j])){
+                isLonely = false
+                break
+            } 
+        }
+          if(isLonely){
+            lonelyNumbers.add(list[i])
+        }
+           
+    }
+    return lonelyNumbers
+}
+//TM :  O(n log n)
+fun lonelyNumbersSort(list: ArrayList<Int>): ArrayList<Int> {
+    val lonelyNumbers = ArrayList<Int>()
+    list.sort()
+    for(i in 0 until list.size){ // i in list.indices
+    val before = if(i > 0 ){
+        list[i -1]
+    }else{
+        Int.MIN_VALUE
+    }
+     val after = if (i < list.size - 1) {
+         list[i + 1]
+     }else {
+         Int.MAX_VALUE
+     }   
+        if (list[i] - 1 != before && list[i] + 1 != after && list[i] != before && list[i] != after) {
+            lonelyNumbers.add(list[i])
+        }
+     
+    }
+    return lonelyNumbers
+}
+//TM : O(n)
+fun lonelyNumbersHashmap(list: ArrayList<Int>): ArrayList<Int> {
+     val freq = HashMap<Int, Int>()
+    val lonelyNumbers = ArrayList<Int>()
+     // Count frequency
+    for (num in list) {
+        freq[num] = freq.getOrDefault(num, 0) + 1
+    }
+    // Check lonely numbers
+    for (num in list) {
+        if (freq[num] == 1 && !freq.containsKey(num - 1) && !freq.containsKey(num + 1)) {
+            lonelyNumbers.add(num)
+        }
+    }
+    return lonelyNumbers
+}
