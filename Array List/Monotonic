@@ -1,0 +1,58 @@
+fun main() {
+    val list = ArrayList<Int>()
+    list.add(2)
+    list.add(2)
+    list.add(2)
+ println("monotonic: ${monotonic(list)}")
+ println("monotonic monotonicDirection : ${monotonicDirection(list)}")
+}
+// Best Approchs : O(n)
+fun monotonic(list: ArrayList<Int>): Pair<Boolean , String> {
+    var isIncreasing = false
+    var isDecreasing = false
+    for(i in 0 until list.size-1){
+            if(list.get(i) < list.get(i+1)){
+              isIncreasing = true
+            }else if(list.get(i) > list.get(i+1)){
+              isDecreasing = true 
+            }
+    }
+    return if(isIncreasing && isDecreasing){
+        Pair(false , "Not Monotonic")
+    }else if(isDecreasing){
+        Pair(true , "Monotinic Decresing")
+    }else{
+         Pair(true , "Monotinic Incresing")
+    }
+}
+fun monotonicDirection(list: ArrayList<Int>): Pair<Boolean, String> {
+
+    var direction = 0   // 0 = unknown, 1 = increasing, -1 = decreasing
+
+    for(i in 0 until list.size - 1){
+
+        if(list[i] < list[i+1]){
+
+            if(direction == -1){
+                return Pair(false , "Not Monotonic")
+            }
+
+            direction = 1
+        }
+
+        else if(list[i] > list[i+1]){
+
+            if(direction == 1){
+                return Pair(false , "Not Monotonic")
+            }
+
+            direction = -1
+        }
+    }
+
+    return if(direction == -1){
+        Pair(true , "Monotonic Decreasing")
+    }else{
+        Pair(true , "Monotonic Increasing")
+    }
+}
