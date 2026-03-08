@@ -1,0 +1,37 @@
+fun main() {
+    val list = ArrayList<Int>()
+    list.add(1)
+    list.add(2)
+    list.add(3)
+    list.add(4)
+    list.add(5)
+    list.add(6)
+ println("pair Sum-1 Brute Force Approch: ${pairSum1(list,9)}")
+ println("pair Sum-1 2 Pointer Apporoach: ${pairSum1_2Pointer(list,9)}")
+}
+// Brute Force approch : O(n^2)
+fun pairSum1(list: ArrayList<Int>, target : Int): Boolean {
+    for(i in 0 until list.size){
+        for(j in i+1 until list.size){
+            if(list.get(i)+ list.get(j) == target){
+                return true
+       }
+        }
+    }
+    return false
+}
+// 2 Pointer Apporoach
+fun pairSum1_2Pointer(list: ArrayList<Int>, target : Int): Boolean {
+    var lp = 0
+    var rp = list.size-1
+    while(lp < rp){
+        if(list.get(lp) + list.get(rp) == target){
+            return true
+        }else if(list.get(lp) + list.get(rp) < target){
+            lp++
+        }else{
+            rp--
+        }
+    }
+     return false
+}
