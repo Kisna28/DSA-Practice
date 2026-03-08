@@ -1,0 +1,46 @@
+fun main() {
+    val height = ArrayList<Int>()
+    height.add(1)
+    height.add(8)
+    height.add(6)
+    height.add(2)
+    height.add(5)
+    height.add(4)
+    height.add(8)
+    height.add(3)
+    height.add(7)
+
+ println("Max water contain Brute Force Approch: ${showWaterBF(height)}")
+ println("Max water contain 2 Pointer Approch: ${showWater2Pointer(height)}")
+}
+// Brute Force approch : O(n^2)
+fun showWaterBF(height: ArrayList<Int>): Int {
+      var max = 0
+    for(i in 0 until height.size){
+        for(j in i+1 until height.size){
+            val height = minOf(height.get(i),height.get(j))
+            val width = j-i
+            val water = height * width
+            max = maxOf(water,max)
+        }
+    }
+    return max
+}
+//2 pointer approch 
+fun showWater2Pointer(height: ArrayList<Int>): Int {
+    var lp = 0
+    var rp = height.size- 1
+    var max = 0
+      	while(lp < rp){
+            val width = rp - lp
+            val heightMin = minOf(height.get(lp),height.get(rp))
+            val water = heightMin * width 
+            max = maxOf(water,max)
+            if(height.get(lp) <height.get(rp)){
+                lp++
+            }else{
+                rp--
+            }
+        }
+    return max
+}
