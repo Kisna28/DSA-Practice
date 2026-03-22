@@ -1,0 +1,435 @@
+import java.util.LinkedList
+
+fun main() {
+    val ll = LinkedListCustome()
+    ll.addfirst(2)
+    ll.addfirst(1)
+     ll.addfirst(0)
+    ll.addLast(8)
+    ll.addLast(6)
+    ll.addLast(7)
+    ll.add(2,3)
+ // ll.removefirst()
+ // ll.removeLast()
+    println("Key is found in :${ll.searchResursion(3)}")
+    println("Reverse is :")
+   // ll.reverse()
+    println("size = ${ll.size}")
+    println("Key is found in : ${ll.search(key = 4)}")
+ //   ll.deleteNthFromEnd(n = 1)
+    println("---Merge Linked List---")
+   ll.mergeSort(ll?.head)
+    println("---Merge Linked List END---")
+    ll.printll()
+    println("---Zig Zag---")
+    ll.zigZag()
+    println("---Zig Zag End---")
+    ll.printll()
+    
+    
+   println("Is pelidrome : ${ll.checkPalindrome()}")
+   println("Is Cycle exist : ${ll.isCycle()}")
+   println("Is Remove Cycle  : ${ll.removeCycle()}")
+   
+   // CollectionFrame Work Linked List
+   println("Collection Framework using in Linked List")
+   // create objects - int,char,string,float -> Interger, Float...
+   
+    val linkedList = LinkedList<Int>()
+    linkedList.add(1)
+    linkedList.addLast(4)
+    linkedList.addFirst(0)
+    linkedList.add(2,2)
+    println("Linked List : $linkedList")
+}
+open class LinkedListCustome{
+data class Node(
+	var data: Int,
+    var next: Node? = null
+)
+    var head: Node? = null
+    var tail: Node? = null
+    var size = 0
+    
+    fun mergeSort(head : Node?):Node?{
+        //base case
+        if(head == null || head?.next == null) return head
+        // find mid
+        val mid = getMid(head)
+        
+        // left & right ms
+        var rightHead = mid?.next
+        mid?.next = null
+        var newLeft = mergeSort(head)
+        var newRight = mergeSort(rightHead)
+        
+        //merge 
+        return merge(newLeft,newRight)
+    }
+    
+    fun zigZag(){
+        //find mid
+        var slow = head
+        var fast = head?.next
+        while(fast !=null && fast?.next !=null){
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        val mid = slow
+        
+        //reverse 2nd half
+        var curr = mid?.next
+        mid?.next = null
+        var prev:Node? = null
+        var next:Node?  = null
+        
+        while(curr != null){
+            next = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = next
+        }
+        
+        var left:Node?  = head
+        var right:Node?  = prev
+        var nextL:Node?  = null
+        var nextR:Node? = null
+        
+        //alternative merge(zig-zag merge)
+        while(right != null){
+            nextL = left?.next 
+            left?.next = right 
+            nextR = right?.next
+            right?.next = nextL 
+            
+            left = nextL
+            right = nextR 
+        }
+    }
+    
+    private fun getMid(head : Node?):Node?{
+        var slow = head
+        var fast = head?.next
+        while(fast !=null && fast?.next != null){
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        return slow
+    }
+    
+    private fun merge(h1 :Node?,h2:Node?):Node?{
+        var head1 = h1
+    	var head2 = h2
+        val mergeLL = Node(-1)
+        var temp = mergeLL
+        while(head1 !=null && head2 !=null){
+            if(head1.data <= head2.data){
+                temp.next = head1
+                head1 = head1.next 
+               
+            }else{
+                temp.next = head2
+                head2 = head2.next
+              
+            }
+             temp = temp.next!!
+        }
+        while(head1 != null){
+            temp.next = head1
+            head1 = head1.next 
+            temp = temp.next!!
+        }
+         while(head2 != null){
+            temp.next = head2
+            head2 = head2.next
+            temp = temp.next!!
+        }
+         return mergeLL.next
+    }
+    
+    //slow - Fast approch
+    fun findMid(head: Node?): Node? {
+        var slow = head
+        var fast = head
+        while(fast != null && fast?.next != null){
+            slow = slow?.next // +1
+            fast = fast?.next?.next // +2
+        }
+        return slow
+    }
+    
+    fun checkPalindrome(): Boolean{
+        if(head == null || head?.next == null){
+            return true
+        }
+        // Find Mid
+        var midNode = findMid(head)
+        println("Mid Node $midNode")
+        
+        //reverse second half
+        var prev:Node? = null
+        var curr:Node? = midNode
+        var next: Node? = null
+        println("prev $prev")
+        println("curr = midNode $curr")
+        println("next $next")
+        while(curr != null){
+            next = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = next
+            
+        println("next = curr?.next $next")
+        println("curr?.next = prev ${curr?.next}")
+        println("prev = curr $prev")
+        println("curr = next $curr")
+        }
+        
+        var right = prev  //right half head
+        var left = head
+        
+        println(" right = prev  $right")
+        println("left = head $left")
+        
+        //check left and right half
+        
+        while(right != null){
+            if(left?.data != right?.data){
+                println("left Data = ${left?.data} != ${right?.data}")
+                return false
+            }
+            left = left?.next
+            right = right?.next
+        }
+        return true
+    }
+    
+    fun isCycle():Boolean { // flowied algorith 
+        var slow = head
+        var fast = head 
+        while(fast !=null && fast?.next !=null){
+            slow = slow?.next // +1
+            fast = fast?.next?.next // + 2
+            if(slow == fast){
+                return true
+            }
+        }
+         return false
+    }
+    
+    fun removeCycle(){
+        //detect cycle
+        var slow = head
+        var fast = head 
+        var isCycleExists = false
+         while(fast !=null && fast?.next !=null){
+            slow = slow?.next // +1
+            fast = fast?.next?.next // +2
+            if(slow == fast){
+                isCycleExists = true
+                break
+            }
+        }
+         if(isCycleExists == false){
+             return
+         }
+        //find meeting points
+        slow = head
+        var prev:Node? = null
+        while(slow != fast){
+            prev = fast
+             slow = slow?.next // +1
+            fast = fast?.next // +1
+        }
+        
+        //remove cycle -> last.next = null
+        prev?.next = null
+    }
+    
+    fun addfirst(data: Int){
+        val newNode = Node(data)
+        size++
+        println(newNode)
+        if(head == null){
+            head = newNode
+            tail = newNode
+            println("head = ${head}")
+            return
+        }
+        newNode.next = head
+        println("newNode next = ${newNode.next}")
+        head = newNode
+        println("newNode head = ${head}")
+        
+        println("Head Data = ${head?.data}")
+        println("Head Next = ${head?.next}")
+        
+    }
+    fun addLast(data: Int){
+        val newNode = Node(data)
+        size++
+        println(newNode)
+        if(head == null && tail == null){
+            head = newNode
+            tail = newNode
+            println("head and tail IF= ${head} $tail")
+            return
+        }
+        tail?.next = newNode
+        println("tail next = ${tail?.next}")
+        tail = newNode
+        println("newNode = ${newNode}")
+        
+        println("Tail Data = ${tail?.data}")
+        println("Tail Next = ${tail?.next}")
+        
+    }
+    fun add(idx: Int, data: Int){
+        if(idx == 0){
+            addfirst(data)
+            return
+        }    
+        val newNode = Node(data)
+        size++
+        println("NEW NODE = $newNode")
+        var temp: Node? = head
+        println("temp = $temp")
+        var i = 0 
+        println("i = $i")
+       println("idx = $idx")
+        
+        while(i < idx-1){
+            temp = temp?.next
+            println("temp :next= $temp")
+            i++
+        }
+        //i = idx-1 and temp ->prev
+        newNode.next = temp?.next
+        println("newNode.next ${newNode.next}")
+        temp?.next = newNode
+        println("temp?.next ${temp?.next}")
+        
+    }
+    fun removefirst(){	// O(1)
+       if (size == 0) {
+       println("Linked List is Empty")
+       }
+        
+    if (size == 1) {
+        head = null
+        tail = null
+        size = 0
+        return
+    } 
+        head = head?.next
+    	size--
+        println("head = ${head}")
+        println("Head Data = ${head?.data}")
+        println("Head Next = ${head?.next}")
+        
+    }
+    fun removeLast(){ // O(n)
+       if (size == 0) {
+       println("Linked List is Empty")
+       }
+        
+    if (size == 1) {
+        head = null
+        tail = null
+        size = 0
+        return
+    } 
+    
+    //prev: i = size-2
+    var prev = head
+       for(i in 0 until size-2){
+           prev = prev?.next
+       }
+       	val `value` = prev?.next?.data // tail.data
+       	prev?.next = null
+        tail = prev
+    	size--
+        println("head = ${head}")
+        println("Head Data = ${head?.data}")
+        println("Head Next = ${head?.next}")
+        
+    }
+    
+    fun search(key:Int):Int{ //O(n)
+        var i = 0
+        var temp = head
+        while(temp !=null){
+            if(temp.data == key){
+                return i 
+            }
+            i++
+            temp = temp.next
+        }
+        return -1
+    
+    }
+    fun searchResursion(key : Int):Int{ //O(n)
+        return helper(head,key)
+    }
+    fun helper(head: Node?, key : Int):Int{
+        if(head == null){return -1}
+        if(head?.data == key){
+            return 0 
+        }
+        var idx = helper(head?.next, key)
+        if(idx == -1){return -1}
+        return idx+1
+    }
+    fun reverse(){
+        var prev: Node? = null
+        var tail = head
+        var curr = tail
+        var next : Node? = null
+        while(curr !=null){
+            next = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = next
+        }
+        head = prev  
+    }
+    fun deleteNthFromEnd(n:Int){
+        //calculate size
+        var size = 0
+        var temp = head
+        // here we find size, althogue we alredy have size varible
+        while(temp != null){
+            temp = temp?.next
+            size++
+        }
+        
+        if(n == size){
+            head = head?.next //remove first
+            return
+        }
+        
+        //size - n
+       	var i = 1
+        val iToFind = size-n
+        var prev = head
+        while(i < iToFind){
+         prev = prev?.next
+            i++
+        }
+        
+        prev?.next = prev?.next?.next
+        return
+    }
+    fun printll(){
+        if(head == null){
+            println("LinkedList is Empty")
+            return
+        }
+        var temp: Node? = head
+        println("HEad is : $temp")
+        while(temp !=null){
+            println(temp.data)
+            temp = temp.next
+        }
+    }
+}
