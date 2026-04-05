@@ -1,0 +1,73 @@
+data class ListNode(var value: Int, var next: ListNode? = null)
+
+fun main(){
+     val arr = intArrayOf(1,2,3,4)
+    val head = createLinkedList(arr)
+
+    print("Original: ")
+    printLinkedList(head)
+    swapXAndY(head,4,2)
+    printLinkedList(head)
+}
+
+fun swapXAndY(head: ListNode?, x: Int, y: Int): ListNode? {
+
+    if (head == null || x == y) return head
+
+    var prevX: ListNode? = null
+    var currX: ListNode? = head
+
+    var prevY: ListNode? = null
+    var currY: ListNode? = head
+
+    // Find X
+    while (currX != null && currX.value != x) {
+        prevX = currX
+        currX = currX.next
+    }
+
+    // Find Y
+    while (currY != null && currY.value != y) {
+        prevY = currY
+        currY = currY.next
+    }
+
+    // If either not found
+    if (currX == null || currY == null) return head
+
+    // Update previous pointers
+    if (prevX != null) prevX.next = currY else return currY.also { it.next = head?.next }
+    if (prevY != null) prevY.next = currX else return currX.also { it.next = head?.next }
+
+    // Swap next pointers
+    val temp = currX.next
+    currX.next = currY.next
+    currY.next = temp
+
+    return head
+}
+
+// 👉 Create Linked List from array
+fun createLinkedList(arr: IntArray): ListNode? {
+    if (arr.isEmpty()) return null
+
+    val head = ListNode(arr[0])
+    var current = head
+
+    for (i in 1 until arr.size) {
+        current.next = ListNode(arr[i])
+        current = current.next!!
+    }
+
+    return head
+}
+fun printLinkedList(head: ListNode?) {
+    var current = head
+
+    while (current != null) {
+        print("${current.value}")
+        if (current.next != null) print(" -> ")
+        current = current.next
+    }
+    println()
+}
