@@ -1,0 +1,60 @@
+data class ListNode(var value: Int, var next: ListNode? = null)
+
+fun main(){
+     val arr = intArrayOf(1,2,3,4,5,6,7,8)
+    val head = createLinkedList(arr)
+
+    print("Original: ")
+    printLinkedList(head)
+    skipMdeleteN(head,2,2)
+    printLinkedList(head)
+}
+
+fun skipMdeleteN(head: ListNode?, m: Int, n: Int): ListNode? {
+ if (head == null || m == 0) return null
+    if (n == 0) return head
+    
+    var current = head
+    while (current != null) {
+
+        for(i in 1 until m){
+            if (current == null) return head
+            current = current?.next
+        }
+        if (current == null) break
+        
+        var temp = current?.next
+
+        for(j in 1 until n+1){
+            temp = temp?.next
+        }
+        current.next = temp
+        current = temp
+    }
+    return head
+}
+
+// 👉 Create Linked List from array
+fun createLinkedList(arr: IntArray): ListNode? {
+    if (arr.isEmpty()) return null
+
+    val head = ListNode(arr[0])
+    var current = head
+
+    for (i in 1 until arr.size) {
+        current.next = ListNode(arr[i])
+        current = current.next!!
+    }
+
+    return head
+}
+fun printLinkedList(head: ListNode?) {
+    var current = head
+
+    while (current != null) {
+        print("${current.value}")
+        if (current.next != null) print(" -> ")
+        current = current.next
+    }
+    println()
+}
