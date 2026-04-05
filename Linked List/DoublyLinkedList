@@ -1,0 +1,79 @@
+fun main() {
+    val Dll = DoublyLinkedList()
+    Dll.addFirst(2)
+    Dll.addFirst(1)
+    Dll.addFirst(0)
+   // println("Remove First : ${Dll.removeFirst()}")
+   println("Reverse Doubly LL")
+   Dll.reverse()
+    Dll.printll()
+ 
+}
+open class DoublyLinkedList{
+ class Node(
+	var data: Int,
+    var prev : Node? = null,
+    var next: Node? = null
+)
+    var head: Node? = null
+    var tail: Node? = null
+    var size = 0
+    
+    fun addFirst(data: Int){
+        val newNode = Node(data)
+        size++
+         if(head == null){
+           head = newNode
+           tail = newNode
+             return
+        }
+        newNode?.next = head
+        head?.prev = newNode
+        head = newNode
+    }
+    fun removeFirst():Int{
+        if(head == null){
+            println("LinkedList is Empty")
+            return Int.MIN_VALUE
+        }
+        val valToReturn = head?.data
+        size--
+         if (head == tail) {
+        head = null
+        tail = null
+        return valToReturn ?: Int.MIN_VALUE
+    }
+        val temp:Node? = head
+        head = temp?.next
+        head?.prev = null
+        return valToReturn ?: Int.MIN_VALUE
+    }
+    fun reverse(){
+        var curr: Node? = head 
+        var prev: Node? = null
+        var next: Node? = null
+        while(curr !=null){
+            next = curr?.next
+            curr?.next = prev 
+            curr?.prev = next
+            prev =  curr
+            curr = next
+        }
+        head = prev
+    }
+    
+    fun printll(){
+        if(head == null){
+            println("LinkedList is Empty")
+            return
+        }
+        var temp: Node? = head
+        println("Head is :  ${temp?.data}")
+        print("null <-")
+        while(temp !=null){
+            print("${temp.data} <-> ")
+            temp = temp.next
+        }
+        print("null")
+}
+}
