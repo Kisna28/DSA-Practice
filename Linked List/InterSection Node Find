@@ -1,0 +1,53 @@
+data class ListNode(var value: Int, var next: ListNode? = null)
+
+fun main() {
+
+    // Common part (intersection)
+    val c1 = ListNode(8)
+    val c2 = ListNode(10)
+    val c3 = ListNode(12)
+
+    c1.next = c2
+    c2.next = c3
+
+    // First linked list: 3 -> 6 -> 9 -> 8 -> 10 -> 12
+    val a1 = ListNode(3)
+    val a2 = ListNode(6)
+    val a3 = ListNode(9)
+
+    a1.next = a2
+    a2.next = a3
+    a3.next = c1   // 👈 intersection here
+
+    // Second linked list: 4 -> 7 -> 8 -> 10 -> 12
+    val b1 = ListNode(4)
+    val b2 = ListNode(7)
+
+    b1.next = b2
+    b2.next = c1   // 👈 same intersection
+
+    val result = getIntersectionNode(a1, b1)
+
+    if (result != null) {
+        println("Intersection at: ${result.value}")
+    } else {
+        println("No intersection")
+    }  
+}
+fun getIntersectionNode(headA: ListNode?, headB: ListNode?): ListNode? {
+    var p1 = headA
+    var p2 = headB
+    while(p1 != p2){
+        if(p1 == null){
+            p1 = headB
+        }else{
+            p1 = p1.next
+        }
+        if(p2 == null){
+            p2 = headA
+        }else{
+            p2 = p2.next
+        }
+    }
+    return p1
+}
