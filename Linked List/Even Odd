@@ -1,0 +1,72 @@
+data class ListNode(var value: Int, var next: ListNode? = null)
+
+fun main(){
+     val arr = intArrayOf(8,12,10,5,4,1,6)
+    val head = createLinkedList(arr)
+
+    print("Original: ")
+    printLinkedList(head)
+    rearrangeEvenOdd(head)
+    printLinkedList(head)
+}
+
+fun rearrangeEvenOdd(head: ListNode?): ListNode? { // O(n)
+	 var evenHead: ListNode? = null
+    var evenTail: ListNode? = null
+    var oddHead: ListNode? = null
+    var oddTail: ListNode? = null
+    var temp = head
+    while(temp != null){
+        val nextNode = temp.next   
+        temp.next = null  
+          if (temp?.value?.rem(2) == 0) {
+            if (evenHead == null) {
+                evenHead = temp
+                evenTail = temp
+            } else {
+                evenTail!!.next = temp
+                evenTail = temp
+            }
+        } else {
+            if (oddHead == null) {
+                oddHead = temp
+                oddTail = temp
+            } else {
+                oddTail!!.next = temp
+                oddTail = temp
+            }
+        }
+                  temp = nextNode
+
+
+    }
+   
+    evenTail?.next = oddHead
+
+    return evenHead ?: oddHead
+}
+
+// 👉 Create Linked List from array
+fun createLinkedList(arr: IntArray): ListNode? {
+    if (arr.isEmpty()) return null
+
+    val head = ListNode(arr[0])
+    var current = head
+
+    for (i in 1 until arr.size) {
+        current.next = ListNode(arr[i])
+        current = current.next!!
+    }
+
+    return head
+}
+fun printLinkedList(head: ListNode?) {
+    var current = head
+
+    while (current != null) {
+        print("${current.value}")
+        if (current.next != null) print(" -> ")
+        current = current.next
+    }
+    println()
+}
