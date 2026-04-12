@@ -1,0 +1,112 @@
+fun main() {
+  val s = StackArrayList()
+    s.push(1)
+    s.push(2)
+    s.push(3)
+     print(---ArrayList---n)
+    while(!s.isEmpty()){
+        println(s.peek())
+        s.pop()
+    }
+    val sLL = StackLinkedListInt()
+    sLL.push(1)
+    sLL.push(2)
+    sLL.push(3)
+  	print(---LinkedList--- n)
+
+    while(!sLL.isEmpty()){
+        println(sLL.peek())
+        sLL.pop()
+    }
+     Collection Frame Work Not Supported By Kotlin
+    print(---Insert at bottom--- n)
+    val insertAtBotttom = StackLinkedListInt()
+    insertAtBotttom.push(1)
+    insertAtBotttom.push(2)
+    insertAtBotttom.push(3)
+    
+    pushAtBottom(insertAtBotttom,4)
+
+   while(!insertAtBotttom.isEmpty()){
+        println(insertAtBotttom.peek())
+        insertAtBotttom.pop()
+    }
+   print(---Reverse String--- n)
+   println(reverseString(abc))
+}
+
+fun T pushAtBottom(stackStackLinkedListT ,data T){
+    if(stack.isEmpty()){
+        stack.push(data)  Empty add (data = 4)
+        return
+     }
+    val top = stack.pop()!! 3 2 1
+    pushAtBottom(stack,data) (2,4) (1,4)
+    stack.push(top)  4 - 1 - 2 - 3
+   }
+
+fun reverseString(str String) String{
+    var idx = 0 
+    val stack = StackLinkedListChar() 
+     it shown error because StackLinkedList - 
+     data is Int type. so we convert into generic type
+    while(idx  str.length){
+        stack.push(str[idx])
+        idx++
+        }
+    val result = StringBuilder()
+    while (!stack.isEmpty()) {
+        result.append(stack.pop())
+    }
+
+    return result.toString()
+}
+
+class StackArrayList{
+    val list = ArrayListInt()
+    fun isEmpty() Boolean{
+        return list.isEmpty()
+    }
+    push
+    fun push(data Int){
+        list.add(data)
+    }
+    pop
+    fun pop() Int{
+        val top = list.get(list.size-1)
+        list.removeLast()
+        return top
+    }
+    peek
+    fun peek() Int{
+        return list.get(list.size-1)
+    }
+}
+
+data class NodeT(var data T,var next NodeT = null)
+
+class StackLinkedListT(){
+    private var head NodeT = null
+     
+    fun isEmpty() Boolean {
+        return head == null
+    }
+   
+    push
+    fun push(data T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    pop
+    fun pop() T{
+        if(isEmpty()){return null}
+        val top = head.data
+        head = head.next
+        return top!!
+    }
+    peek
+    fun peek() T{
+        return head.data
+    }
+}
