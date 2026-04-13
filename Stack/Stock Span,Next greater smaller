@@ -1,0 +1,146 @@
+fun main() {
+  val s = StackArrayList()
+    s.push(1)
+    s.push(2)
+    s.push(3)
+     print("---ArrayList---\n")
+
+     print("---Reverse Stack---\n")
+     reverseStack(s)
+    while(!s.isEmpty()){
+        println(s.peek())
+        s.pop()
+    }
+     print("---Stock Span Problem---\n")
+     val stock = arrayOf(100,80,60,70,60,85,100)
+	val span = Array(stock.size){0}
+    StockSpan(stock,span)
+     print("---Next Greater Element in Right---\n")
+     val arr = arrayOf(6,8,0,1,3)
+	val nextGreater = Array(arr.size){0}
+    NextGreaterRight(arr,nextGreater)
+    
+     print("---Next Smaller Element in Right---\n")
+     val arrSmall = arrayOf(4,8,5,2,25)
+	val nextSmaller = Array(arrSmall.size){0}
+    NextGreaterSmall(arrSmall,nextSmaller)
+}
+fun reverseStack(s: StackArrayList){
+    if(s.isEmpty()){
+        return
+    }
+    val top = s.pop() //3 2 1
+    reverseStack(s)
+    pushAtBottom(s, top)
+}
+ 
+
+fun pushAtBottom(stack:StackArrayList ,data: Int){
+    if(stack.isEmpty()){
+        stack.push(data)
+        return
+     }
+    val top = stack.pop()!! 
+    pushAtBottom(stack,data)
+   stack.push(top)
+   }
+
+fun StockSpan(stocks: Array<Int>,span: Array<Int>){
+    val s = StackArrayList()
+    span[0] = 1
+    s.push(0)
+    for(i in 1 until stocks.size){
+        val currPrice = stocks[i]
+        while(!s.isEmpty() && currPrice >= stocks[s.peek()]){
+            s.pop()
+        }
+        if(s.isEmpty()){
+            span[i] = i+1
+             }else{
+            val prevHeight = s.peek()
+            span[i] = i - prevHeight
+        }
+        s.push(i)
+    }
+     println(span.joinToString(" , "))
+}
+fun NextGreaterRight(arr: Array<Int>,ng: Array<Int>){
+    val s = StackArrayList()
+    for(i in arr.size - 1 downTo 0){
+        while(!s.isEmpty() && arr[s.peek()] < arr[i]){
+            s.pop()
+        }
+        if(s.isEmpty()){
+            ng[i] = -1
+        }else{
+            ng[i] = arr[s.peek()]
+        }
+        s.push(i)
+    }
+     println(ng.joinToString(" , "))
+}
+
+fun NextGreaterSmall(arr: Array<Int>,ns: Array<Int>){
+    val s = StackArrayList()
+    for(i in arr.size - 1 downTo 0){
+        while(!s.isEmpty() && arr[s.peek()] > arr[i]){
+            s.pop()
+        }
+        if(s.isEmpty()){
+            ns[i] = -1
+        }else{
+            ns[i] = arr[s.peek()]
+        }
+        s.push(i)
+    }
+     println(ns.joinToString(" , "))
+}
+
+class StackArrayList{
+    val list = ArrayList<Int>()
+    fun isEmpty(): Boolean{
+        return list.isEmpty()
+    }
+    //push
+    fun push(data: Int){
+        list.add(data)
+    }
+    //pop
+    fun pop(): Int{
+        val top = list.get(list.size-1)
+        list.removeLast()
+        return top
+    }
+    //peek
+    fun peek(): Int{
+        return list.get(list.size-1)
+    }
+}
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
