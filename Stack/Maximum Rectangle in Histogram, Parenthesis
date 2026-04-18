@@ -1,0 +1,141 @@
+fun main() {
+    println("Is parenthesis valid ${isParenthesisValid()}")
+    
+    println("Is parenthesis Duplicate ${isParenthesisDuplicate()}")
+    maxHeight()
+   
+}
+fun isParenthesisValid():Boolean{
+    val s = StackLinkedList<Char>()
+    val arr = charArrayOf('(','{','}',')','[','{','}',']')
+    for(char in arr){
+        when(char){
+            '(','{','[' ->  s.push(char)
+            ')','}', ']' -> {
+                 if (s.isEmpty()) return false
+
+                 if( s.peek() == '('&& char == ')'||
+                     s.peek() == '{'&& char == '}'||
+                       s.peek() == '['&& char == ']'){
+                   return true
+               }else{
+                   return false
+               }
+            }
+        }
+    }
+     return s.isEmpty()
+}
+fun isParenthesisDuplicate():Boolean{
+    val s = StackLinkedList<Char>()
+    val arr = charArrayOf('(','(', 'a', '+','b',')', ')') //((a+b)) -> true
+    
+ for(char in arr){ 
+        if (char == '(' || char.isLetter() || char == '+' || char == '-' || char == '*' || char == '/') {
+         s.push(char)
+     }else{
+         var count = 0
+     while (!s.isEmpty() && s.peek() != '('){
+         s.pop()
+         count++
+         println("Count = $count")
+     }
+      if(count <1) return true
+     else s.pop()
+     }
+    
+ }
+ return false
+}
+
+fun maxHeight(){
+    val arr = arrayOf(2,1,5,6,2,3)
+    var maxArea = 0
+    val n = arr.size
+    val nsr = Array<Int>(n){0}
+    val nsl = Array<Int>(n){0}
+    //nsr
+    var s = StackArrayList()
+   
+    for(i in n-1 downTo 0){
+        while(!s.isEmpty() && arr[s.peek()] >= arr[i]){
+            s.pop()
+        }
+        if(s.isEmpty()){
+            nsr[i] = n
+        }else{
+            nsr[i] = s.peek()
+        }
+        s.push(i)
+    }
+    //nsl
+     s = StackArrayList()
+     for(i in 0 until n){ // OR i in 0..n-1
+        while(!s.isEmpty() && arr[s.peek()] >= arr[i]){
+            s.pop()
+        }
+        if(s.isEmpty()){
+            nsl[i] = -1
+        }else{
+            nsl[i] = s.peek()
+        }
+        s.push(i)
+    }
+     //area =  width = j-i-1
+     for(i in 0 until n){
+         val height = arr[i]
+         val width = nsr[i] - nsl[i] -1 // here in nsr , nsl we store index not an a value of arr
+         val currArea = height * width
+         maxArea = maxOf(currArea, maxArea)
+     }
+     println("Max Histogram Area is : $maxArea")
+    
+}
+class StackArrayList{
+    val list = ArrayList<Int>()
+    fun isEmpty(): Boolean{
+        return list.isEmpty()
+    }
+    //push
+    fun push(data: Int){
+        list.add(data)
+    }
+    //pop
+    fun pop(): Int{
+        val top = list.get(list.size-1)
+        list.removeLast()
+        return top
+    }
+    //peek
+    fun peek(): Int{
+        return list.get(list.size-1)
+    }
+}
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
