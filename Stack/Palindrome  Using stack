@@ -1,0 +1,78 @@
+import java.util.LinkedList
+
+fun main() {
+  println("IsPelindrome : ${isPelindrome()}")
+   
+}
+fun isPelindrome(): Boolean{
+     val ll = LinkedList<Char>()
+     val s = StackLinkedList<Char>()
+
+     var arr = charArrayOf('A','B','C','B','A') // It is pelindrome
+      for (char in arr) {
+        ll.add(char)
+    }
+        // Push all elements into stack
+        for (char in ll) {
+        s.push(char)
+    }
+       
+while(!s.isEmpty() && ll.isNotEmpty()){
+    if(ll.peek() != s.peek()){
+        return false
+    }
+    s.pop()
+     ll.removeFirst()
+}
+
+    return true
+}
+
+class StackArrayList{
+    val list = ArrayList<Int>()
+    fun isEmpty(): Boolean{
+        return list.isEmpty()
+    }
+    //push
+    fun push(data: Int){
+        list.add(data)
+    }
+    //pop
+    fun pop(): Int{
+        val top = list.get(list.size-1)
+        list.removeLast()
+        return top
+    }
+    //peek
+    fun peek(): Int{
+        return list.get(list.size-1)
+    }
+}
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
