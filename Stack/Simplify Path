@@ -1,0 +1,81 @@
+import java.util.LinkedList
+
+fun main() {
+    val path = "/home/user/Documents/../Pictures"
+    println("simplifyPath: Orignal to Simplify Path : $path -> ${simplifyPath(path)}")
+}
+
+fun simplifyPath(path: String): String {
+    val s = StackLinkedList<String>()
+    val parts = path.split("/")
+    for(part in parts){
+        when{
+            part.isEmpty() || part == "." -> continue
+            part == ".." -> {
+                if(!s.isEmpty()){
+                    s.pop()
+                }
+            }
+            else -> s.push(part)
+        }
+    }
+    val result = mutableListOf<String>()
+
+	while (!s.isEmpty()) {
+   	 result.add(s.peek()!!)
+     s.pop()
+		}
+
+	result.reverse() 
+    
+          return "/" +  result.joinToString("/")
+    }
+
+class StackArrayList{
+    val list = ArrayList<Int>()
+    fun isEmpty(): Boolean{
+        return list.isEmpty()
+    }
+    //push
+    fun push(data: Int){
+        list.add(data)
+    }
+    //pop
+    fun pop(): Int{
+        val top = list.get(list.size-1)
+        list.removeLast()
+        return top
+    }
+    //peek
+    fun peek(): Int{
+        return list.get(list.size-1)
+    }
+}
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
