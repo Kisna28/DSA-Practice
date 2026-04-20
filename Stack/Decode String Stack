@@ -1,0 +1,125 @@
+import java.util.LinkedList
+
+fun main() {
+    val string = "3[b2[v]]L"
+    println("Decode String: Orignal to Decoded String : $string -> ${decodeString(string)}")
+    println("Decode String Two Stack: Orignal to Decoded String : $string -> ${decodeStringTwoStack(string)}")
+}
+
+fun decodeString(string: String): String { //TC: O(n * k) , SC: O(n) or O(output) 
+    // also solve using recursive approch which use stack internallylyu
+    val s = StackLinkedList<Char>()
+
+    for (char in string) {
+        if (char != ']') {
+            s.push(char)
+        } else {
+            // Step 1: get string inside []
+            val sb = StringBuilder()
+            while (!s.isEmpty() && s.peek() != '[') {
+                sb.append(s.pop())
+            }
+            s.pop() // remove '['
+
+            sb.reverse()
+            val temp = sb.toString()
+
+            // Step 2: get number
+            val numBuilder = StringBuilder()
+            while (!s.isEmpty() && s.peek()!!.isDigit()) {
+                numBuilder.append(s.pop())
+            }
+            numBuilder.reverse()
+            val count = numBuilder.toString().toInt()
+
+            // Step 3: repeat string
+            val repeated = StringBuilder()
+            repeat(count) {
+                repeated.append(temp)
+            }
+
+            // Step 4: push back to stack
+            for (c in repeated.toString()) {
+                s.push(c)
+            }
+        }
+    }
+
+    // Final result
+    val result = StringBuilder()
+    while (!s.isEmpty()) {
+        result.append(s.pop())
+    }
+
+    return result.reverse().toString()
+}
+fun decodeStringTwoStack(s: String): String {
+    val countStack = ArrayDeque<Int>()
+    val stringStack = ArrayDeque<StringBuilder>()
+
+    var currentString = StringBuilder()
+    var k = 0 //3
+
+    for (ch in s) {
+        when {
+            ch.isDigit() -> {
+                k = k * 10 + (ch - '0') // handle multi-digit
+            }
+
+            ch == '[' -> {
+                countStack.addLast(k)
+                stringStack.addLast(currentString)
+
+                // reset
+                k = 0
+                currentString = StringBuilder()
+            }
+
+            ch == ']' -> {
+                val count = countStack.removeLast()
+                val prevString = stringStack.removeLast()
+
+                repeat(count) {
+                    prevString.append(currentString)
+                }
+
+                currentString = prevString
+            }
+
+            else -> {
+                currentString.append(ch)
+            }
+        }
+    }
+
+    return currentString.toString()
+}
+
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
