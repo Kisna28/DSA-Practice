@@ -1,0 +1,92 @@
+import java.util.LinkedList
+
+fun main() {
+      val arr = arrayOf(4,2,0,6,3,2,5)
+      println("Total water Trapped is : ${trappedRainwater(arr)}")
+      println("Total water Trapped Using Stack is : ${trappedRainwaterStack(arr)}")
+}
+fun trappedRainwaterStack(height: Array<Int>): Int { //Time: O(n)
+    val stack = ArrayDeque<Int>() // stores indices
+    var trappedWater = 0
+
+    for (i in height.indices) {
+
+        // while current bar is taller → we found a right boundary
+        while (stack.isNotEmpty() && height[i] > height[stack.last()]) {
+
+            val bottomIndex = stack.removeLast() // valley bottom
+
+            // if stack becomes empty → no left boundary
+            if (stack.isEmpty()) break
+
+            val leftIndex = stack.last() // left boundary
+
+            val width = i - leftIndex - 1
+            val boundedHeight = minOf(height[i], height[leftIndex]) - height[bottomIndex]
+
+            trappedWater += width * boundedHeight
+        }
+
+        // push current index
+        stack.addLast(i)
+    }
+
+    return trappedWater
+}
+
+fun trappedRainwater(height:Array<Int>):Int{    //TC: O(n)
+    //  (4,2,0,6,3,2,5)
+    val n= height.size
+    //calculate left max boundry
+    val leftMax = Array(n){0}
+    leftMax[0] = height[0]
+    for(i in 1 until n){
+        leftMax[i]=maxOf(height[i],leftMax[i-1])
+    }  
+    //calculate right max boundry
+       //  (4,2,0,6,3,2,5)
+       val rightMax = Array(n){0}
+      rightMax[n-1] = height[n-1]
+       for(i in n-2 downTo 0){
+        rightMax[i]=maxOf(height[i],rightMax[i+1])
+    }
+    
+    //loop
+    var trappedWater = 0
+      for(i in 0 until n){
+     //waterLavel = min(leftmax boundery,rightmax boundry)
+         val waterLevel = minOf(leftMax[i],rightMax[i])
+    
+    //trapped water = waterLevel - height[i]
+          trappedWater += waterLevel - height[i]
+      }
+      return trappedWater
+}
+
+data class Node<T>(var data: T,var next: Node<T>? = null)
+
+class StackLinkedList<T>(){
+    private var head: Node<T>? = null
+     
+    fun isEmpty(): Boolean {
+        return head == null
+    }
+   
+    //push
+    fun push(data: T){
+       val newNode = Node(data)
+        newNode.next = head
+        head = newNode
+    }
+    //pop
+    fun pop(): T?{
+        if(isEmpty()){return null}
+        val top = head?.data
+        head = head?.next
+        return top!!
+    }
+    //peek
+    fun peek(): T?{
+        return head?.data
+    }
+}
