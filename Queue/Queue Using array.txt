@@ -1,0 +1,86 @@
+fun main() {
+    val q = Queue(3)
+
+    q.add(10)
+    q.add(20)
+    q.add(30)
+
+    println(q.remove()) // 10
+     q.add(40)
+    println(q.remove()) // 20
+     q.add(50)
+
+    q.printQueue()
+
+   println(q.isFull())
+}
+class Queue(val size: Int) {
+    private val arr = Array(size) { 0 }
+    private var front = -1
+    private var rear = -1
+    
+    // Check if empty
+    fun isEmpty(): Boolean {
+        return rear == -1 && front == -1
+    }
+    
+    fun isFull():Boolean{
+            return ((rear + 1) % size) == front
+    }
+
+    // Add element (Enqueue)
+    fun add(data: Int) {
+        if (isFull()) {
+            println("Queue is Full")
+            return
+        }
+
+        if (front == -1) {
+            front = 0
+        }
+        
+        rear = (rear+1) % size
+        arr[rear] = data
+    }
+
+    // Delete element (Dequeue)
+    fun remove(): Int {
+        if (isEmpty()) {
+            println("Queue is Empty")
+            return -1
+        }
+
+        val value = arr[front]
+		
+        if (front == rear) {
+            front = -1
+            rear = -1
+        } else {
+            front = (front+1) % size
+        }
+        
+        return value
+    }
+    
+      // Peek 
+    fun peek(): Int {
+        if (isEmpty()) {
+            println("Queue is Empty")
+            return -1
+        }
+        return arr[front]
+    }
+
+    // Print queue
+    fun printQueue() {
+        if (isEmpty()) {
+            println("Queue is Empty")
+            return
+        }
+
+        while(!isEmpty()){
+           print("${remove()} |")
+        }
+        println()
+    }
+}
