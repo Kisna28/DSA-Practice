@@ -1,0 +1,85 @@
+fun main() {
+    val q = Queue()
+
+    q.add(10)
+    q.add(20)
+    q.add(30)
+
+    println(q.remove()) // 10
+     q.add(40)
+    println(q.remove()) // 20
+     q.add(50)
+
+    q.printQueue()
+
+}
+data class Node(
+    val data: Int,
+    var next: Node? = null
+)
+class Queue() {
+    
+   var tail: Node? = null
+	var head: Node? = null
+ 
+    private var front = -1
+    private var rear = -1
+    
+    // Check if empty
+    fun isEmpty(): Boolean {
+        return head == null && tail == null
+    }
+    
+
+    // Add element (Enqueue)
+    fun add(data: Int) {
+       val newNode = Node(data = data)
+        if (head == null) {
+           head = newNode
+            tail = newNode
+            return
+        }
+        tail?.next = newNode
+        tail = newNode
+    }
+
+    // Delete element (Dequeue)
+    fun remove(): Int? {
+        if (isEmpty()) {
+            println("Queue is Empty")
+            return -1
+        }
+
+        val front = head?.data
+        if(tail == head){
+            tail = null
+            head = null
+        }else{
+            head = head?.next
+        }
+        
+        return front
+    }
+    
+      // Peek 
+  fun peek(): Int? {
+    if (isEmpty()) {
+        println("Queue is Empty")
+        return -1
+    }
+    return head?.data
+}
+
+    // Print queue
+    fun printQueue() {
+        if (isEmpty()) {
+            println("Queue is Empty")
+            return
+        }
+
+        while(!isEmpty()){
+           print("${remove()} |")
+        }
+        println()
+    }
+}
