@@ -1,0 +1,15 @@
+import java.util.Queue
+import java.util.LinkedList
+fun main() {
+    val q: Queue<Int> = LinkedList() // arrayDeque
+
+    q.add(10)   // enqueue
+    q.add(20)
+    q.add(30)
+
+    println(q.peek())   // 10 (front)
+    println(q.remove()) // 10 (dequeue)
+    
+   println(q)
+
+}
