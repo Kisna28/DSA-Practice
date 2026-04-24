@@ -1,0 +1,86 @@
+// POP IN O(N)
+import java.util.Queue
+import java.util.LinkedList
+import java.util.Stack
+fun main() {
+    val s = Stack<Int>()
+  
+    s.push(10)   // enqueue
+   s.push(20)
+    s.push(30)
+
+    while(!s.isEmpty()){
+   println(s.pop())
+    }
+}
+
+class Queue(){
+   val q1:Queue<Int> = LinkedList() // Or arrayDeque
+     val q2:Queue<Int> = LinkedList()
+
+    
+    fun isEmpty():Boolean{
+        return q1.isEmpty() && q2.isEmpty()
+    }
+    //add
+    fun push(data: Int){ // TM: 0(1)
+       if(!q1.isEmpty()){
+           q1.add(data)
+       }else{
+            q2.add(data)
+       }
+    }
+    //remove 
+    fun pop():Int{
+        if(isEmpty()){
+            println("Empty Stack")
+            return -1
+        }
+       var top = -1
+        //case 1
+        if(!q1.isEmpty()){
+            while(!q1.isEmpty()){
+                top = q1.remove()
+                if(q1.isEmpty()){
+                    break
+                }
+                q2.add(top)
+            }
+        }else{//case 2
+            while(!q2.isEmpty()){
+                top = q2.remove()
+                if(q2.isEmpty()){
+                    break
+                }
+                q1.add(top)
+            } 
+        }
+        return top
+    }
+    //peek 
+    fun peek():Int{
+          if(isEmpty()){
+            println("Empty Stack")
+            return -1
+        }
+       var top = -1
+           if(!q1.isEmpty()){
+            while(!q1.isEmpty()){
+                top = q1.remove()
+                if(q1.isEmpty()){
+                    break
+                }
+                q2.add(top)
+            }
+        }else{//case 2
+            while(!q2.isEmpty()){
+                top = q2.remove()
+                if(q2.isEmpty()){
+                    break
+                }
+                q1.add(top)
+            } 
+        }
+        return top
+    }
+}
