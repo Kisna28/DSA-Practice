@@ -1,0 +1,30 @@
+import java.util.*
+fun main() {
+    val str = "aabccxb"
+    PrintNonRepeting(str)
+}
+//Solve using hash when required the out side the character or lot's of character othervise array is better approch.
+fun PrintNonRepeting(str : String){ // o(n)
+    val freq = Array<Int>(26){0}
+   //  val freq = HashMap<Char, Int>()
+    val q:Queue<Char> = LinkedList<Char>()
+    
+    for(i in 0 until str.length){
+        val ch = str[i]
+        q.add(ch)
+       freq[ch-'a']++
+      // freq[ch] = freq.getOrDefault(ch, 0) + 1
+        
+        while(q.isNotEmpty() && freq[q.peek()-'a'] > 1){
+            q.remove()
+        }
+//            while (q.isNotEmpty() && freq[q.peek()]!! > 1) {
+//             q.remove()
+//         }
+        if(q.isEmpty()){
+            print("-1 ")
+        }else{
+            print("${q.peek()} ")
+        }
+    }
+}
