@@ -1,12 +1,11 @@
 // POP IN O(N)
 import java.util.Queue
 import java.util.LinkedList
-import java.util.Stack
 fun main() {
-    val s = Stack<Int>()
+    val s = Stack()
   
     s.push(10)   // enqueue
-   s.push(20)
+    s.push(20)
     s.push(30)
 
     while(!s.isEmpty()){
@@ -14,7 +13,7 @@ fun main() {
     }
 }
 
-class Queue(){
+class Stack(){
    val q1:Queue<Int> = LinkedList() // Or arrayDeque
      val q2:Queue<Int> = LinkedList()
 
