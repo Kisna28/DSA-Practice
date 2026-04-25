@@ -1,0 +1,13 @@
+import java.util.*
+fun main() {
+    val deque: Deque<Int> = LinkedList()
+    for(i in 1..10){
+        deque.addFirst(i)
+    }
+     deque.addLast(11)
+     deque.removeLast()
+     deque.removeFirst()
+     println(deque.getFirst())
+      println(deque.getLast())
+    println(deque)
+}
