@@ -1,0 +1,19 @@
+import java.util.*
+fun main() {
+    val q: Queue<Int> = LinkedList<Int>()
+    for(i in 1..10){
+        q.add(i)
+    }
+    reverseQueue(q)
+    println(q)
+}
+fun reverseQueue(q: Queue<Int>){
+    val s = Stack<Int>()
+    val size = q.size
+    for(i in 0 until size){
+        s.add(q.remove())
+    }
+    while(!s.isEmpty()){
+        q.add(s.pop())
+    }
+}
