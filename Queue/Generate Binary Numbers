@@ -14,7 +14,7 @@ fun GenerateBinaryNumbers(n : Int){
     println("$queue ")
 }
 // This function is Optional We use a i.toString(2) where 2 is a base
-fun decimalToBinary(n: Int): String {
+fun decimalToBinary(n: Int): String { // Time Complexity: O(log n)
     if (n == 0) return "0"
 
     var num = n
