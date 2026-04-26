@@ -3,12 +3,27 @@ fun main() {
    val k = 5
      val queue: Queue<Int> = ArrayDeque()
      val queueINPlace: Queue<Int> = ArrayDeque()
+     val queueRecursion: Queue<Int> = ArrayDeque()
      for(i in 1..10){
          queue.add(i)
          queueINPlace.add(i)
+         queueRecursion.add(i)
      }
-   //  ReverseFirstKElement(k,queue)
+     ReverseFirstKElement(k,queue)
      ReverseFirstKElementINPlace(k,queueINPlace)
+     ReverseFirstKElementRecursion(k,queueRecursion)
+}
+
+// NOTE : Always Use the IN Place Approch
+
+fun ReverseFirstKElementRecursion(k: Int, queue: Queue<Int>) { //time :  O(n)  space: O(k)
+    if (k <= 0) return
+    val front = queue.remove()
+    ReverseFirstKElementRecursion(k-1,queue)
+    queue.add(front)
+    // reverser required
+   println("queue Recursion = $queue")
+
 }
 fun ReverseFirstKElementINPlace(k: Int, queue: Queue<Int>) {
     if (k <= 0 || k > queue.size) return
