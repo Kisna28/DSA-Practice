@@ -17,10 +17,10 @@ fun ConnectNRopesMinimumCostPriorityQueue(n : Int, arr : Array<Int>){ // O(n log
     
     // Step 2 : keep combining Smallest Two
     while(pq.size > 1){
-        val first = pq.remove() // smallest
-         val second = pq.remove() // second smallest
+        val first = pq.remove() // smallest //O(log n)
+         val second = pq.remove() // second smallest  //O(log n)
          val cost = first + second 
-         pq.add(cost)
+         pq.add(cost) // O(log n)
         totalCost += cost 
        
     }
@@ -28,7 +28,7 @@ fun ConnectNRopesMinimumCostPriorityQueue(n : Int, arr : Array<Int>){ // O(n log
     
 }
 fun ConnectNRopesMinimumCost(n : Int, arr : Array<Int>){ // Total Time:O(n log n) + O(n) + O(n) + O(n) = O(n log n)
-    arr.sort() // 2,3,4,6 //Time: O(n log n)
+    arr.sort() //Time: O(n log n)
     val queue: Queue<Int> = ArrayDeque()
     var result = arr[0] 
     for(i in 1..arr.size-1){ // Time: O(n)
