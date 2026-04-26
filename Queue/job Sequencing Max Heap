@@ -1,0 +1,82 @@
+import java.util.PriorityQueue
+
+data class Job(val id: Char, val deadline: Int, val profit: Int)
+
+fun jobSequencingMinHeap(jobs: List<Job>): Pair<List<Char>, Int> {
+    // Sort by deadline
+    val sortedJobs = jobs.sortedBy { it.deadline }
+
+    val minHeap = PriorityQueue<Job>(compareBy { it.profit }) // smallest profit on top
+
+    for (job in sortedJobs) {
+        minHeap.add(job)
+
+        // If we exceed allowed jobs, remove least profit
+        if (minHeap.size > job.deadline) {
+            minHeap.poll()
+        }
+    }
+
+    // Extract result
+    val selectedJobs = minHeap.map { it.id }
+    val totalProfit = minHeap.sumOf { it.profit }
+
+    return Pair(selectedJobs, totalProfit)
+}
+
+fun jobSequencingMaxHeap(jobs: List<Job>): Pair<List<Char>, Int> {
+    // Sort by deadline descending
+    val sortedJobs = jobs.sortedByDescending { it.deadline }
+
+    val maxHeap = PriorityQueue<Job>(compareByDescending { it.profit }) // max profit on top
+
+    val result = mutableListOf<Char>()
+    var totalProfit = 0
+
+    var i = 0
+    var time = sortedJobs.first().deadline
+
+    while (time > 0) {
+
+        // Add all jobs whose deadline >= current time
+        while (i < sortedJobs.size && sortedJobs[i].deadline >= time) {
+            maxHeap.add(sortedJobs[i])
+            i++
+        }
+
+        // Pick best available job
+        if (maxHeap.isNotEmpty()) {
+            val job = maxHeap.poll()
+            result.add(job.id)
+            totalProfit += job.profit
+        }
+
+        time--
+    }
+
+    return Pair(result, totalProfit)
+}
+
+//| Approach | When to use                           |
+//| -------- | ------------------------------------- |
+//| Min-Heap | ⭐ Clean, most preferred in interviews |
+//| Max-Heap | When thinking in **time slots**       |
+
+// Final Interview Tip
+
+//If asked for best approach, say:
+
+//“I prefer the min-heap solution because it avoids explicit slot management and is cleaner to implement.”
+
+fun main() {
+    val jobs = listOf(
+        Job('a', 4, 20),
+        Job('b', 1, 10),
+        Job('c', 1, 40),
+        Job('d', 1, 30)
+    )
+
+    val (result, profit) = jobSequencingMinHeap(jobs)
+    println("Jobs: $result")
+    println("Profit: $profit")
+}
