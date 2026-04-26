@@ -1,0 +1,48 @@
+import java.util.*
+fun main() {
+    val k = 3
+    val arr= arrayOf(1,2,3,1,4,5,2,3,6)
+     MaximumSubarrayK(k,arr)
+     MaximumSubarrayKQueue(k,arr)
+    
+}
+fun MaximumSubarrayKQueue(k:Int, arr: Array<Int>){
+ val dq = ArrayDeque<Int>()
+ val result = mutableListOf<Int>()
+ for(i in arr.indices){
+      //  Remove out-of-window elements (front)
+     if(dq.isNotEmpty() && dq.first()<= i -k){
+         dq.removeFirst()
+     }
+     //  Remove smaller elements (back)
+        while (dq.isNotEmpty() && arr[dq.last()] < arr[i]) {
+         dq.removeLast()
+     }
+      // Add current index
+        dq.addLast(i)
+
+        // Add answer (window formed)
+        if (i >= k - 1) {
+            result.add(arr[dq.first()])
+        }
+ }
+ println("Result ArrayDeque= ${result}")
+}
+fun MaximumSubarrayK(k:Int, arr: Array<Int>){    // Time : O(N × K) 
+     val result = mutableListOf<Int>()
+        for (i in 0..arr.size - k) {
+        var max = arr[i]
+
+        // Check all elements in current window
+        for (j in i until i + k) {
+            if (arr[j] > max) {
+                max = arr[j]
+            }
+        }
+
+        result.add(max)
+    }
+
+    println("Result = ${result}")
+}
+
