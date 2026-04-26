@@ -1,0 +1,30 @@
+import java.util.*
+fun main() {
+   // val number = 2 //o/p = 1 10
+   val number = 5 // o/p = 1 10 11 100 101
+   GenerateBinaryNumbers(number)
+}
+
+fun GenerateBinaryNumbers(n : Int){
+    val queue: Queue<String> = ArrayDeque()
+    for(i in 1..n){
+        val binary = decimalToBinary(i)
+        queue.add(binary) // OR  queue.add(i.toString(2))
+    }
+    println("$queue ")
+}
+// This function is Optional We use a i.toString(2) where 2 is a base
+fun decimalToBinary(n: Int): String {
+    if (n == 0) return "0"
+
+    var num = n
+    var result = ""
+
+    while (num > 0) {
+        val remainder = num % 2
+        result = remainder.toString() + result   // prepend
+        num /= 2
+    }
+
+    return result
+}
