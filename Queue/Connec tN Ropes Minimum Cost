@@ -1,0 +1,48 @@
+import java.util.*
+fun main() {
+   val number = 4 
+    val arr= arrayOf(1, 2, 3, 4, 5) // o/p = 33
+   ConnectNRopesMinimumCost(number,arr)
+   ConnectNRopesMinimumCostPriorityQueue(number,arr)
+}
+
+fun ConnectNRopesMinimumCostPriorityQueue(n : Int, arr : Array<Int>){ // O(n log n)
+        val pq = PriorityQueue<Int>() // min heap
+        var totalCost = 0
+        
+    // Step 1: Add all ropes
+    for (num in arr) {
+        pq.add(num)
+    }
+    
+    // Step 2 : keep combining Smallest Two
+    while(pq.size > 1){
+        val first = pq.remove() // smallest
+         val second = pq.remove() // second smallest
+         val cost = first + second 
+         pq.add(cost)
+        totalCost += cost 
+       
+    }
+      println("totalCost PriorityQueue = $totalCost")
+    
+}
+fun ConnectNRopesMinimumCost(n : Int, arr : Array<Int>){ // Total Time:O(n log n) + O(n) + O(n) + O(n) = O(n log n)
+    arr.sort() // 2,3,4,6 //Time: O(n log n)
+    val queue: Queue<Int> = ArrayDeque()
+    var result = arr[0] 
+    for(i in 1..arr.size-1){ // Time: O(n)
+        queue.add(arr[i])
+    }
+    
+    for(i in 0 until queue.size){ // O(n)
+        result = queue.peek() + result 
+        queue.add(result)
+        queue.remove()  
+    }
+    var finalResult = 0
+    while(queue.isNotEmpty()){ // Time: O(n)
+        finalResult += queue.remove()
+    }
+     println("finalResult = $finalResult")
+}
