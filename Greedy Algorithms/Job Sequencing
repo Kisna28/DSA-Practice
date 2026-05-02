@@ -1,0 +1,32 @@
+data class Job( val deadLine:Int,
+          val profit:Int,
+          val id:Int)
+fun main() {
+    // Job Sequencing
+    val arr =  arrayOf(intArrayOf(4,20),
+                      intArrayOf(1,10),
+                      intArrayOf(1,40),
+                      intArrayOf(1,30))
+val jobs = ArrayList<Job>()
+
+for (i in arr.indices) {
+    jobs.add(Job(arr[i][0], arr[i][1], i))
+} 
+//Alos we use map 
+//val jobs = arr.mapIndexed { i, it ->
+ //   Job(it[0], it[1], i)
+//}
+ jobs.sortByDescending { it.profit } // safe
+    // OR jobs.sortWith { a, b -> b.profit - a.profit } // descending -> object sortnig
+	// avoid this : because it can cause integer overflow (rare but interviewer may ask)
+    val seq = ArrayList<Int>()
+    var time = 0
+    for( i in 0 until jobs.size){
+        var curr = jobs.get(i)
+        if(curr.deadLine > time){
+            seq.add(curr.id)
+            time++
+        }
+    }
+    println("Max job = ${seq.size} and job is : ${seq.joinToString(", ")}")
+}
