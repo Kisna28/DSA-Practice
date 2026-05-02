@@ -1,4 +1,4 @@
-fun main() {
+fun main() { // TM: O(n log n)
     // Max Chain Length - same as activity selection
     val arr =  arrayOf(
     	intArrayOf(5, 24),
