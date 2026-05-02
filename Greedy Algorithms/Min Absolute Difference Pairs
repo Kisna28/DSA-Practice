@@ -1,0 +1,12 @@
+fun main() {
+    // Min absolute Difference Pairs
+    val A = arrayOf(1,4,7,8)
+    val B = arrayOf(2,3,5,6)
+    A.sort()
+    B.sort()
+    var ans = 0
+    for(i in 0 until A.size){
+        ans+=Math.abs(A[i] - B[i])
+    }
+    println("Answer is : $ans")
+}
