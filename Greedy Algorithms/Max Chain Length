@@ -1,0 +1,20 @@
+fun main() {
+    // Max Chain Length - same as activity selection
+    val arr =  arrayOf(
+    	intArrayOf(5, 24),
+    	intArrayOf(39, 60),
+        intArrayOf(5, 28),
+        intArrayOf(27, 40),
+        intArrayOf(50, 90),
+)
+    arr.sortBy { it[1] }
+    var chainLength = 1
+    var chainEnd = arr[0][1] //last selected chain(pair)
+    for(i in 1 until arr.size){
+        if(arr[i][0]>chainEnd){
+            chainLength++
+            chainEnd = arr[i][1]
+        }
+    }
+    println("Max Chain Length = $chainLength")
+}
