@@ -1,0 +1,34 @@
+fun main() {
+    val `value` = arrayOf(60,100,120)
+    val weight = arrayOf(10,20,30)
+    val capacity = 50
+    fractionalKnapsack(`value`,weight,capacity)
+}
+
+fun fractionalKnapsack(value: Array<Int>, weight: Array<Int>, capacity: Int) {
+
+    val n = value.size
+
+    // Step 1: Create index array
+    val indices = Array(n) { it }
+
+    // Step 2: Sort indices based on ratio (value/weight) DESC
+    indices.sortByDescending { value[it].toDouble() / weight[it] }
+
+    var remainingCapacity = capacity
+    var finalValue = 0.0
+
+    // Step 3: Traverse sorted indices
+    for (i in indices) {
+        if (remainingCapacity >= weight[i]) {
+            finalValue += value[i]
+            remainingCapacity -= weight[i]
+        } else {
+            // Take fraction
+            finalValue += (value[i].toDouble() / weight[i]) * remainingCapacity
+            break
+        }
+    }
+
+    println("Fractional Knapsack Value = $finalValue")
+}
