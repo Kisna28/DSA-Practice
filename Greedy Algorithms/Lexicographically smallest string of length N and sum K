@@ -1,0 +1,21 @@
+//Lexicographically smallest string of length N and sum K
+fun main() {
+  	val n = 4
+    val k = 42
+    println(getSmallestString(n, k))
+}
+fun getSmallestString(n: Int, k: Int): String { // Time: O(n)
+    val result = CharArray(n) { 'a' }
+
+    var remaining = k - n
+
+    var i = n - 1
+    while (remaining > 0 && i >= 0) {
+        val add = minOf(25, remaining)  // max we can increase
+        result[i] = (result[i].code + add).toChar()
+        remaining -= add
+        i--
+    }
+
+    return String(result)
+}
