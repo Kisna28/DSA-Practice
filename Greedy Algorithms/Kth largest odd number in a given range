@@ -1,0 +1,56 @@
+//Kth largest odd number in a given range
+fun main() {
+    val l = -3
+    val r = 5
+    val k = 1
+     println("Brute Force = ${kthLargestOddBrute(l, r, k)}")
+    println("Better = ${kthLargestOddBetter(l, r, k)}")
+    println("Best = ${kthLargestOddBest(l, r, k)}")
+ 
+}
+/*  Brute Approch
+ 	Time: O(n log n) (sorting)
+	Space: O(n) (storing odds)
+ */
+fun kthLargestOddBrute(l: Int, r: Int, k: Int): Int {
+    val list = mutableListOf<Int>()
+
+    for (i in l..r) {
+        if (i % 2 != 0) {
+            list.add(i)
+        }
+    }
+
+    list.sortDescending()
+
+    return if (k <= list.size) list[k - 1] else -1
+}
+/*  Better Approch
+	Time: O(n)
+	Space: O(1)
+ */
+ fun kthLargestOddBetter(l: Int, r: Int, k: Int): Int {
+    var count = 0
+
+    for (i in r downTo l) {
+        if (i % 2 != 0) {
+            count++
+            if (count == k) return i
+        }
+    }
+
+    return -1
+}
+ /*  Best Approch
+	Time: O(1)
+	Space: O(1)
+ */
+ fun kthLargestOddBest(l: Int, r: Int, k: Int): Int {
+    val largestOdd = if (r % 2 != 0) r else r - 1
+     println("largest odd = $largestOdd")
+
+    val result = largestOdd - (k - 1) * 2
+     println("result = $result")
+
+    return if (result >= l) result else -1
+}
