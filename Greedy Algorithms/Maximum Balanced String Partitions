@@ -1,0 +1,20 @@
+//Maximum Balanced String Partitions
+fun main() {
+    val str = "LRRRRLLRLLRL"
+    var count = 0 
+    var balance = 0
+     var temp = ""  
+   for (ch in str) {
+        temp += ch  
+    	if (ch == 'L') balance++
+    	else balance--
+
+    if (balance == 0){
+         println("Partition: $temp")
+            count++
+        temp = ""
+    }
+}
+    
+    println("count = $count")
+}
