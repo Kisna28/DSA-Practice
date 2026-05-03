@@ -1,0 +1,50 @@
+// Split the given array into K sub-arrays
+fun main() {
+   val arr = intArrayOf(1, 2, 3, 4)
+    val k = 3
+    val n = arr.size
+
+    solve(arr, n, k, 0, 0, 0)
+    println(ans)
+}
+// Greedy approch
+var ans = Int.MAX_VALUE
+
+fun solve(
+    arr: IntArray,
+    n: Int,
+    k: Int,
+    index: Int,
+    sum: Int,
+    maxSum: Int
+) {  
+// Time Complexity  :O((N−1)c(K−1))
+/*
+(Here‘c’heredepictscombinationsi.e.((n-1)!/((n-k)!*(k-1)!)WhereNisthenumberofelements of the array and K is the number of divisions that we are having)Space Complexity: o(n)
+*/
+    var currSum = sum
+    var currMax = maxSum
+
+    // Base case
+    if (k == 1) {
+        currMax = maxOf(currMax, currSum)
+        currSum = 0
+
+        for (i in index until n) {
+            currSum += arr[i]
+        }
+
+        currMax = maxOf(currMax, currSum)
+        ans = minOf(ans, currMax)
+        return
+    }
+
+    currSum = 0
+
+    for (i in index until n) {
+        currSum += arr[i]
+        currMax = maxOf(currMax, currSum)
+
+        solve(arr, n, k - 1, i + 1, currSum, currMax)
+    }
+}
