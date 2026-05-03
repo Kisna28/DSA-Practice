@@ -1,0 +1,41 @@
+// Best Time to Buy and Sell Stock
+fun main() {
+  	val arr = arrayOf(7,1,5,3,6,4)
+    println(bestTimeForStockBrute(arr))
+    println(bestTimeForStockGreedy(arr))
+}
+// Greedy approch
+fun bestTimeForStockGreedy(price: Array<Int>): Int { // Time: O(n)
+   var minPrice = Int.MAX_VALUE
+    println("min Price = $minPrice")
+    var maxProfit = 0
+
+    for (i in price.indices) {
+        // update minimum price so far
+        if (price[i] < minPrice) {
+            minPrice = price[i]
+        }
+
+        // calculate profit if sold today
+        val profit = price[i] - minPrice
+
+        // update max profit
+        if (profit > maxProfit) {
+            maxProfit = profit
+        }
+    }
+
+    return maxProfit
+}
+// Brute approch
+fun bestTimeForStockBrute(price: Array<Int>): Int { // Time: O(n^2)
+  var maxProfit = 0
+    for(i in 0 until price.size-1){
+        for(j in i+1 until price.size){
+            val minus = price[j] - price[i]
+            maxProfit = maxOf(minus,maxProfit)
+        }
+    }
+    
+    return maxProfit
+}
