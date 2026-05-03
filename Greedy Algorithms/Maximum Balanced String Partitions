@@ -1,5 +1,5 @@
 //Maximum Balanced String Partitions
-fun main() {
+fun main() { //Greedy → O(n)
     val str = "LRRRRLLRLLRL"
     var count = 0 
     var balance = 0
