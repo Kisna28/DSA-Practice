@@ -1,0 +1,140 @@
+import java.util.*
+data class Node<T>(
+    val data: T,
+    var left: Node<T>? = null,
+    var right: Node<T>? = null
+)
+class BinaryTree<T> {
+
+    var idx = -1
+
+    fun buildTree(nodes: Array<T?>): Node<T>? {
+        idx++
+
+        if (idx >= nodes.size) return null
+
+        val value: T = nodes[idx] ?: return null
+
+        val newNode = Node(value)
+        newNode.left = buildTree(nodes)
+        newNode.right = buildTree(nodes)
+
+        return newNode
+    }
+    
+    // Root → Left → Right
+   fun <T> preorder(root: Node<T>?) {
+    if (root == null) return
+
+    print("${root.data} ")   // Root
+    preorder(root.left)      // Left
+    preorder(root.right)     // Right
+}
+       // Left → Root → Right
+   fun <T> inorder(root: Node<T>?) {
+    if (root == null) return
+
+    preorder(root.left)      // Left
+    print("${root.data} ")   // Root
+    preorder(root.right)     // Right
+}
+   
+   // Left → Right → Root
+   fun <T> postorder(root: Node<T>?) {
+    if (root == null) return
+
+    postorder(root.left)      // Left
+    postorder(root.right)     // Right
+    print("${root.data} ")   // Root
+}
+    fun <T> levelorder(root: Node<T>?) { // O(n)
+    if (root == null) return
+        val q: Queue<Node<T>> = LinkedList()
+        q.add(root)
+        while(!q.isEmpty()){
+            val currentNode = q.remove()
+             print("${currentNode.data} ")
+         	
+            currentNode.left?.let {
+                q.add(it)
+            }
+
+            currentNode.right?.let {
+                q.add(it)
+            }
+            
+            /* Also write like this/
+             if (currentNode.left != null) {
+    			q.add(currentNode.left)
+					}
+
+				if (currentNode.right != null) {
+    				q.add(currentNode.right)
+						}
+             */
+        }
+}
+   
+    fun <T> heightOfTree(root: Node<T>?): Int { // O(n) and space : O(h)
+    if (root == null) return 0
+
+    val leftHeight = heightOfTree(root.left)
+    val rightHeight = heightOfTree(root.right)
+
+    return maxOf(leftHeight, rightHeight) + 1
+}
+    fun countNodes(root: Node<T>?):Int { // O(n) and space : O(h)
+        if (root == null) return 0
+        val leftCount = countNodes(root.left)
+        val rightCount = countNodes(root.right)
+        return leftCount + rightCount + 1
+}
+       fun sumOfNodes(root: Node<Int>?):Int {// O(n)
+        if (root == null) return 0
+        val leftSum = sumOfNodes(root.left)
+        val rightSum = sumOfNodes(root.right)
+        return leftSum + rightSum + root.data
+}
+        fun <T> diameter2(root: Node<T>?): Int {// O(n^2)
+        if (root == null) return 0
+        val leftheight = heightOfTree<T>(root.left)
+        val leftDiam = diameter2(root.left)
+        val righthright = heightOfTree<T>(root.right)
+        val rightDiam = diameter2(root.right)
+        val selfDiam =  leftheight + righthright + 1
+            return maxOf(leftDiam,rightDiam,selfDiam)
+}
+        data class Info(
+        val diam:Int ,
+        val ht:Int        
+        )
+         fun <T> diameter(root: Node<T>?): Info {// O(n^2)
+        if (root == null) {return Info(0,0)}
+        val leftInfo:Info = diameter(root.left)
+        val rightInfo:Info = diameter(root.right)
+        val diam = maxOf(maxOf(leftInfo.diam , rightInfo.diam), (leftInfo.ht+rightInfo.ht+1))
+        val ht =  maxOf(leftInfo.ht , rightInfo.ht)+1
+            return Info(diam,ht)
+}
+}
+
+fun main() {
+   val nodes = arrayOf(1,2,4,null,null,5,null,null,3,null,6,null,null)
+   val tree = BinaryTree<Int>()
+   val root = tree.buildTree(nodes)
+   println(root?.data)
+   println("Preorder Tree")
+   tree.preorder(root)
+   println("\nInorder Tree")
+   tree.inorder(root)
+   println("\nPostorder Tree")
+   tree.postorder(root)
+   
+   println("\nLevel order Tree")
+   tree.levelorder(root)
+   println("\nHeight Of Tree ${tree.heightOfTree(root)}")
+   println("\nCount Of Nodes ${tree.countNodes(root)}")
+   println("\nSum Of Nodes ${tree.sumOfNodes(root)}")
+   println("\nMax Diameter O(n^2) ${tree.diameter2(root)}")
+   println("\nMax Diameter O(n) ${tree.diameter(root)}")
+}
