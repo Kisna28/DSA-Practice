@@ -116,6 +116,61 @@ class BinaryTree<T> {
         val ht =  maxOf(leftInfo.ht , rightInfo.ht)+1
             return Info(diam,ht)
 }
+         fun isSubTree(root: Node<T>?,subRoot: Node<T>?):Boolean{
+             if(root == null) return false
+             if(root?.data == subRoot?.data){
+                 if(isIdentical(root,subRoot)){
+                     return true
+                 }
+             }
+             val leftAns = isSubTree(root.left,subRoot)
+             val rightAns = isSubTree(root.right,subRoot)
+             return leftAns || rightAns
+         }
+         
+         fun isIdentical(root: Node<T>?,subRoot: Node<T>?):Boolean{
+             if(root == null && subRoot == null){
+                 return true
+             }
+             if(!isIdentical(root?.left,subRoot?.left)){
+                 return false
+             }
+             if(!isIdentical(root?.right,subRoot?.right)){
+                 return false
+             }
+             return true
+         }
+          data class Info2<T>(
+        val node:Node<T> ,
+        val hd:Int        
+        )
+          
+          fun <T> topView(root: Node<T>?){
+              val root = root ?: return
+
+              val q: Queue<Info2<T>> = LinkedList()
+              val map = HashMap<Int,Node<T>>()
+              var min = 0
+              var max = 0
+              q.add(Info2(root,0))
+              while(q.isNotEmpty()){
+                  val curr = q.remove()
+                  if (!map.containsKey(curr.hd)){
+                         map.put(curr.hd,curr.node)
+                     }
+                     if(curr.node.left != null){
+                         q.add(Info2(curr.node.left!!,curr.hd-1))
+                         min = minOf(min,curr.hd-1)
+                     }
+                     if(curr.node.right != null){
+                         q.add(Info2(curr.node.right!!,curr.hd+1))
+                         max = maxOf(max,curr.hd+1)
+                     }
+                  }
+                    for (i in min..max) {
+            			println(map[i]?.data)
+        			}
+              }
 }
 
 fun main() {
@@ -130,6 +185,10 @@ fun main() {
    println("\nPostorder Tree")
    tree.postorder(root)
    
+   val subNodes = arrayOf(2,4,null,null,5,null,null)
+   val subTree = BinaryTree<Int>()
+   val subRoot = subTree.buildTree(subNodes)
+   
    println("\nLevel order Tree")
    tree.levelorder(root)
    println("\nHeight Of Tree ${tree.heightOfTree(root)}")
@@ -137,4 +196,8 @@ fun main() {
    println("\nSum Of Nodes ${tree.sumOfNodes(root)}")
    println("\nMax Diameter O(n^2) ${tree.diameter2(root)}")
    println("\nMax Diameter O(n) ${tree.diameter(root)}")
+   println("\nSub tree of other tree ${tree.isSubTree(root,subRoot)}")
+      println("\nTop View of tree")
+      tree.topView(root)
+
 }
