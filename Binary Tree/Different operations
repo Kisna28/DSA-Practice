@@ -1,6 +1,6 @@
 import java.util.*
 data class Node<T>(
-    val data: T,
+    var data: T,
     var left: Node<T>? = null,
     var right: Node<T>? = null
 )
@@ -171,8 +171,142 @@ class BinaryTree<T> {
             			println(map[i]?.data)
         			}
               }
-}
+          
+          fun klevel(root:Node<T>?,level:Int,k:Int){
+              if(root==null){return}
+              if(level == k){
+                  print("${root.data }")
+                  return
+              }
+              klevel(root.left,level+1,k)
+              klevel(root.right,level+1,k)
+          }
+          //lowest comman ancestors
+          fun lca(root: Node<T>?,n1:Int,n2:Int):Node<T>{
+              val path1 = ArrayList<Node<T>>()
+              val path2 = ArrayList<Node<T>>()
+              
+              getPath(root,n1,path1)
+              getPath(root,n2,path2)
+              
+             var i = 0
 
+			while (i < path1.size && i < path2.size) {
+   				 if (path1[i] != path2[i]) {
+       				 break
+    		}
+   			 i++
+			}
+              return path1.get(i-1)
+              
+          }
+          
+          fun getPath(root: Node<T>?,n:Int,path:ArrayList<Node<T>>):Boolean{
+              if(root == null){return false}
+              path.add(root)
+              
+              if(root.data == n){
+                  return true
+              }
+              
+          val foundLeft=  getPath(root.left,n,path)
+          val foundRight=  getPath(root.right,n,path)
+          
+          if(foundLeft || foundRight){
+              return true
+          }
+          
+          path.removeAt(path.size-1)
+          	return false
+          }
+          
+   fun <T> lca2(root: Node<T>?, n1: T, n2: T): Node<T>? {
+
+    // base case
+    if (root == null) return null
+
+    // if current node matches
+    if (root.data == n1 || root.data == n2) {
+        return root
+    }
+
+    // search in left subtree
+    val leftLca = lca2(root.left, n1, n2)
+
+    // search in right subtree
+    val rightLca = lca2(root.right, n1, n2)
+
+    // if found in both sides
+    if (leftLca != null && rightLca != null) {
+        return root
+    }
+
+    // if found only on one side
+    return leftLca ?: rightLca
+}
+   
+   fun kAncestors(root: Node<T>?,n:Int,k:Int):Int{
+       if(root==null){
+           return -1
+       }
+       if(root?.data == n){
+           return 0
+       }
+       
+       val leftDist = kAncestors(root?.left,n,k)
+       val rightDist = kAncestors(root?.right,n,k)
+       
+       if(leftDist == -1 && rightDist == -1){
+           return -1
+       }
+       val max = maxOf(leftDist,rightDist)
+       if(max+1 == k){
+           println(root?.data)
+       }
+       return max+1
+              
+          }
+ fun transform(root: Node<Int>?): Int {
+
+    if (root == null) {
+        return 0
+    }
+
+    val leftChild = transform(root.left)
+    val rightChild = transform(root.right)
+
+    val old = root.data
+
+    val leftData = root.left?.data ?: 0
+    val rightData = root.right?.data ?: 0
+
+    root.data = leftData + leftChild + rightData + rightChild
+
+    return old
+}
+ fun minDisct(root: Node<Int>?,n1:Int,n2:Int):Int{
+     val lca = lca2(root,n1,n2)
+    val dist1 = lcaDist(lca,n1)
+    val dist2 = lcaDist(lca,n2)
+    
+    return dist1+dist2
+ }
+ fun lcaDist(root: Node<Int>?,n:Int):Int{
+     if(root==null){return -1}
+     if(root?.data == n){return 0}
+     val leftDist = lcaDist(root.left,n)
+     val rightDist = lcaDist(root.right,n)
+     
+     if(leftDist == -1 && rightDist == -1){
+         return -1
+     }else if(leftDist == -1){
+         return rightDist+1
+     }else{
+         return leftDist+1
+     }
+ }
+ 
+}
 fun main() {
    val nodes = arrayOf(1,2,4,null,null,5,null,null,3,null,6,null,null)
    val tree = BinaryTree<Int>()
@@ -199,5 +333,13 @@ fun main() {
    println("\nSub tree of other tree ${tree.isSubTree(root,subRoot)}")
       println("\nTop View of tree")
       tree.topView(root)
+       println("\nK Level")
+      tree.klevel(root,1,3)
+   println("\nlowest comman ancestors ${tree.lca(root,4,5).data}")
+    println("\nlowest comman ancestors Optimized ${tree.lca2(root,4,5)?.data}")
+        println("\nKth ancestors ${tree.kAncestors(root,5,2)}")
+        println("\nMin Distance between node ${tree.minDisct(root,4,6)}")
+        println("\nTransaform Tree Into sum ${tree.transform(root)}")
+        tree.levelorder(root)
 
 }
