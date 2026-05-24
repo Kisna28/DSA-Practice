@@ -305,7 +305,98 @@ class BinaryTree<T> {
          return leftDist+1
      }
  }
+ fun isUnivalued(root : Node<T>?): Boolean{ //O(n)
+    if (root == null) return true
+    println("root = $root")
+    println("root.data = ${root.data}")
+    	 return check(root, root.data)
+ }
+ fun  check(node: Node<T>?, value: T): Boolean {
+    if (node == null) return true
+
+    if (node.data != value) return false
+
+    return check(node.left, value) &&
+           check(node.right, value)
+}
  
+ fun invert(root: Node<T>?):Node<T>?{
+     if(root == null){return null}
+     
+     //swap
+     val temp = root.left
+     root.left = root.right
+     root.right = temp
+     
+     //recursive call
+     invert(root.left)
+     invert(root.right)
+     
+     return root
+ }
+ fun deleteLeaf(root: Node<Int>?,x:Int):Node<Int>?{
+         if(root == null){return null}
+         
+         root.left = deleteLeaf(root.left, x)
+         root.right = deleteLeaf(root.right,x)
+      
+         if(root.left == null && root.right == null && root.data == x ){
+             return null
+         }
+         return root
+}
+ fun findDuplicate(root: Node<Int>?): List<Node<Int>> {
+
+    val map = HashMap<String, Int>()
+    val ans = ArrayList<Node<Int>>()
+    serialize(root, map, ans)
+
+    return ans
+}
+ 
+ 
+fun serialize(
+    root: Node<Int>?,
+    map: HashMap<String, Int>,
+    ans: ArrayList<Node<Int>>
+): String {
+
+    if(root == null) return "#"
+
+    val left = serialize(root.left, map, ans)
+    val right = serialize(root.right, map, ans)
+
+    val str = "${root.data},$left,$right"
+
+    map[str] = map.getOrDefault(str, 0) + 1
+
+    if(map[str] == 2){
+        ans.add(root)
+    }
+
+    return str
+}
+
+var maxSum = Int.MIN_VALUE
+fun maxPathSum(root: Node<Int>?): Int {
+        gain(root)
+        return maxSum
+    }
+private fun gain(node: Node<Int>?): Int {
+        if (node == null) return 0
+
+        // ignore negative paths
+        val left = maxOf(0, gain(node.left))
+        val right = maxOf(0, gain(node.right))
+
+        // path THROUGH current node
+        val currentSum = node.data + left + right
+
+        maxSum = maxOf(maxSum, currentSum)
+
+        // return BEST single path for parent
+        return node.data + maxOf(left, right)
+    }
 }
 fun main() {
    val nodes = arrayOf(1,2,4,null,null,5,null,null,3,null,6,null,null)
@@ -341,5 +432,29 @@ fun main() {
         println("\nMin Distance between node ${tree.minDisct(root,4,6)}")
         println("\nTransaform Tree Into sum ${tree.transform(root)}")
         tree.levelorder(root)
-
+      
+        println()
+    val nodes3 = arrayOf(1,1,1,null,null,1,null,null,1,null,1,null,null)
+   val tree3 = BinaryTree<Int>()
+   val root3 = tree3.buildTree(nodes3)
+   println("\nIt is univalues or not : ${tree.isUnivalued(root3)}")
+   println()
+   
+   println("Invert Tree: ${tree.invert(root)}")
+   tree.preorder(root)
+	
+    println()
+    val nodes4 = arrayOf(1,3,3,null,null,2,null,null,3,null,null)
+   val tree4 = BinaryTree<Int>()
+   val root4 = tree4.buildTree(nodes4)
+   tree.preorder(root4)
+   println("\nAfter delet x node")
+   tree.deleteLeaf(root4,3)
+   tree.preorder(root4)
+   
+   val nodes5 = arrayOf(1,4,3,3,null,4,3,null,null,3)
+   val tree5 = BinaryTree<Int>()
+   val root5 = tree5.buildTree(nodes5)
+   println("Find duplicate = ${tree.findDuplicate(root5)}")
+   println("Max path Sum = ${tree.maxPathSum(root)}")
 }
