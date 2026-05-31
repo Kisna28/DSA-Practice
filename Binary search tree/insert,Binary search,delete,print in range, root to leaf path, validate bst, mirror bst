@@ -111,13 +111,39 @@ fun root2path(root:Node?,path:ArrayList<Int>){
     root2path(root.left,path)
     root2path(root.right,path)
     
-    path.remove(path.size-1)
+    path.removeAt(path.size-1)
 }
  fun printPath(path: ArrayList<Int>){
      for(i in 0 until path.size){
          print("${path.get(i)} -> ")
      }
      println("null")
+ }
+ 
+ fun isValidBST(root:Node?,min:Node?,max:Node?):Boolean{
+     if(root == null){return true}
+ 
+ 	if(min !=null && root.data <= min.data){
+        return false
+    }
+    else if(max !=null && root.data >= max.data){
+        return false
+    }
+    else{
+        return isValidBST(root.left,min,root) &&
+        isValidBST(root.right,root,max)
+    }
+ }
+ 
+ fun createMirror(root:Node?):Node?{ //O(n)
+     if(root == null){return null}
+     val lm = createMirror(root.left)
+     val rm = createMirror(root.right)
+     
+     root.left = rm
+     root.right = lm
+     return root
+     
  }
 
 
@@ -178,4 +204,13 @@ fun main() {
     
     println("\nRoot to path List")
     root2path(rootfordeletion , ArrayList<Int>())
+    
+    println("/n is valid BST: ${isValidBST(rootfordeletion,null,null)}")
+    
+    println("/n Mirror")
+    println("Before Mirror")
+    inorder(rootfordeletion)
+    println("Mirror Tree is\n")
+    createMirror(rootfordeletion)
+    inorder(rootfordeletion)
 }
