@@ -145,7 +145,71 @@ fun root2path(root:Node?,path:ArrayList<Int>){
      return root
      
  }
+ 
+ //required sorted array
+ fun creatBSTFromArray(arr:ArrayList<Int>,start:Int,end:Int):Node?{ //O(n)
+     if(start > end){return null}
+     
+     val mid = (start+end)/2
+     
+     val root = Node(arr[mid])
+     
+     root.left = creatBSTFromArray(arr,start,mid-1)
+     root.right = creatBSTFromArray(arr,mid+1,end)
+     return root
+ }
+ fun balanceBST(root: Node?): Node? {
+    val inorder = ArrayList<Int>()
 
+    getInorder(root, inorder)
+    
+    return creatBSTFromArray(inorder, 0, inorder.size - 1)
+}
+ 
+ fun getInorder(root:Node?,inorder:ArrayList<Int>){
+     if(root == null){return}
+     getInorder(root.left,inorder)
+     inorder.add(root.data)
+     getInorder(root.right,inorder)
+      }
+
+fun height(root: Node?): Int {
+    if (root == null) return 0
+
+    val leftHeight = height(root.left)
+    val rightHeight = height(root.right)
+
+    return maxOf(leftHeight, rightHeight) + 1
+}
+
+var maxBST = 0
+
+data class Info(
+	val isBST:Boolean,
+    val size:Int,
+    val min:Int,
+    val max:Int,
+)
+
+fun largestBST(root:Node?):Info{
+    if(root == null){return Info(true,0,Int.MAX_VALUE,Int.MIN_VALUE)}
+    //LI = leftInfo and RI = righr Info
+    val LI = largestBST(root.left)
+    val RI = largestBST(root.right)
+    
+    val size = LI.size + RI.size + 1
+    val min = minOf(root.data,minOf(LI.min,RI.min))
+    val max = maxOf(root.data,maxOf(LI.max,RI.max))
+    
+    if(root.data <= LI.max || root.data >= RI.min){
+        return Info(false,size,min,max)
+    }
+    if(LI.isBST && RI.isBST){
+        maxBST = maxOf(maxBST, size)
+        return Info(true,size,min,max)
+    }
+    return Info(false,size,min,max)
+}
 
 fun inorder(root:Node?){
     if(root == null){return}
@@ -213,4 +277,60 @@ fun main() {
     println("Mirror Tree is\n")
     createMirror(rootfordeletion)
     inorder(rootfordeletion)
+    
+    val arr = arrayOf(3,5,6,8,10,11,12)
+    val list = ArrayList(arr.toList())
+    
+    val arrayBST = creatBSTFromArray(list,0,list.size-1)
+    println("\n BST from array")
+    inorder(arrayBST)
+    
+//         10
+//        /  \
+//       8    15
+//      /       \
+//     6         20
+//    /
+//   4
+    
+     val root4 = Node(10)
+
+    root4.left = Node(8)
+    root4.left!!.left = Node(6)
+    root4.left!!.left!!.left = Node(4)
+
+    root4.right = Node(15)
+    root4.right!!.right = Node(20)
+
+    println("\nBefore Balancing Height = ${height(root4)}")
+
+    val balancedRoot = balanceBST(root4)
+
+    println("\nAfter Balancing Height = ${height(balancedRoot)}")
+    
+    
+//    			50
+//           /    \
+//         30      60
+//        /  \    /  \
+//       5   20  45   70
+//                    / \
+//                  65   80
+    val root5 = Node(50)
+
+    root5.left = Node(30)
+    root5.right = Node(60)
+
+    root5.left!!.left = Node(5)
+    root5.left!!.right = Node(20)
+
+    root5.right!!.left = Node(45)
+    root5.right!!.right = Node(70)
+
+    root5.right!!.right!!.left = Node(65)
+    root5.right!!.right!!.right = Node(80)
+
+    largestBST(root5)
+
+    println("maxBST correct is = $maxBST")
 }
