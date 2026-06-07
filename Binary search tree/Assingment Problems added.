@@ -1,0 +1,429 @@
+import java.util.*
+data class Node(
+    var data: Int,
+    var left: Node? = null,
+    var right: Node? = null
+) 
+
+fun insert(root:Node?,data:Int):Node{
+    var root = root
+    if(root == null){
+        root = Node(data)
+       return root
+    }
+    
+    if(root.data > data){
+        // left subtree
+      root.left = insert(root.left,data)
+    }
+     if(root.data < data){
+       // right subtree
+      root.right = insert(root.right,data)
+    }
+     
+    return root
+}
+
+//Search in BST 
+fun search(root:Node?,key:Int):Boolean{ // O(H)
+    if(root == null){return false}
+    
+    if(root.data == key){return true}
+    
+  
+    if(root.data > key){
+        return search(root.left,key)
+    }else{
+        return search(root.right,key)
+    }
+}
+
+//Delet a Node -> adobe  // IMP
+
+fun delete(root:Node?,`val`:Int):Node?{
+      if (root == null) return null
+    if(root.data < `val`){
+        root?.right = delete(root?.right,`val`)
+    }else if(root.data > `val`){
+        root?.left = delete(root?.left,`val`)
+    }else{
+       	// voila 
+        //case 1 - leaf node
+        
+        if(root.left == null && root.right == null){
+            return null
+        }
+        
+        //case 2 : single child
+        
+        if(root.left ==null){
+            return root.right
+        }else if( root.right == null){
+            return root.left
+        }
+        //case 3 both child - find inorderSuccseor(left most node in right tree)
+        val successor  = findInorderSuccessor(root.right!!)
+        println("root.data = ${root.data}")
+        println("root.right = ${root.right}")
+        
+        root.data = successor.data
+        
+        root.right = delete(root.right,successor.data)
+    }
+    
+    return root
+}
+
+fun findInorderSuccessor(root:Node):Node{
+    var current = root
+    while(current.left !=null){
+        current = current.left!!
+    }
+    println("current = $current")
+    return current
+}
+
+fun findRange(root:Node?,k1:Int,k2:Int){
+    if(root == null){return}
+    
+    if (root.data >= k1 && root.data <= k2) { // or  if(root.data in k1..k2){
+       findRange(root.left,k1,k2) 
+       print("${root.data} ")
+       findRange(root.right,k1,k2) 
+    }else if( root.data < k1){
+      findRange(root.left,k1,k2)  
+    }else{
+        findRange(root.right,k1,k2)
+    }
+    
+}
+
+// Root to path - snapdeal,fb,amezon 
+fun root2path(root:Node?,path:ArrayList<Int>){
+    if(root == null){return}
+    
+    path.add(root.data)
+    
+    if(root.left == null && root.right == null){
+        printPath(path)
+    }
+    
+    root2path(root.left,path)
+    root2path(root.right,path)
+    
+    path.removeAt(path.size-1)
+}
+ fun printPath(path: ArrayList<Int>){
+     for(i in 0 until path.size){
+         print("${path.get(i)} -> ")
+     }
+     println("null")
+ }
+ 
+ fun isValidBST(root:Node?,min:Node?,max:Node?):Boolean{
+     if(root == null){return true}
+ 
+ 	if(min !=null && root.data <= min.data){
+        return false
+    }
+    else if(max !=null && root.data >= max.data){
+        return false
+    }
+    else{
+        return isValidBST(root.left,min,root) &&
+        isValidBST(root.right,root,max)
+    }
+ }
+ 
+ fun createMirror(root:Node?):Node?{ //O(n)
+     if(root == null){return null}
+     val lm = createMirror(root.left)
+     val rm = createMirror(root.right)
+     
+     root.left = rm
+     root.right = lm
+     return root
+     
+ }
+ 
+ //required sorted array
+ fun creatBSTFromArray(arr:ArrayList<Int>,start:Int,end:Int):Node?{ //O(n)
+     if(start > end){return null}
+     
+     val mid = (start+end)/2
+     
+     val root = Node(arr[mid])
+     
+     root.left = creatBSTFromArray(arr,start,mid-1)
+     root.right = creatBSTFromArray(arr,mid+1,end)
+     return root
+ }
+ fun balanceBST(root: Node?): Node? {
+    val inorder = ArrayList<Int>()
+
+    getInorder(root, inorder)
+    
+    return creatBSTFromArray(inorder, 0, inorder.size - 1)
+}
+ 
+ fun getInorder(root:Node?,inorder:ArrayList<Int>){
+     if(root == null){return}
+     getInorder(root.left,inorder)
+     inorder.add(root.data)
+     getInorder(root.right,inorder)
+      }
+
+fun height(root: Node?): Int {
+    if (root == null) return 0
+
+    val leftHeight = height(root.left)
+    val rightHeight = height(root.right)
+
+    return maxOf(leftHeight, rightHeight) + 1
+}
+
+var maxBST = 0
+
+data class Info(
+	val isBST:Boolean,
+    val size:Int,
+    val min:Int,
+    val max:Int,
+)
+
+fun largestBST(root:Node?):Info{
+    if(root == null){return Info(true,0,Int.MAX_VALUE,Int.MIN_VALUE)}
+    //LI = leftInfo and RI = righr Info
+    val LI = largestBST(root.left)
+    val RI = largestBST(root.right)
+    
+    val size = LI.size + RI.size + 1
+    val min = minOf(root.data,minOf(LI.min,RI.min))
+    val max = maxOf(root.data,maxOf(LI.max,RI.max))
+    
+    if(root.data <= LI.max || root.data >= RI.min){
+        return Info(false,size,min,max)
+    }
+    if(LI.isBST && RI.isBST){
+        maxBST = maxOf(maxBST, size)
+        return Info(true,size,min,max)
+    }
+    return Info(false,size,min,max)
+}
+// Best case: O(h) where h is the height of the BST.
+// Worst case (all nodes fall in range or skewed tree): O(n).
+fun rangeSum(root:Node?,L:Int,R:Int):Int{
+    if(root == null){return 0}
+    
+    if(root.data < L){
+        return rangeSum(root.right, L, R)
+    }
+    if(root.data > R){
+        return rangeSum(root.left, L, R)
+    }
+    
+    return root.data +
+            rangeSum(root.left, L, R) +
+            rangeSum(root.right, L, R)
+    
+}
+fun cloestElement(root:Node?,k:Int, closest: Int):Int{
+    if (root == null) {return closest}
+
+    var newClosest = closest
+    
+     if (Math.abs(root.data - k) < Math.abs(closest - k)) {
+        newClosest = root.data
+    }
+
+     return if (k < root.data) {
+        cloestElement(root.left, k, newClosest)
+    } else if (k > root.data) {
+        cloestElement(root.right, k, newClosest)
+    } else {
+        root.data
+    }
+   }
+
+// Time Complexity: O(n)
+// Space Complexity: O(h) (recursion stack, where h is tree height).
+var count = 0
+
+fun kthsmallestElement(root: Node?, k: Int): Int {
+    if (root == null) return -1
+
+    val left = kthsmallestElement(root.left, k)
+    if (left != -1) return left
+
+    count++
+    if (count == k) return root.data
+
+    return kthsmallestElement(root.right, k)
+}
+
+fun inorderSet(root: Node?, set: HashSet<Int>) {
+    if (root == null) return
+
+    inorderSet(root.left, set)
+    set.add(root.data)
+    inorderSet(root.right, set)
+}
+
+fun printPairs(root: Node?, target: Int, set: HashSet<Int>) {
+  if (root == null) return
+
+    printPairs(root.left, target, set)
+
+    val complement = target - root.data
+
+    if (set.contains(complement)) {
+        println("($complement, ${root.data})")
+    }
+
+    printPairs(root.right, target, set)
+}
+
+fun inorder(root:Node?){
+    if(root == null){return}
+    inorder(root.left) 
+    print("${root.data} ") 
+    inorder(root.right) 
+}
+
+fun main() {
+//         5
+//        / \
+//       1   7
+//        \
+//         3
+//        / \
+//       2   4 
+    val bst = intArrayOf(5,1,3,4,2,7)
+
+    var root: Node? = null
+    for (i in bst.indices) {
+        root = insert(root, bst[i])
+    }
+    println("root = $root")
+
+    inorder(root)
+   
+    if(search(root,4)) {
+        	println("\n Present in - BST")
+    }else{
+          println("\n Not found")
+    }
+    
+//           8
+//         /   \
+//        5     10
+//       / \      \
+//      3   6      11
+//     / \           \
+//    1   4          14
+
+    println("For deletion Node")
+    val bstfordeletion = intArrayOf(8,5,3,1,4,6,10,11,14)
+    var rootfordeletion: Node? = null
+    for (i in bstfordeletion.indices) {
+        rootfordeletion = insert(rootfordeletion, bstfordeletion[i])
+    }
+    println("root = $rootfordeletion")
+    println("Before deletion")
+    inorder(rootfordeletion)
+//     println("\n After deletion")
+//     delete(rootfordeletion,5)
+//     inorder(rootfordeletion)
+    
+    println("\nPrint Range")
+    findRange(rootfordeletion,3,12)
+    
+    println("\nRoot to path List")
+    root2path(rootfordeletion , ArrayList<Int>())
+    
+    println("/n is valid BST: ${isValidBST(rootfordeletion,null,null)}")
+    
+    println("/n Mirror")
+    println("Before Mirror")
+    inorder(rootfordeletion)
+    println("Mirror Tree is\n")
+    createMirror(rootfordeletion)
+    inorder(rootfordeletion)
+    
+    val arr = arrayOf(3,5,6,8,10,11,12)
+    val list = ArrayList(arr.toList())
+    
+    val arrayBST = creatBSTFromArray(list,0,list.size-1)
+    println("\n BST from array")
+    inorder(arrayBST)
+    
+//         10
+//        /  \
+//       8    15
+//      /       \
+//     6         20
+//    /
+//   4
+    
+     val root4 = Node(10)
+
+    root4.left = Node(8)
+    root4.left!!.left = Node(6)
+    root4.left!!.left!!.left = Node(4)
+
+    root4.right = Node(15)
+    root4.right!!.right = Node(20)
+
+    println("\nBefore Balancing Height = ${height(root4)}")
+
+    val balancedRoot = balanceBST(root4)
+
+    println("\nAfter Balancing Height = ${height(balancedRoot)}")
+    
+    
+//    			50
+//           /    \
+//         30      60
+//        /  \    /  \
+//       5   20  45   70
+//                    / \
+//                  65   80
+    val root5 = Node(50)
+
+    root5.left = Node(30)
+    root5.right = Node(60)
+
+    root5.left!!.left = Node(5)
+    root5.left!!.right = Node(20)
+
+    root5.right!!.left = Node(45)
+    root5.right!!.right = Node(70)
+
+    root5.right!!.right!!.left = Node(65)
+    root5.right!!.right!!.right = Node(80)
+
+    largestBST(root5)
+
+    println("maxBST correct is = $maxBST")
+    
+    println("\nrange of sum = ${rangeSum(root5,20,70)}")
+    println("\nCloest element = ${cloestElement(root,8,root!!.data)}")
+    println("\nkth smallest element = ${kthsmallestElement(root,3)}")
+    
+     // BST1
+    val root1 = Node(2)
+    root1.left = Node(1)
+    root1.right = Node(4)
+
+    // BST2
+    val root2 = Node(3)
+    root2.left = Node(2)
+    root2.right = Node(5)
+
+
+    val set = HashSet<Int>()
+
+    inorderSet(root1, set)
+
+    printPairs(root2,6, set)
+}
