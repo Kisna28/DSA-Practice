@@ -1,0 +1,208 @@
+import java.util.*
+data class Node(
+    var data: Int,
+    var height:Int,
+    var left: Node? = null,
+    var right: Node? = null,
+) 
+
+fun height(root: Node?): Int {
+    if (root == null) return 0
+
+    return root.height
+}
+
+
+// Right rotate subtree rooted with y
+fun rightRotate(y:Node):Node?{
+    val x = y.left
+    val T2 = x?.right
+    // rotation using 3 nodes
+    x?.right = y
+    y.left = T2
+    // update heights
+    
+    y.height = maxOf(height(y.left),height(y.right))+1
+    x?.height= maxOf(height(x.left),height(x.right))+1
+    
+    //x is new root
+    return x
+}
+// Left rotate subtree rooted with x
+fun leftRotate(x:Node):Node?{
+    val y = x.right
+    val T2 = y?.left
+    // rotation using 3 nodes
+    y?.left = x
+    x.right = T2
+    // update heights
+    
+    x.height = maxOf(height(x.left),height(x.right))+1
+    y?.height= maxOf(height(y.left),height(y.right))+1
+    
+    //y is new root
+    return y
+}
+
+// Get Balance factor of node
+
+fun getBalance(root: Node?):Int {
+    if(root == null) return 0
+    return height(root?.left) - height(root?.right);
+}
+
+fun insert(root:Node?,key:Int):Node?{
+    if(root == null){ return Node(key,1)}
+    
+     if (key < root.data) {
+        root.left = insert(root.left, key)
+    } else if (key > root.data) {
+        root.right = insert(root.right, key)
+    } else {
+        return root
+    }
+    
+    // Update root height
+    
+    root.height = 1 + maxOf(height(root.left),height(root.right))
+    // Get root's balance factor
+    val bf = getBalance(root)
+    
+    //LL case 
+     if(bf > 1 && key < root.left!!.data){
+         return rightRotate(root)
+     }
+     //RR case 
+     if(bf < -1 && key > root.right!!.data){
+         return leftRotate(root)
+     }
+     //LR case
+      if(bf>1 && key >root.left!!.data) {
+          root.left=leftRotate(root.left!!)
+         return rightRotate(root)
+     }
+      
+      //RL case
+      if(bf < -1 && key < root.right!!.data) {
+          root.right=rightRotate(root.right!!)
+          return leftRotate(root)
+	}
+      return root //returned if AVL balanced
+}
+
+fun getMinNode(root:Node?):Node?{
+    var curr = root
+    // min data of left most node
+    
+    while(curr?.left != null){
+        curr = curr?.left
+    }
+    return curr
+}
+
+fun deleteNode(root: Node?, key: Int): Node? {
+    var root = root
+    if(root == null){ return root}
+    
+    // key < root's data => then it lies in leftsubtree
+    if (key < root.data) {
+        root.left = deleteNode(root.left, key)
+    } 
+    // key > root's data => then it lies in rightsubtree
+    else if (key > root.data) {
+        root.right = deleteNode(root.right, key)
+    }
+    // key = root's data => then this is the nodeto be deleted
+    else {
+        // node with only one child or no child
+      
+        if((root.left==null) || (root.right==null)) {
+            
+            var temp = root.left ?: root.right
+            
+            
+            // No child case
+            if(temp==null){
+                temp=root
+                root = null
+            }
+            else{
+            // One child case
+            root=temp
+            // Copy the contents of the non-empty child
+            }
+            
+        }else{
+            // node with two children: Get theinorder
+            // successor (smallest in the rightsubtree)
+            var successor  = getMinNode(root.right)!!
+            // Copy the inorder successor's data to this node
+            root.data = successor.data
+            // Delete the inorder successor
+            root.right = deleteNode(root.right, successor.data)
+        }
+        
+    }
+    
+    // If the tree had only one node then return
+    if(root==null){ return root }
+    
+    root.height = 1 + maxOf(height(root.left),height(root.right))
+    // Get root's balance factor
+    val bf = getBalance(root)
+    
+    //LL case 
+     if(bf > 1 && getBalance(root.left) >=0){
+         return rightRotate(root)
+     }
+     //RR case 
+     if(bf < -1 && getBalance(root.right) <= 0){
+         return leftRotate(root)
+     }
+     //LR case
+      if(bf>1 && getBalance(root.left) < 0) {
+          root.left=leftRotate(root.left!!)
+         return rightRotate(root)
+     }
+      
+      //RL case
+      if(bf < -1 && getBalance(root.right) >0) {
+          root.right=rightRotate(root.right!!)
+          return leftRotate(root)
+	}
+      return root //returned if AVL balanced
+}
+    
+    
+  fun preOrder(root:Node?){
+    if(root == null){return}
+    print("${root.data} ") 
+    preOrder(root.left) 
+    preOrder(root.right) 
+}  
+    
+fun inorder(root:Node?){
+    if(root == null){return}
+    inorder(root.left) 
+    print("${root.data} ") 
+    inorder(root.right) 
+}
+
+fun main() {
+var root: Node? = null
+
+    root = insert(root, 10)
+    root = insert(root, 20)
+    root = insert(root, 30)
+    root = insert(root, 40)
+    root = insert(root, 50)
+    root = insert(root, 25)
+
+    inorder(root)
+    println("\nPreOrder")
+    preOrder(root)
+    
+    deleteNode(root,25)
+    println("\n Inorder after Delete:")
+    inorder(root)
+}
