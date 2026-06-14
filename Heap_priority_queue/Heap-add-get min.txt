@@ -1,3 +1,88 @@
+import java.util.*
+
+class Heap {
+    private val heap = mutableListOf<Int>()
+
+// Time Complexity: O(log n)
+// Space Complexity: O(1) extra (excluding the heap storage itself)
+
+fun add(data:Int){
+    heap.add(data)
+    
+    var i = heap.size - 1
+    
+    while(i > 0){
+        val parent = (i - 1) /2
+        if(heap[i] < heap[parent]){
+            val temp = heap[i]
+            heap[i] = heap[parent]
+            heap[parent] = temp
+            i = parent
+        }else{
+            break
+    }
+    } 
+}
+
+// O(1)
+fun getMin():Int{
+    if(heap.isEmpty()){
+     throw NoSuchElementException("Heap is empty") 
+    }
+    
+    return heap[0]
+}
+
+fun remove():Int{
+     if (heap.isEmpty()) {
+        throw NoSuchElementException("Heap is empty")
+    }
+    val min = heap[0]
+ 	 // Move last element to root
+    heap[0] = heap[heap.size-1]
+    
+    // Remove Last Element 
+    heap.removeAt(heap.size-1)
+    
+    heapifyDown(0)
+    
+    return min
+}
+
+private fun heapifyDown(index: Int) {
+    var i = index
+   
+    while(true){
+        val left = 2 * i + 1
+    	val right = 2 * i + 2
+   		var smallest = i
+        
+        if(left < heap.size && heap[left] < heap[smallest]){
+            smallest = left
+        }
+        if(right < heap.size && heap[right] < heap[smallest]){
+            smallest = right
+        }
+        
+        if(smallest == i){
+            break
+        }
+        val temp = heap[i]
+        heap[i] = heap[smallest]
+        heap[smallest] = temp
+
+        i = smallest
+    }
+}
+
+/*
+| Operation              | Time       |
+| ---------------------- | ---------- |
+| Build heap (n inserts) | O(n log n) |
+| Remove n elements      | O(n log n) |
+| Total                  | O(n log n) |
+*/
+
 fun heapSort(arr:IntArray){
     val n = arr.size
     for(i in n/2 -1 downTo 0){
@@ -15,16 +100,16 @@ fun heapSort(arr:IntArray){
 }
 
 fun heapifyDownForSort(arr: IntArray, size: Int, i: Int) {
-    var largest = i
+    var largest = i 
 
-    val left = 2 * i + 1
+    val left = 2 * i + 1  
     val right = 2 * i + 2
 
-    if (left < size && arr[left] > arr[largest]) {
+    if (left < size && arr[left] < arr[largest]) {
         largest = left
     }
 
-    if (right < size && arr[right] > arr[largest]) {
+    if (right < size && arr[right] < arr[largest]) {
         largest = right
     }
 
@@ -35,4 +120,146 @@ fun heapifyDownForSort(arr: IntArray, size: Int, i: Int) {
 
         heapifyDownForSort(arr, size, largest)
     }
+}
+
+data class Points(
+val distSq:Int,
+val idx:Int
+)
+
+fun nearestCars(pts:Array<IntArray>,k:Int){
+     // Defines a Min-Heap Priority Queue.
+    val pq = PriorityQueue<Points>(
+         compareBy<Points> { it.distSq }
+    )
+    
+    for(i in 0 until pts.size){
+        val x = pts[i][0]
+        val y = pts[i][1]
+        val distSq = x * x + y * y
+
+        pq.add(Points(distSq,i))
+    }
+     repeat(k) {
+        println("C${pq.poll().idx}")
+    }
+}
+
+fun connectRopes(ropes:IntArray):Int{ // O(n log n)
+    val pq = PriorityQueue<Int>()
+    
+    for(i in 0 until ropes.size){
+        pq.add(ropes[i])
+    }
+    var cost = 0 
+    while(pq.size > 1 ){
+        val min = pq.poll()
+        val min2 = pq.poll() 
+        cost += min+min2  
+        pq.add(min+min2)
+    }
+    return cost
+}
+
+data class Row(val soldiers:Int,val idx:Int)
+
+fun weakestRows(army:Array<IntArray>,k:Int){
+    val pq = PriorityQueue<Row>(
+         compareBy<Row> { it.soldiers }
+         .thenBy{it.idx}
+    )
+    for(i in 0 until army.size){
+        var count = 0
+        for(j in 0 until army[0].size){
+            count += if(army[i][j] == 1){
+                1
+            } else {
+            	0
+            }
+        }
+        pq.add(Row(count,i))
+    }
+    for(i in 0 until k){
+        println("R${pq.poll().idx}")
+    }
+}
+
+data class Pair(val `val`:Int, val idx:Int)
+
+/*
+ add()    -> O(log k)
+remove() -> O(log k)
+total : O(n log k)
+SC: O(k)
+*/
+fun maxSlidingWindow(arr:IntArray,k:Int){
+   val res = IntArray(arr.size - k + 1)
+    val pq = PriorityQueue<Pair>{a, b ->
+    b.`val` - a.`val`
+    }
+    
+    for(i in 0 until k){
+        pq.add(Pair(arr[i],i))
+    }
+    
+    res[0] = pq.peek().`val`
+    
+    for(i in k until arr.size){
+        pq.add(Pair(arr[i],i))
+        while(pq.peek().idx <= (i-k)){
+            pq.poll()
+        }
+        
+        res[i - k + 1] = pq.peek().`val`
+    }
+    println(res.joinToString(" ,"))
+}
+
+fun printHeap() {
+        println(heap)
+    }
+}
+
+fun main() {
+   val heap = Heap()
+
+    heap.add(2)
+    heap.add(3)
+    heap.add(4)
+    heap.add(5)
+	heap.add(10)
+	heap.add(1)
+    println(heap.remove())
+    heap.printHeap()
+    
+    println("Get min : ${heap.getMin()}")
+    val sortArray = intArrayOf(10,8,9,4,5,1)
+    heap.heapSort(sortArray)
+    println("Sorting: ${sortArray.joinToString(" ,")}")
+    
+     val points = arrayOf(
+        intArrayOf(3, 3),    // C0
+        intArrayOf(5, -1),   // C1
+        intArrayOf(-2, 4)    // C2
+         )
+        
+        heap.nearestCars(points, 2)
+        
+    val ropes = intArrayOf(4, 2, 3, 6)
+
+    println(heap.connectRopes(ropes))
+    
+      val mat = arrayOf(
+        intArrayOf(1, 1, 0, 0, 0),
+        intArrayOf(1, 1, 1, 1, 0),
+        intArrayOf(1, 0, 0, 0, 0),
+        intArrayOf(1, 1, 0, 0, 0),
+        intArrayOf(1, 1, 1, 1, 1)
+    )
+
+    heap.weakestRows(mat, 3)
+     
+    val arr = intArrayOf(1, 3, -1, -3, 5, 3, 6, 7)
+    
+    heap.maxSlidingWindow(arr, 3)
 }
