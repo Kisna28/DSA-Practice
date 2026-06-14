@@ -195,7 +195,7 @@ SC: O(k)
 fun maxSlidingWindow(arr:IntArray,k:Int){
    val res = IntArray(arr.size - k + 1)
     val pq = PriorityQueue<Pair>{a, b ->
-    b.`val` - a.`val`
+    b.`val` - a.`val`  // use this for the minSlidingWindow : a.`val` - b.`val`
     }
     
     for(i in 0 until k){
