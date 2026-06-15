@@ -1,0 +1,29 @@
+class KthLargest(private val k: Int) {
+  val pq = PriorityQueue<Int>()
+
+    fun add(num: Int): Int {
+        // Your heap logic here
+         pq.add(num)
+        
+       // Keep only k largest elements
+        if (pq.size > k) {
+            pq.poll()
+        }
+		// Not enough elements yet
+        if (pq.size < k) {
+            return -1
+        }
+
+        // Root of min heap = kth largest
+        return pq.peek()    
+    }
+}
+fun main() {
+val arrKthsteam = intArrayOf(10, 20, 11, 70, 50, 40, 100, 5)
+
+    val kthLargest = KthLargest(3)
+
+    for (num in arrKthsteam) {
+        println(kthLargest.add(num))
+    }
+}
