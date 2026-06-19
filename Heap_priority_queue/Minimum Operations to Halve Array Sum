@@ -1,0 +1,33 @@
+//Tc: O(n + k log n) whiout hepify
+    fun minimumHalves(nums: IntArray): Int {
+        
+         // if not want to use the for loop
+        // Heapify in O(n)
+       // val maxHeap = PriorityQueue(nums.map { it.toDouble() }.compareByDescending { it })
+    val maxHeap = PriorityQueue<Double>(compareByDescending { it }) //O(log n)
+
+    var totalSum = 0.0
+    for (num in nums) {
+        totalSum += num
+        maxHeap.offer(num.toDouble())
+    }
+
+    val target = totalSum / 2
+    var reduced = 0.0
+    var operations = 0
+
+    while (reduced < target) {
+        val largest = maxHeap.poll()
+        val half = largest / 2
+
+        reduced += half
+        maxHeap.offer(half)
+        operations++
+    }
+
+fun main(){
+println("Minimum Operations to Halve Array Sum")
+     println(minimumHalves(intArrayOf(1,5,8,19)))
+}
+    return operations
+}
