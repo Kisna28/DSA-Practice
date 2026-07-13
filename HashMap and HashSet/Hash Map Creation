@@ -1,1 +1,125 @@
-update later
+import java.util.*
+    class HashMap<K, V> {
+
+     private inner class Node(
+        val key: K,
+        var value: V? = null
+    )
+        
+        private var n = 0
+        private var N = 4
+        
+       	private var buckets = Array(N) { LinkedList<Node>() }
+        
+        
+        private fun hashFunction(key: K): Int{
+             val hashCode = key.hashCode()
+             println("hashCode = $hashCode")
+   			 return kotlin.math.abs(hashCode) % N
+        }
+        
+        private fun searchInLL(key: K, bi: Int):Int{
+            val ll: LinkedList<Node> = buckets[bi]
+            var di = 0
+            for(i in 0 until ll.size){
+                val node = ll[i]
+                if(node.key == key){
+                    return di
+                }
+                di++
+            }
+            return -1
+        }
+        
+        fun put(key: K , value: V?){
+           	val bi = hashFunction(key)
+			val di = searchInLL(key,bi)
+            if (di != -1) {
+       			 buckets[bi][di].value = value
+   			 } else {
+     		   buckets[bi].add(Node(key, value))
+       			 n++
+                
+            val lambda = n.toDouble() / N
+
+       			 if (lambda > 2.0) {
+          			  rehash()
+        		}
+   			 }
+        }
+        
+        private fun rehash(){
+            val oldBuckets = buckets
+            N = N*2
+            buckets = Array(N) { LinkedList<Node>() }
+              n = 0
+             for (ll in oldBuckets) {
+       				for (node in ll) {
+        			   put(node.key, node.value)
+       				 }
+   				 }
+        }
+        
+        fun containsKey(key: K):Boolean{
+            val bi = hashFunction(key)
+			val di = searchInLL(key,bi)
+            if (di != -1) {
+       			return true
+   			 } 
+     		  return false 
+            }
+        
+        fun get(key:K):V?{
+            val bi = hashFunction(key)
+			val di = searchInLL(key,bi)
+            if (di != -1) {
+       			 val node = buckets[bi].get(di)
+                 return node.value
+   			 }
+     		  return null  
+        }
+        
+        fun remove(key:K):V?{
+            val bi = hashFunction(key)
+			val di = searchInLL(key,bi)
+            if (di != -1) {
+       			  val node = buckets[bi].removeAt(di)
+                  n--
+                 return node.value
+   			 } 
+            return null     
+        }
+        
+        fun keySet():ArrayList<K>{
+          val keys = ArrayList<K>()
+            for(ll in buckets){
+                for(node in ll){
+                    keys.add(node.key)
+                }
+            }
+            return keys
+        }
+        
+        fun isEmpty():Boolean{
+            return n==0
+        }
+        
+    }
+
+
+fun main() {
+	val map = HashMap<Int, Int>()
+
+    map.put(1, 100)
+    map.put(2, 200)
+    map.put(3, 300)
+    
+    println(map.keySet())
+     println(map.get(2)) 
+     
+      println(map.containsKey(3))
+      map.remove(2)
+
+    println(map.keySet()) 
+    
+}
