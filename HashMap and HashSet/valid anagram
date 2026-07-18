@@ -1,0 +1,39 @@
+fun main(){
+ // valid anagram ex = race ,care = true
+    //heart , earth = true
+    //tulip , lipid = false
+    
+    //method 1 (toCharArray() → O(n),sorted() → O(n log n),Comparison → O(n)  -> Overall: O(n log n))
+    
+    val str1 = "heart"
+    val str2 = "earth"
+    
+    
+    println("str1 = $str1  str2 = $str2")
+    if(str1.toCharArray().sorted() == str2.toCharArray().sorted()){
+        println("Both string is Anagram")
+    } else{
+        println("Not anagram")
+    }
+     
+     //method 2 (hash Map)  0(n)
+     
+     val hm = hashMapOf<Char,Int>()
+     
+     for(i in 0 until str1.length){
+         hm[str1[i]] = hm.getOrDefault(str1[i],0)+1
+     }
+     
+     for(i in 0 until str2.length){
+             if (hm[str2[i]] != null) {
+            	 if(hm[str2[i]] == 1){
+                 hm.remove(str2[i])
+             }else{
+                hm[str2[i]] = hm.getOrDefault(str2[i],0)-1
+             }
+         }else{
+                  println("Not anagram")
+             }
+     }
+      if(hm.isEmpty()){ println("Both string is Anagram")}
+}
