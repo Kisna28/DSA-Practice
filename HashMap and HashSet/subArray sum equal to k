@@ -1,0 +1,40 @@
+fun main(){
+ //subArray sum equal to k
+    val arr = intArrayOf(10, 2, -2, -20, 10) // k = -10       // intArrayOf(1,2,3) k =3  o/p = 2 (1,2)(3)
+    val k  = -10
+    val map = hashMapOf<Int,Int>()
+    var sum = 0
+    for(i in 0 until arr.size){
+        sum += arr[i]
+        
+         // If sum becomes 0, subarray starts from index 0
+        if (sum == k) {
+           println("Subarray found:")
+            for (j in 0..i) {
+                print("${arr[j]} ")
+            }
+            return
+        }
+        
+         // Case 2: Check if (sum - k) exists
+        if (map.containsKey(sum - k)) {
+
+            val start = map[sum - k]!! + 1
+            val end = i
+
+            println("Subarray found:")
+            for (j in start..end) {
+                print("${arr[j]} ")
+            }
+            return
+        }
+        
+        // Store first occurrence of prefix sum
+        if (!map.containsKey(sum)) {
+            map[sum] = i
+        }
+    }
+		    println("No subarray found")
+
+        
+}
