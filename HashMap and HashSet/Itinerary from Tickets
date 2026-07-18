@@ -1,0 +1,35 @@
+fun getStart(tickets: HashMap<String,String>):String?{ // O(n)
+    val revMap = hashMapOf<String,String>()
+    for(key in tickets.keys){
+        revMap[tickets[key]!!] = key
+    }
+     for(key in tickets.keys){
+         if(!revMap.containsKey(key)){
+             return key
+         }
+     }
+     return null
+}
+fun main(){
+   // Itinerary from Tickets
+    
+     val tickets = hashMapOf(
+        "Chennai" to "Bengaluru",
+        "Mumbai" to "Delhi",
+        "Goa" to "Chennai",
+        "Delhi" to "Goa"
+    )
+     var start = getStart(tickets)
+     println("Starting point is = $start")
+     
+     while (start != null) {
+    print("$start")
+
+    if (tickets.containsKey(start)) {
+        print(" -> ")
+        start = tickets[start]
+    } else {
+        break
+    }
+}
+ }
