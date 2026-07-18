@@ -1,0 +1,29 @@
+   fun main(){// Union and InterSection of 2 array   O(n + m)
+   
+   val arr1 = intArrayOf(7,3,9)
+   val arr2 = intArrayOf(6,3,9,2,9,4)
+   
+   val set = hashSetOf<Int> () 	
+    
+    for(i in 0 until arr1.size){
+        set.add(arr1[i])
+    }
+    for(i in 0 until arr2.size){
+        set.add(arr2[i])
+    }
+    println("Union = ${set.size}")
+  
+  set.clear()
+    //InterSection
+   var count = 0
+   for(i in 0 until arr1.size){
+        set.add(arr1[i])
+    }
+    for(i in 0 until arr2.size){
+       if(set.contains(arr2[i])){
+           count++
+           set.remove(arr2[i])
+       }
+    }
+    println("InterSection = $count")
+}
