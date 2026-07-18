@@ -1,0 +1,45 @@
+ fun main(){
+val arr = intArrayOf(15,-2,2,-8,1,7,10,23) // o/p = 5 , arr= 3,4,5 ans = 0
+    
+    var start = -1
+	var end = -1
+    
+    val map = hashMapOf<Int,Int>()
+    var sum = 0
+    var maxLen = 0
+    for(i in 0 until arr.size){
+        sum += arr[i]
+        
+         // If sum becomes 0, subarray starts from index 0
+        if (sum == 0) {
+            maxLen = i + 1
+            start = 0
+            end = i
+        }
+        
+        if(map.containsKey(sum)){
+             val currentLen = i - map[sum]!!
+
+            if (currentLen > maxLen) {
+                maxLen = currentLen
+                start = map[sum]!! + 1
+                end = i
+            }
+            
+        }else{
+            // Store first occurrence of prefix sum
+            map[sum] = i
+        }
+    }
+		 println("Longest Zero Sum Subarray Length = $maxLen")
+
+    if (start != -1) {
+        print("Subarray: ")
+        for (i in start..end) {
+            print("${arr[i]} ")
+        }
+    } else {
+        println("No zero sum subarray found.")
+    }    
+        
+}
