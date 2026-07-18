@@ -1,0 +1,8 @@
+fun main(){
+val arr = intArrayOf(4,3,2,5,6,7,3,4,2,1) // ans = 7
+   val set = hashSetOf<Int>()
+   for(i in 0 until arr.size){
+        set.add(arr[i])
+   }
+   println("set contains ${set.size} unique element")
+}
