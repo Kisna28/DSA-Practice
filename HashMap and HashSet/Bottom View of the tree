@@ -1,0 +1,77 @@
+class Node(var data: Int) {
+    var left: Node? = null
+    var right: Node? = null
+}
+
+/*
+   		  20
+         /  \
+        8    22
+       / \     \
+      5   3     25
+         / \
+        10 14
+ */
+
+class Solution {
+
+    fun bottomView(root: Node?): ArrayList<Int> { // O(n log n)
+
+        // Edge case
+        if (root == null) return arrayListOf()
+
+        // Horizontal Distance -> Node Value
+        val map = TreeMap<Int, Int>()
+
+        // Queue for BFS
+        val queue: Queue<Pair<Node, Int>> = LinkedList()
+
+        // Root is at horizontal distance 0
+        queue.offer(Pair(root, 0))
+
+        while (queue.isNotEmpty()) {
+
+            val (current, hd) = queue.poll()
+            
+            map.put(hd,current.data)
+
+           
+            if (current.left != null) {               
+                queue.offer(Pair(current.left!!, hd - 1))
+            }
+
+            if (current.right != null) {
+                queue.offer(Pair(current.right!!, hd + 1))
+            }
+        }
+
+        val ans = ArrayList<Int>()
+
+        for((key,value) in map){
+            ans.add(value)
+        }
+
+        return ans
+    }
+}
+
+fun main() {
+    
+      val root = Node(20)
+
+    root.left = Node(8)
+    root.right = Node(22)
+
+    root.left!!.left = Node(5)
+    root.left!!.right = Node(3)
+
+    root.right!!.right = Node(25)
+
+    root.left!!.right!!.left = Node(10)
+    root.left!!.right!!.right = Node(14)
+
+    val solution = Solution()
+
+    println(solution.bottomView(root))
+
+}
