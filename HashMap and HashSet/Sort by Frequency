@@ -1,0 +1,17 @@
+fun main(){
+
+    val s = "tree"
+    val map = hashMapOf<Char,Int>()
+     for (ch in s) {
+        map[ch] = map.getOrDefault(ch, 0) + 1
+    }
+	 val result = StringBuilder()
+	 val list = map.entries.sortedByDescending { it.value }
+
+    for ((ch, freq) in list) {
+        repeat(freq) {
+            result.append(ch)
+        }
+    }
+    print(result.toString())
+}
