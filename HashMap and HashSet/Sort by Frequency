@@ -1,3 +1,33 @@
+fun frequencySort(s: String): String {
+
+    // Step 1: Count frequency
+    val map = HashMap<Char, Int>()
+
+    for (ch in s) {
+        map[ch] = map.getOrDefault(ch, 0) + 1
+    }
+
+    // Step 2: Create buckets
+    val buckets = Array(s.length + 1) { mutableListOf<Char>() }
+
+    // Put each character into the bucket of its frequency
+    for ((ch, freq) in map) {
+        buckets[freq].add(ch)
+    }
+
+    // Step 3: Build answer
+    val result = StringBuilder()
+
+    for (freq in buckets.size - 1 downTo 1) {
+        for (ch in buckets[freq]) {
+            repeat(freq) {
+                result.append(ch)
+            }
+        }
+    }
+
+    return result.toString()
+}
 fun main(){
 
     val s = "tree"
@@ -14,4 +44,5 @@ fun main(){
         }
     }
     print(result.toString())
+ 	println(frequencySort(s))
 }
