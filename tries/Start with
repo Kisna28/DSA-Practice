@@ -1,0 +1,37 @@
+fun startsWith(prefix:String):Boolean{ // Here eow not required // O(L)
+        var curr = root
+        
+        for(i in 0 until prefix.length){
+            val idx = prefix[i] - 'a'
+            if(curr.child[idx] == null){
+                return false
+            }
+            curr = curr.child[idx]!!
+        }
+        return true
+  }
+
+fun main() {
+    val trie = solution()
+
+    val words = arrayOf(
+        "apple",
+        "app",
+        "mango",
+        "man",
+        "woman"
+    )
+
+    // Insert all words
+    for (word in words) {
+        trie.insert(word)
+    }
+
+    // Test startsWith()
+    println("app    : ${trie.startsWith("app")}")
+    println("ap     : ${trie.startsWith("ap")}")
+    println("man    : ${trie.startsWith("man")}")
+    println("wo     : ${trie.startsWith("wo")}")
+    println("cat    : ${trie.startsWith("cat")}")
+    println("apples : ${trie.startsWith("apples")}")
+}
