@@ -1,0 +1,40 @@
+    fun findPrefix(root: Node?, ans: String) {
+    if (root == null) return
+
+    if (root.freq == 1) {
+        println(ans)
+        return
+    }
+
+    for (i in 0 until 26) {
+        if (root.child[i] != null) {
+            findPrefix(
+                root.child[i],
+                ans + (i + 'a'.code).toChar()
+            )
+        }
+    }
+}
+
+fun main() {
+     val trie = solution()
+
+    val words = arrayOf(
+        "zebra",
+        "dog",
+        "duck",
+        "dove"
+    )
+
+    // Insert all words into the Trie
+    for (word in words) {
+        trie.insert(word)
+    }
+
+    // Root frequency should be -1 so it is not printed
+    trie.root.freq = -1
+
+    println("Unique Prefixes:")
+    trie.findPrefix(trie.root, "")
+
+}
