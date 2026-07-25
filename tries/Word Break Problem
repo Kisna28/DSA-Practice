@@ -1,0 +1,30 @@
+fun wordBreak(key:String):Boolean{
+         if (key.isEmpty()) {
+      			  return true
+   			 }
+         for(i in 1..key.length){ // NOT USE : i in 1 until key.length ->  until
+             if(search(key.substring(0,i)) && wordBreak(key.substring(i))){
+                 return true
+             }
+         }
+         return false
+     }
+fun main() {
+    val trie = solution()
+
+    val words = arrayOf(
+        "i",
+        "like",
+        "sam",
+        "samsung",
+        "mobile",
+        "ice"
+    )
+    val key = "ilikesamsung"
+
+    for (word in words) {
+        trie.insert(word)
+    }
+    
+    println("Word Break : ${trie.wordBreak(key)}")
+}
