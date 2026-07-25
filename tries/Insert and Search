@@ -1,0 +1,41 @@
+class solution{
+    //here freq is take for this problem : Find sortest unique path
+    data class Node(
+      val child : Array<Node?> = Array(26){ null },
+      var eow:Boolean = false,
+      var freq:Int = 1,
+    )
+    val root = Node()
+    
+      fun insert(word:String){
+        var curr = root          
+          for(i in 0 until word.length){ // OR ch in word
+              val idx = word[i] - 'a'
+              if(curr.child[idx] == null){
+                  curr.child[idx] = Node()
+              } else{
+                  curr.child[idx]!!.freq++
+              }
+              curr = curr.child[idx]!!
+             }
+          curr.eow = true    
+    }
+      
+     fun search(key:String):Boolean{
+          var curr = root          
+          for(i in 0 until key.length){ // OR ch in key
+              val idx = key[i] - 'a'
+              if(curr.child[idx] == null){
+                  return false
+              } 
+              curr = curr.child[idx]!!
+             }
+          return curr.eow == true    
+     }
+}
+
+fun main() {
+    val solution = solution()
+         solution.insert("hello")
+         println(solution.search("hello"))
+}
