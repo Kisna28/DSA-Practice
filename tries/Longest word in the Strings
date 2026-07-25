@@ -1,0 +1,45 @@
+var ans = ""
+fun longestWord(root: Node?, temp: StringBuilder) {
+    if (root == null) return
+
+    for (i in 0 until 26) {
+        if (root.child[i] != null && root.child[i]!!.eow) {
+
+            val ch = (i + 'a'.code).toChar()
+            temp.append(ch)
+
+            if (temp.length > ans.length) {
+                ans = temp.toString()
+            }
+
+            longestWord(root.child[i], temp)
+
+            temp.deleteAt(temp.length - 1)   // backtracking
+        }
+   	 }
+	}
+}
+
+  fun main() {
+    val trie = solution()
+
+    val words = arrayOf(
+        "a",
+        "banana",
+        "app",
+        "appl",
+        "ap",
+        "apply",
+        "apple"
+    )
+
+    // Insert all words into the Trie
+    for (word in words) {
+        trie.insert(word)
+    }
+
+    // Find the longest word
+    trie.longestWord(trie.root, StringBuilder())
+
+    println("Longest Word: ${trie.ans}")
+}
