@@ -1,0 +1,28 @@
+fun countNodes(root:Node?):Int{
+        if(root == null){
+            return 0
+        }
+        
+        var count = 0
+        for(i in 0 until 26){
+            if(root.child[i] != null){
+                count  += countNodes(root.child[i])
+            }
+        }
+        return count + 1 // +1 for the empty string
+    }
+fun main() {
+   val trie = solution()
+
+    val str = "ababa"
+
+    // Insert all suffixes
+    for (i in str.indices) {
+        trie.insert(str.substring(i))
+    }
+
+    val totalNodes = trie.countNodes(trie.root)
+
+    println("Total Nodes = $totalNodes")
+    println("Unique Substrings = ${totalNodes - 1}")
+}
