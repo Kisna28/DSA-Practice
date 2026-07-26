@@ -1,0 +1,60 @@
+    data class Node(
+      val child : Array<Node?> = Array(26){ null },
+      var eow:Boolean = false,
+      var freq:Int = 1,
+      val words: MutableList<String>  = mutableListOf<String>()
+    )
+    val root = Node()
+    val result = mutableListOf<List<String>>()
+      fun insert(word:String){
+        val sorted =  word.toCharArray().sorted().joinToString("") 
+        println("sorted = $sorted")
+        var curr = root          
+           for(i in 0 until sorted.length){ // OR ch in sorted
+              val idx = sorted[i] - 'a'
+              if(curr.child[idx] == null){
+                  curr.child[idx] = Node()
+              } else{
+                  curr.child[idx]!!.freq++
+              }
+              curr = curr.child[idx]!!
+              }
+            curr.eow = true  
+          curr.words.add(word)
+    }
+  fun dfs(root: Node?) {
+    if (root == null) return
+
+    if (root.eow) {
+        result.add(root.words.toList())
+    }
+
+    for (i in 0 until 26) {
+        dfs(root.child[i])
+    }
+}
+fun main() {
+    val trie = solution()
+
+    val words = arrayOf(
+        "eat",
+        "tea",
+        "tan",
+        "ate",
+        "nat",
+        "bat",
+    )
+
+    // Insert all words into the Trie
+    for (word in words) {
+        trie.insert(word)
+    }
+    
+
+   	 // Group Anagrams
+		trie.dfs(trie.root)
+
+	for (group in trie.result) {
+   		 println(group)
+			}
+  }
