@@ -44,3 +44,34 @@ class Graph() {
     }
          
 }
+// OTHER APPROCH //Leetcode : 1971
+class Solution {
+
+    fun validPath(n: Int, edges: Array<IntArray>, source: Int, destination: Int): Boolean {
+     val graph = Array(n) { mutableListOf<Int>() }
+        for (edge in edges) {
+            val u = edge[0]
+            val v = edge[1]
+
+            graph[u].add(v)
+            graph[v].add(u)
+        }
+
+        val vis = BooleanArray(n)
+        fun dfs(curr: Int): Boolean {
+            if (curr == destination) return true
+
+            vis[curr] = true
+
+            for (next in graph[curr]) {
+                if (!vis[next] && dfs(next)) {
+                    return true
+                }
+            }
+
+            return false
+        }
+           return dfs(source)
+
+    }
+}
