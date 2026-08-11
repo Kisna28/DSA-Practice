@@ -42,9 +42,10 @@ graph[4].add(Edge(4, 5, 1))
  // 5
 graph[5].add(Edge(5, 3, 1))
 graph[5].add(Edge(5, 4, 1))
+
         
         
-        //Cycle is not present
+ //Cycle is not present
  /* graph[0].add(Edge(0, 1, 1))
 graph[0].add(Edge(0, 2, 1))
 
@@ -58,17 +59,20 @@ graph[3].add(Edge(3, 1, 1))
 
 graph[4].add(Edge(4, 1, 1)) */  
          
-      val detectCycle = detectCycle(graph)
-      println("Cycle is present = $detectCycle")
+      val detectCycleDfs = detectCycleDfs(graph)
+      println("Cycle is present usinf DFS = $detectCycleDfs")
+      
+      val detectCycleBfs = detectCycleBfs(graph)
+      println("Cycle is present usinf BFS = $detectCycleBfs")
    
     }
     
-    fun detectCycle(graph: Array<MutableList<Edge>>):Boolean{
+    fun detectCycleDfs(graph: Array<MutableList<Edge>>):Boolean{
         val n = graph.size
         val vis = BooleanArray(n)
         for(i in 0 until n){
             if(!vis[i]){
-                if(detectCycleUtils(graph,vis,i,-1)) { //-1 because at start we not have parent
+                if(detectCycleUtilsDfs(graph,vis,i,-1)) { //-1 because at start we not have parent
                    return true
                 }
 			}
@@ -76,11 +80,11 @@ graph[4].add(Edge(4, 1, 1)) */
         return false
     }
     
-    fun detectCycleUtils(path: Array<MutableList<Edge>>,vis:BooleanArray,curr:Int,parent:Int):Boolean{
+    fun detectCycleUtilsDfs(path: Array<MutableList<Edge>>,vis:BooleanArray,curr:Int,parent:Int):Boolean{
         vis[curr] = true
         for(e in graph[curr]){
             if(!vis[e.dest]){
-                if(detectCycleUtils(graph,vis,e.dest,curr)){
+                if(detectCycleUtilsDfs(graph,vis,e.dest,curr)){
                     return true
                 }
             }else if(e.dest != parent){
@@ -88,6 +92,35 @@ graph[4].add(Edge(4, 1, 1)) */
                 }
             }
         return false
+    }
+    
+    fun detectCycleBfs(graph: Array<MutableList<Edge>>):Boolean{
+        val n = graph.size
+         val vis = BooleanArray(n)
+       	    // Queue stores: Pair(currentNode, parent)
+   			 val q = ArrayDeque<Pair<Int, Int>>()
+        for(i in 0 until n){
+             if(!vis[i]){
+              q.add(Pair(i,-1))
+              vis[i] = true
+                 
+                 while(q.isNotEmpty()){
+                     val (curr,parent) = q.removeFirst()
+                     
+                     for(e in graph[curr]){
+                         if(!vis[e.dest]){
+                             vis[e.dest] = true
+                             
+                             q.add(Pair(e.dest,curr))
+                         }else if (e.dest != parent) {
+                        		return true
+                    	}
+               
+                     }
+                 }
+			}
+        }
+        return false        
     }
   
 }
