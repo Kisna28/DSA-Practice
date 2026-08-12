@@ -55,9 +55,7 @@ class Graph() {
         val detectCycleDfs = detectCycleDfs(graph)
         println("Cycle is present  DFS = $detectCycleDfs")
 
-        val detectCycleBfs = detectCycleBfs(graph)
-        println("Cycle is present  BFS = $detectCycleBfs")
-
+    
     }
 
     fun detectCycleDfs(graph: Array<MutableList<Edge>>): Boolean {
@@ -98,32 +96,7 @@ class Graph() {
         return false
     }
 
-    fun detectCycleBfs(graph: Array<MutableList<Edge>>): Boolean {
-        val n = graph.size
-        for (i in 0 until n) {
-            val vis = BooleanArray(n)
-            val q = ArrayDeque<Int>()
-
-            q.add(i)
-
-            while (q.isNotEmpty()) {
-                val curr = q.removeFirst()
-                for (e in graph[curr]) {
-                    if (e.dest == i) {
-                        return true
-                    }
-
-                    if (!vis[e.dest]) {
-                        vis[e.dest] = true
-                        q.add(e.dest)
-                    }
-                }
-            }
-        }
-        return false
-    }
-}
-
+   }
 fun main() {
     val graph = Graph()
 }
