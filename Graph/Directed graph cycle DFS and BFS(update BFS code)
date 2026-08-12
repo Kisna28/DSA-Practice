@@ -89,7 +89,7 @@ class Graph() {
             }
 
             if (!vis[e.dest]) {
-                if (detectCycleUtilsDfs(graph, vis,pathVisited, e.dest)) {
+                if (detectCycleUtilsDfs(graph, vis, pathVisited, e.dest)) {
                     return true
                 }
             }
@@ -100,33 +100,28 @@ class Graph() {
 
     fun detectCycleBfs(graph: Array<MutableList<Edge>>): Boolean {
         val n = graph.size
-        val vis = BooleanArray(n)
-        // Queue stores: Pair(currentNode, parent)
-        val q = ArrayDeque<Pair<Int, Int>>()
         for (i in 0 until n) {
-            if (!vis[i]) {
-                q.add(Pair(i, -1))
-                vis[i] = true
+            val vis = BooleanArray(n)
+            val q = ArrayDeque<Int>()
 
-                while (q.isNotEmpty()) {
-                    val (curr, parent) = q.removeFirst()
+            q.add(i)
 
-                    for (e in graph[curr]) {
-                        if (!vis[e.dest]) {
-                            vis[e.dest] = true
+            while (q.isNotEmpty()) {
+                val curr = q.removeFirst()
+                for (e in graph[curr]) {
+                    if (e.dest == i) {
+                        return true
+                    }
 
-                            q.add(Pair(e.dest, curr))
-                        } else if (e.dest != parent) {
-                            return true
-                        }
-
+                    if (!vis[e.dest]) {
+                        vis[e.dest] = true
+                        q.add(e.dest)
                     }
                 }
             }
         }
         return false
     }
-
 }
 
 fun main() {
