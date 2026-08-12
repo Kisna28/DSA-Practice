@@ -1,0 +1,134 @@
+class Graph() {
+    data class Edge(
+        val src: Int,
+        val dest: Int,
+        val wt: Int
+    )
+
+    val V = 6
+    val graph = Array(V) { mutableListOf<Edge>() }
+
+    init { //Loops, if, when, println, graph[i].add(...) → executable statements, so they must be inside an init block or a function.
+
+
+        /*
+       0
+      / \
+     ↓   ↓
+     1   2
+     ↓   ↓
+     3   4
+      \ /
+       ↓
+       5
+
+         * */
+        //cycle is present
+        graph[0].add(Edge(0, 1, 5))
+        graph[0].add(Edge(0, 2, 5))
+
+        graph[1].add(Edge(1, 3, 1))
+
+        graph[2].add(Edge(2, 4, 1))
+
+        graph[3].add(Edge(3, 5, 1))
+
+        graph[4].add(Edge(4, 5, 1))
+
+        /*
+                0
+               / \
+               ↓   ↓
+               1   2
+               / \
+               ↓   ↓
+               3   4
+               */
+
+        //Cycle is not present
+        /* graph[0].add(Edge(0, 1, 1))
+            graph[0].add(Edge(0, 2, 1))
+
+         graph[1].add(Edge(1, 3, 1))
+         graph[1].add(Edge(1, 4, 1)) */
+
+        val detectCycleDfs = detectCycleDfs(graph)
+        println("Cycle is present  DFS = $detectCycleDfs")
+
+        val detectCycleBfs = detectCycleBfs(graph)
+        println("Cycle is present  BFS = $detectCycleBfs")
+
+    }
+
+    fun detectCycleDfs(graph: Array<MutableList<Edge>>): Boolean {
+        val n = graph.size
+        val vis = BooleanArray(n)
+        val pathVisited = BooleanArray(n)
+        for (i in 0 until n) {
+            if (!vis[i]) {
+                if (detectCycleUtilsDfs(graph, vis, pathVisited, i)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun detectCycleUtilsDfs(
+        graph: Array<MutableList<Edge>>,
+        vis: BooleanArray,
+        pathVisited: BooleanArray,
+        curr: Int,
+    ): Boolean {
+        vis[curr] = true
+        pathVisited[curr] = true
+
+        for (e in graph[curr]) {
+            if (pathVisited[e.dest]) {
+                return true
+            }
+
+            if (!vis[e.dest]) {
+                if (detectCycleUtilsDfs(graph, vis,pathVisited, e.dest)) {
+                    return true
+                }
+            }
+        }
+        pathVisited[curr] = false
+        return false
+    }
+
+    fun detectCycleBfs(graph: Array<MutableList<Edge>>): Boolean {
+        val n = graph.size
+        val vis = BooleanArray(n)
+        // Queue stores: Pair(currentNode, parent)
+        val q = ArrayDeque<Pair<Int, Int>>()
+        for (i in 0 until n) {
+            if (!vis[i]) {
+                q.add(Pair(i, -1))
+                vis[i] = true
+
+                while (q.isNotEmpty()) {
+                    val (curr, parent) = q.removeFirst()
+
+                    for (e in graph[curr]) {
+                        if (!vis[e.dest]) {
+                            vis[e.dest] = true
+
+                            q.add(Pair(e.dest, curr))
+                        } else if (e.dest != parent) {
+                            return true
+                        }
+
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+}
+
+fun main() {
+    val graph = Graph()
+}
