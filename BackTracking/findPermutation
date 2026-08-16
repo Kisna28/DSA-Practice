@@ -25,3 +25,29 @@ fun findPermutation(str:String,ans:String){
         findPermutation(str, ans+curr)
     }
 }
+
+//LEETCODE 46. Permutations
+class Solution {
+    fun permute(nums: IntArray): List<List<Int>> {
+        val ans = mutableListOf<List<Int>>()
+        findPermutation(nums,ans,emptyList())
+        return ans
+    }
+
+    fun findPermutation(
+    nums:IntArray,
+    ans: MutableList<List<Int>>,
+    current: List<Int>,){
+    //base case       
+    if(nums.size == 0){
+        ans.add(ArrayList(current))
+            return
+    }
+    //recursion
+    for(i in 0 until nums.size){
+        val curr = nums[i]
+        val nums = nums.copyOfRange(0,i) + nums.copyOfRange(i+1,nums.size)
+        findPermutation(nums,ans ,current+curr)
+    }
+}
+}
