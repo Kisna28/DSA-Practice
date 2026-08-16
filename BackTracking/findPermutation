@@ -4,18 +4,24 @@ fun main() {  //TC : O(n * n!)
 }
 fun findPermutation(str:String,ans:String){
     //base case
-        if(str.length==0){
-            println(ans)
-            return
-        }
+    println("str length = ${str.length}")
+       
+    if(str.length==0){
+        println(ans)
+   		 return
+    }
+        
     
     //recursion
-   for(i in 0 until str.length){
-       var curr  = str[i]
-       //"abc"-> "ab"+"de" ="abde"
-       var str = str.substring(0,i)+str.substring(i+1)
-         findPermutation(str, ans+curr)
-   }
-
-
+    
+    for(i in 0 until str.length){
+        println("i = $i \n curr = ${str[i]}")
+        var curr = str[i]
+        println("str.subString(0,$i) = ${str.substring(0,i)} str.subString(i+1) = ${str.substring(i+1)}")
+        var str = str.substring(0,i) + str.substring(i+1)
+        println("str = $str")
+        println("findPermutation($str, ${ans+curr})")
+        println("----------------")
+        findPermutation(str, ans+curr)
+    }
 }
