@@ -67,6 +67,7 @@ graph[4].add(Edge(4, 5, 1))
 // 5 → nothing
      
       topSort(graph)
+      topSortUsingOutDegree(graph)
    
     }
 
@@ -97,8 +98,54 @@ graph[4].add(Edge(4, 5, 1))
                  }
              }
            }
-        
+         
+         
+fun topSortUsingOutDegree(graph: Array<MutableList<Edge>>) {
+
+    val n = graph.size
+
+    // Reverse graph
+    val reverseGraph = Array(n) { mutableListOf<Int>() }
+
+    val outdeg = IntArray(n)
+
+    // Calculate outdegree + create reverse graph
+    for (i in 0 until n) {
+
+        outdeg[i] = graph[i].size
+
+        for (e in graph[i]) {
+            reverseGraph[e.dest].add(i)
+        }
+    }
+
+    val q = ArrayDeque<Int>()
+
+    // Nodes with outdegree 0
+    for (i in 0 until n) {
+        if (outdeg[i] == 0) {
+            q.addLast(i)
+        }
+    }
+
+    while (q.isNotEmpty()) {
+
+        val curr = q.removeFirst()
+
+        print("$curr ")
+
+        // Go backwards
+        for (prev in reverseGraph[curr]) {
+
+            outdeg[prev]--
+
+            if (outdeg[prev] == 0) {
+                q.addLast(prev)
+            }
+        }
+    }
 }
+        }
 fun main() {
     val graph = Graph()
 }
