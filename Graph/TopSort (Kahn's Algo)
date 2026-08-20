@@ -1,0 +1,104 @@
+class Graph() {
+    data class Edge(
+    	val src:Int,
+        val dest: Int,
+        val wt:Int
+    )
+    val V = 6
+    val graph = Array(V){ mutableListOf<Edge>() }
+    init{ //Loops, if, when, println, graph[i].add(...) → executable statements, so they must be inside an init block or a function.
+        
+        
+//         /*
+//    	    0
+//        / \
+//       ↓   ↓
+//       1   2
+//       ↓   ↓
+//       3   4
+//        \ /
+//         ↓
+//         5
+
+//          * */
+//        graph[0].add(Edge(0, 1, 5))
+// graph[0].add(Edge(0, 2, 5))
+
+// // 1
+// graph[1].add(Edge(1, 3, 1))
+
+// // 2
+// graph[2].add(Edge(2, 4, 1))
+// // 3
+// graph[3].add(Edge(3, 5, 1))
+
+// // 4
+// graph[4].add(Edge(4, 5, 1))
+
+// // 5
+// // no outgoing edge
+        
+        /*
+  
+          0
+         / \
+        ↓   ↓
+        1   2
+       / \   \
+      ↓   ↓   ↓
+      3   4 ←─┘
+       \ /
+        ↓
+        5
+          
+          */
+ graph[0].add(Edge(0, 1, 1))
+graph[0].add(Edge(0, 2, 1))
+
+graph[1].add(Edge(1, 3, 1))
+graph[1].add(Edge(1, 4, 1))
+
+graph[2].add(Edge(2, 4, 1))
+
+graph[3].add(Edge(3, 5, 1))
+
+graph[4].add(Edge(4, 5, 1))
+
+// 5 → nothing
+     
+      topSort(graph)
+   
+    }
+
+        fun topSort(graph: Array<MutableList<Edge>>){
+             val n = graph.size
+         	val indeg = IntArray(n)
+            val q = ArrayDeque<Int>()
+            calculateInDegreee(graph,indeg)
+            for(i in 0 until indeg.size){
+                if(indeg[i] == 0){q.addLast(i)}
+            }
+            while(q.isNotEmpty()){
+                val curr = q.removeFirst()
+                println("$curr")
+                    
+                for(e in graph[curr]){
+                  indeg[e.dest]--
+                if(indeg[e.dest] == 0){
+                    q.add(e.dest)
+                }
+             }
+            }            
+        }
+         fun calculateInDegreee(graph: Array<MutableList<Edge>>,indeg : IntArray){
+             for(i in 0 until graph.size){
+                 for(e in graph[i]){
+                     indeg[e.dest]++
+                 }
+             }
+           }
+        
+}
+fun main() {
+    val graph = Graph()
+}
