@@ -1,0 +1,85 @@
+class Graph() {
+    data class Edge(
+    	val src:Int,
+        val dest: Int,
+        val wt:Int
+    )
+    val V = 6
+    val graph = Array(V){ mutableListOf<Edge>() }
+    init{ //Loops, if, when, println, graph[i].add(...) → executable statements, so they must be inside an init block or a function.
+        
+        
+//         /*
+//    	    0
+//        / \
+//       ↓   ↓
+//       1   2
+//       ↓   ↓
+//       3   4
+//        \ /
+//         ↓
+//         5
+
+//          * */
+//        graph[0].add(Edge(0, 1, 5))
+// graph[0].add(Edge(0, 2, 5))
+
+// // 1
+// graph[1].add(Edge(1, 3, 1))
+
+// // 2
+// graph[2].add(Edge(2, 4, 1))
+// // 3
+// graph[3].add(Edge(3, 5, 1))
+
+// // 4
+// graph[4].add(Edge(4, 5, 1))
+
+// // 5
+// // no outgoing edge
+        
+        /*
+  
+          0
+         / \
+        ↓   ↓
+        1   2
+       / \   \
+      ↓   ↓   ↓
+      3   4 ←─┘
+       \ /
+        ↓
+        5
+          
+          */
+ graph[0].add(Edge(0, 1, 1))
+graph[0].add(Edge(0, 2, 1))
+
+graph[1].add(Edge(1, 3, 1))
+graph[1].add(Edge(1, 4, 1))
+
+graph[2].add(Edge(2, 4, 1))
+
+graph[3].add(Edge(3, 5, 1))
+
+graph[4].add(Edge(4, 5, 1))
+
+// 5 → nothing
+     
+      printAllPath(graph,0,5,"")
+   
+    }
+
+    fun printAllPath(graph:Array<MutableList<Edge>>,src:Int,dest:Int,path:String){
+        if(src == dest){
+            println("${path+dest}")
+            return
+        }
+        for(e in graph[src]){
+            printAllPath(graph,e.dest,dest,path+src)
+        }
+    }
+}
+fun main() {
+    val graph = Graph()
+}
