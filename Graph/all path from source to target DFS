@@ -66,17 +66,37 @@ graph[4].add(Edge(4, 5, 1))
 
 // 5 → nothing
      
-      printAllPath(graph,0,5,"")
+      printAllPathDfs(graph,0,5,"")
+      println("Using BFS")
+      printAllPathBfs(graph,0,5)
    
     }
+    
+     fun printAllPathBfs(graph:Array<MutableList<Edge>>,src:Int,dest:Int){
+         val q = ArrayDeque<List<Int>>()
+         q.addLast(listOf(src))
+         while(q.isNotEmpty()){
+             val path = q.removeFirst()
+             val curr = path.last()
+             if(curr == dest){
+                 println(path.joinToString(" -> "))
+                 continue
+             }
+             
+             for(e in graph[curr]){
+                 val newPath = path + e.dest
+                 q.addLast(newPath)
+             }
+         }
+     }
 
-    fun printAllPath(graph:Array<MutableList<Edge>>,src:Int,dest:Int,path:String){
+    fun printAllPathDfs(graph:Array<MutableList<Edge>>,src:Int,dest:Int,path:String){
         if(src == dest){
             println("${path+dest}")
             return
         }
         for(e in graph[src]){
-            printAllPath(graph,e.dest,dest,path+src)
+            printAllPathDfs(graph,e.dest,dest,path+src)
         }
     }
 }
