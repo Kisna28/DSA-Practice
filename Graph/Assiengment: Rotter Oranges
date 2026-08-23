@@ -1,0 +1,118 @@
+/*Question 3: Minimum Time Required to Rot All Oranges
+
+We have a matrix of dimensions m × n, where each cell contains one of the following values:
+
+0 → Empty cell
+1 → Fresh orange
+2 → Rotten orange
+
+We need to determine the minimum time required for all fresh oranges to become rotten.
+
+A rotten orange at position [i, j] can rot a fresh orange at the following adjacent positions:
+
+[i-1, j] → Up
+[i+1, j] → Down
+[i, j-1] → Left
+[i, j+1] → Right
+
+Each rotten orange takes 1 unit of time to rot its adjacent fresh oranges.
+
+If it is impossible to rot all fresh oranges, return -1.
+
+Input
+arr = {
+    {2, 1, 0, 2, 1},
+    {0, 0, 1, 2, 1},
+    {1, 0, 0, 2, 1}
+}
+Output
+All oranges cannot be rotten.
+Explanation
+
+At time 0:
+
+2 1 0 2 1
+0 0 1 2 1
+1 0 0 2 1
+
+At time 1:
+
+2 2 0 2 2
+0 0 2 2 2
+1 0 0 2 2
+
+At time 2:
+
+2 2 0 2 2
+0 0 2 2 2
+1 0 0 2 2
+
+The fresh orange 1 at the bottom-left corner can never be reached by any rotten orange.
+
+Therefore, all oranges cannot be rotten, so the answer is:
+
+-1
+
+Expected Output:
+
+All oranges cannot be rotten. */
+fun main() {
+
+    val arr = arrayOf(
+    intArrayOf(2, 1, 0, 2, 1),
+    intArrayOf(0, 0, 1, 2, 1),
+    intArrayOf(1, 1, 0, 2, 1)
+)
+ // 	Time: O(m × n)
+//		Space: O(m × n) in the worst case for the queue.
+ println(orangesRotting(arr))
+
+}
+   fun orangesRotting(arr: Array<IntArray>): Int {
+       val q = ArrayDeque<Pair<Int,Int>>()
+       var fresh = 0 
+       //put rotten oranges into queue
+       for(i in arr.indices){
+           for(j in arr[i].indices){
+               if(arr[i][j] == 2){
+                   q.addLast(Pair(i,j))
+               }
+               if(arr[i][j] == 1){
+                   fresh++
+               }
+           }
+       }
+       var time = 0 
+       
+       val dire = arrayOf(
+           intArrayOf(-1,0), // up
+           intArrayOf(1,0), // down
+           intArrayOf(0,-1), // left
+           intArrayOf(0,1),  //right
+       )
+       
+       while(q.isNotEmpty() && fresh > 0){
+           val size = q.size
+           //process one level  = one minute
+           repeat(size){
+               val (i, j) = q.removeFirst()
+               for(dir in dire){
+                   val ni = i + dir[0]
+                   val nj = j+ dir[1]
+                   
+                   //check boundery
+                   if(ni >= 0 && ni < arr.size && nj >= 0 && nj < arr[0].size){
+                       //Fresh Orange
+                       if(arr[ni][nj] == 1){
+                           arr[ni][nj] = 2
+                           fresh -- 
+                           q.addLast(Pair(ni,nj))
+                       }
+                   }
+               }
+           }
+           time++
+       }
+       
+       return if (fresh == 0) time else -1
+   }
