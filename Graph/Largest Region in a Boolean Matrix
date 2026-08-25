@@ -1,0 +1,88 @@
+/*
+### Largest Region in a Boolean Matrix
+
+Given a matrix where each cell contains either `0` or `1`, a cell containing `1` is called a **filled cell**.
+
+Two filled cells are considered **connected** if they are adjacent horizontally, vertically, or diagonally.
+
+A group of one or more connected filled cells forms a **region**.
+
+**Task:** Find the size (number of cells) of the largest region in the given Boolean matrix.
+
+### Input
+
+```text
+M[][5] = {
+    {0, 0, 1, 1, 0},
+    {0, 0, 1, 1, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1}
+}
+```
+
+### Output
+
+```text
+4
+```
+
+**Explanation:** The four `1`s in the top-right portion of the matrix are connected horizontally and vertically, forming the largest region. Therefore, the size of the largest region is **4**.
+
+*/
+
+fun largestRegion(arr:Array<IntArray>):Int{
+     val q = ArrayDeque<Pair<Int,Int>>()
+        var count = 0 
+       //put rotten oranges into queue
+    
+       val dire = arrayOf(
+           intArrayOf(-1,0), // up
+           intArrayOf(1,0), // down
+           intArrayOf(0,-1), // left
+           intArrayOf(0,1),  //right
+       )
+          for(i in arr.indices){
+           for(j in arr[i].indices){
+               if(arr[i][j] == 1){
+                   q.addLast(Pair(i,j))
+              
+                   
+                  arr[i][j] = 0
+
+                var regionSize = 0
+                   
+       while(q.isNotEmpty()){
+           val size = q.size
+            
+                val (i,j) = q.removeFirst()
+                 regionSize++
+                for(dir in dire){
+                    val ni = i + dir[0]
+                    val nj = j + dir[1]
+                     if(ni >= 0 && ni < arr.size && nj >= 0 && nj < arr[0].size && arr[ni][nj] == 1){
+                           arr[ni][nj] = 0
+                            q.addLast(Pair(ni, nj))
+                       
+                   }
+                }
+            }
+        count = maxOf(count, regionSize)
+           }
+       
+       }
+       
+          }
+       
+    return count
+}
+fun main() {
+    val m = arrayOf(
+    intArrayOf(0, 0, 1, 1, 0),
+    intArrayOf(0, 0, 1, 1, 0),
+    intArrayOf(0, 0, 0, 0, 0),
+    intArrayOf(0, 0, 0, 0, 1)
+)
+     
+
+    println("largest Region: ${largestRegion(m)}")
+}
