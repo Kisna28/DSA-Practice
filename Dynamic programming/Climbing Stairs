@@ -1,0 +1,33 @@
+//Climbing Stairs
+//You are given an integer n representing the number of stairs.
+
+fun main() {
+    val n = 5
+    val f = IntArray(n + 1)
+    println(ways(n,f))
+     println("${f.joinToString(" ,")}")
+    println("Using Tabulation ${waysTab(n)}")
+ 
+}
+// memoization tc: 0(n)
+fun ways(n:Int,f:IntArray):Int{
+	if(n == 0){
+        return 1
+    }
+     if( n < 0){
+         return 0
+     }
+     if(f[n] != 0){return f[n]}
+     f[n] = ways(n-1,f) + ways(n-2,f) // if says that ways of climb is 1,2 and 3 then add the "+ ways(n-3,f)"
+     return f[n]
+}
+// tabluation tc: 0(n)
+fun waysTab(n:Int):Int{
+     val f = IntArray(n + 1)
+     f[0] = 1
+     f[1] = 1
+    for(i in 2..n){
+        f[i] = f[i-1] + f[i-2]
+    }
+    return f[n]
+}
