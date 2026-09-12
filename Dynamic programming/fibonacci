@@ -1,12 +1,11 @@
-//memoization
-//Time Complexity: O(n)
-//Space Complexity: O(n)
-fun main() { 
+fun main() {
     val n = 6
     val f = IntArray(n + 1)
     println(fib(n,f))
-    println("${f.joinToString(" ,")}")
+     println("${f.joinToString(" ,")}")
+    println("Using Tabulation ${fibTab(n)}")
 }
+// memoization tc: 0(n)
 fun fib(n:Int,f:IntArray):Int{
 	if(n == 0 || n ==1){
         return n 
@@ -14,4 +13,14 @@ fun fib(n:Int,f:IntArray):Int{
      if(f[n] != 0){return f[n]}
      f[n] = fib(n-1,f) + fib(n-2,f)
      return f[n]
+}
+// tabluation tc: 0(n)
+fun fibTab(n:Int):Int{
+     val f = IntArray(n + 1)
+     f[0] = 0
+     f[1] = 1
+    for(i in 2..n){
+        f[i] = f[i-1] + f[i-2]
+    }
+    return f[n]
 }
