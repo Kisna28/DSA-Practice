@@ -1,0 +1,17 @@
+//memoization
+//Time Complexity: O(n)
+//Space Complexity: O(n)
+fun main() { 
+    val n = 6
+    val f = IntArray(n + 1)
+    println(fib(n,f))
+    println("${f.joinToString(" ,")}")
+}
+fun fib(n:Int,f:IntArray):Int{
+	if(n == 0 || n ==1){
+        return n 
+    }
+     if(f[n] != 0){return f[n]}
+     f[n] = fib(n-1,f) + fib(n-2,f)
+     return f[n]
+}
