@@ -1,0 +1,38 @@
+//target Sum main code is :0 -1 knapsack.
+//Note : if we requied to print the list of sums then use the back tracking.
+fun main() {
+    val value = intArrayOf(4,2,7,1,3)
+     val n = 10
+    println("Tabulization : ${targetSumTab(value,n)}")
+}
+
+//Tabulization TC: O(n*sum)
+fun targetSumTab(value:IntArray,sum:Int):Boolean{
+    val n = value.size
+    val dp = Array(n+1){BooleanArray(sum+1)}
+    for(i in 0 until n+1){
+        dp[i][0] = true
+    }
+    
+    for(i in 1 until n+1){
+        for(j in 1 until sum+1){
+            val v = value[i-1]
+            if(v <= j && dp[i-1][j-v]  == true){//valid
+              
+                 dp[i][j] = true
+            }else if( dp[i-1][j]  == true){//invalid
+          		 dp[i][j] = true
+            }
+        }
+    } 
+    printDP(dp)
+    return dp[n][sum]
+}
+fun printDP(dp: Array<BooleanArray>) {
+    for (i in dp.indices) {
+        for (j in dp[i].indices) {
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
