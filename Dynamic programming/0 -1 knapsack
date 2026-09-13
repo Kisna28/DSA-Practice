@@ -9,6 +9,7 @@ fun main() {
     println(knapsack(value,weight,w,n))
     println("memoization : ${knapsackMemo(value,weight,w,n,dp)}")
     printDP(dp)
+    println("Tabulization : ${knapsackTab(value,weight,w)}")
    
 }
 //Recursion TC: O(2^n)
@@ -46,6 +47,26 @@ fun knapsackMemo(value:IntArray,wt:IntArray,w:Int,n:Int,dp:Array<IntArray>):Int{
     	 dp[n][w] = knapsackMemo(value,wt,w,n-1,dp)
          return  dp[n][w]
     }
+}
+fun knapsackTab(value:IntArray,wt:IntArray,w:Int):Int{
+    val n = value.size
+    val dp = Array(n+1){IntArray(w+1){0}}
+    
+    for(i in 1 until n+1){
+        for(j in 1 until w+1){
+            val v = value[i-1]
+            val w = wt[i-1]
+            if(w <= j){//valid
+                val incProfit = v + dp[i-1][j-w] //Include Profit
+                val excProfit = dp[i-1][j]
+                 dp[i][j] = maxOf(incProfit, excProfit) //Exclude Profit
+            }else{//invalid
+          		 dp[i][j] = dp[i - 1][j]
+            }
+        }
+    }
+    printDP(dp)
+    return dp[n][w]
 }
 fun printDP(dp: Array<IntArray>) {
     for (i in dp.indices) {
