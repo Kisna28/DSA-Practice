@@ -1,0 +1,49 @@
+fun main() {
+    val value = intArrayOf(2,5,3,6)
+    val sum = 10 
+/*
+ans = 5 ways
+1. 2 + 2 + 2 + 2 + 2
+2. 2 + 2 + 3 + 3
+3. 2 + 2 + 6
+4. 2 + 3 + 5
+5. 5 + 5
+*/
+    println("Tabulization : ${coinChange(value,sum)}")
+}
+
+//Tabulization TC: O(n*sum)
+fun coinChange(coins:IntArray,sum:Int):Int{
+    val n = coins.size
+    
+    val dp = Array(n+1){IntArray(sum+1){0}}
+    for(i in 0 until n+1){
+        dp[i][0] = 1
+    }
+    
+    for(i in 1 until n+1){	
+        for(j in 1 until sum+1){
+            val coin  = coins[i-1]
+            if(coin  <= j){//valid
+                 // Include → same row because
+                // a coin can be used unlimited times
+                val include = dp[i][j - coin]
+                // Exclude → previous row
+                val exclude = dp[i - 1][j]
+                dp[i][j] = include + exclude
+            }else{//invalid
+          		 dp[i][j] = dp[i-1][j]
+            }
+        }
+    } 
+    printDP(dp)
+    return dp[n][sum]
+}
+fun printDP(dp: Array<IntArray>) {
+    for (i in dp.indices) {
+        for (j in dp[i].indices) {
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
