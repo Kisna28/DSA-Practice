@@ -1,0 +1,85 @@
+//Unbounded knapsack.
+fun main() {
+    val value = intArrayOf(15,14,10,45,30)
+    val wt = intArrayOf(2,5,1,3,4)
+    val w = 9
+    val maxItemChose = 2
+    println("Tabulization : ${unboundedKnapsackTab(value,wt,w)}")
+    println("bounded Knapsack : ${boundedKnapsack(value,wt,w,maxItemChose)}")
+}
+
+//Tabulization TC: O(n*w)
+fun unboundedKnapsackTab(value:IntArray,wt:IntArray,w:Int):Int{
+    val n = value.size
+    
+    val dp = Array(n+1){IntArray(w+1)}
+    
+    for(i in 1 until n+1){	
+        for(j in 1 until w+1){
+            val v = value[i-1]
+            val w = wt[i-1]
+            if(w <= j){//valid
+                 val incProfit = v + dp[i][j-w]
+                 val excProfit = dp[i-1][j]
+                 dp[i][j] = maxOf(incProfit,excProfit)
+            }else{//invalid
+          		 dp[i][j] = dp[i-1][j]
+            }
+        }
+    } 
+    printDP(dp)
+    return dp[n][w]
+}
+/*
+Bounded Knapsack — Maximum 2 Copies
+
+Description:
+In bounded knapsack, each item can be selected a limited number of times. For example, if maxCount = 2, an item can be taken 0, 1, or 2 times.
+
+Unlike 0/1 knapsack, where we take an item at most once, and unbounded knapsack, where we can take it unlimited times, bounded knapsack checks all allowed copies.
+
+TC = O(n × w × maxCount)
+ * */
+fun boundedKnapsack(
+    value: IntArray,
+    wt: IntArray,
+    w: Int,
+    maxCount: Int
+): Int {
+
+    val n = value.size
+    val dp = Array(n + 1) { IntArray(w + 1) { 0 } }
+
+    for (i in 1..n) {
+        for (j in 1..w) {
+
+            // Don't take the current item
+            dp[i][j] = dp[i - 1][j]
+
+            // Try taking 1, 2, ... maxCount copies
+            for (count in 1..maxCount) {
+
+                val totalWeight = count * wt[i - 1]
+
+                if (totalWeight <= j) {
+
+                    val profit =
+                        count * value[i - 1] +
+                        dp[i - 1][j - totalWeight]
+
+                    dp[i][j] = maxOf(dp[i][j], profit)
+                }
+            }
+        }
+    }
+	printDP(dp)
+    return dp[n][w]
+}
+fun printDP(dp: Array<IntArray>) {
+    for (i in dp.indices) {
+        for (j in dp[i].indices) {
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
