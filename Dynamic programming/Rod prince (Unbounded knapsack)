@@ -1,0 +1,37 @@
+//Unbounded knapsack.
+fun main() {
+    val price = intArrayOf(1,5,8,9,10,17,17,20)
+    val rodLength = 8
+    println("Tabulization : ${rodPrice(price,rodLength)}")
+}
+
+//Tabulization TC: O(n*price)
+fun rodPrice(price:IntArray,rodLength:Int):Int{
+    val n = price.size
+    
+    val dp = Array(n+1){IntArray(rodLength+1){0}}
+    
+    for(i in 1 until n+1){	
+        for(j in 1 until rodLength+1){
+            val price  = price[i-1]
+            val pieceLength = i
+            if(pieceLength  <= j){//valid
+                val include = price + dp[i][j - pieceLength]
+                val exclude = dp[i - 1][j]
+                dp[i][j] = maxOf(include , exclude)
+            }else{//invalid
+          		 dp[i][j] = dp[i-1][j]
+            }
+        }
+    } 
+    printDP(dp)
+    return dp[n][rodLength]
+}
+fun printDP(dp: Array<IntArray>) {
+    for (i in dp.indices) {
+        for (j in dp[i].indices) {
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
