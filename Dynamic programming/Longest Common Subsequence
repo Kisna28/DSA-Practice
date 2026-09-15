@@ -1,0 +1,21 @@
+//Longest Common Subsequence.
+fun main() {
+    val str1 = "abcd"
+    val str2 = "ac"
+    println("Recurrsion : ${lcs(str1,str2,str1.length,str2.length)}")
+}
+
+//Recurssion TC:O(2^(n+m)) — exponential, very slow,Space: O(n+m) — max depth of the recursion stack
+Space: O(n+m) — max depth of the recursion stack
+fun lcs(str1:String,str2:String,n:Int,m:Int):Int{
+    if(n == 0 || m == 0){
+        return 0
+    }
+    if(str1[n-1] == str2[m-1]){
+        return lcs(str1,str2,n-1,m-1) + 1
+    }else{
+        val ans1 = lcs(str1,str2,n-1,m)
+        val ans2 = lcs(str1,str2,n,m-1)
+        return maxOf(ans1,ans2)
+    }
+}
