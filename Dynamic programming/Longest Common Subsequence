@@ -19,3 +19,22 @@ fun lcs(str1:String,str2:String,n:Int,m:Int):Int{
         return maxOf(ans1,ans2)
     }
 }
+
+//Memoization TC:O(n × m)
+fun lcsMemoization(str1:String,str2:String,n:Int,m:Int,dp:Array<IntArray>):Int{
+    if(n == 0 || m == 0){
+        return 0
+    }
+    if(dp[n][m] != -1){
+        return dp[n][m]
+    }
+    if(str1[n-1] == str2[m-1]){
+         dp[n][m] = lcsMemoization(str1,str2,n-1,m-1,dp) + 1
+         return dp[n][m]
+    }else{
+        val ans1 = lcsMemoization(str1,str2,n-1,m,dp)
+        val ans2 = lcsMemoization(str1,str2,n,m-1,dp)
+        dp[n][m] = maxOf(ans1,ans2)
+        return dp[n][m]
+    }
+}
