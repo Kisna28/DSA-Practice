@@ -3,6 +3,7 @@ fun main() {
     val str1 = "abcd"
     val str2 = "ac"
     println("Recurrsion : ${lcs(str1,str2,str1.length,str2.length)}")
+ println("Tabulazation : ${lcsTabulazation(str1,str2,str1.length,str2.length)}")
 }
 
 //Recurssion TC:O(2^(n+m)) — exponential, very slow,Space: O(n+m) — max depth of the recursion stack
@@ -38,3 +39,25 @@ fun lcsMemoization(str1:String,str2:String,n:Int,m:Int,dp:Array<IntArray>):Int{
         return dp[n][m]
     }
 }
+//Tabulazation TC:O(n × m)
+fun lcsTabulazation(str1:String,str2:String,n:Int,m:Int):Int{
+     val dp = Array(str1.length+1){IntArray(str2.length+1){0}}    
+     for(i in 1 until n+1){
+         for(j in 1 until m+1){
+             if(str1[i-1] == str2[j-1]){ //valide
+                  // Characters match
+                dp[i][j] = 1 + dp[i - 1][j - 1]
+             } else {
+                 // Characters don't match
+                 val ans1 = dp[i - 1][j]
+                 val ans2 =  dp[i][j - 1]
+                dp[i][j] = maxOf(
+                    ans1,
+                    ans2
+                )
+             }
+         }
+     }
+        return dp[n][m]
+}
+
