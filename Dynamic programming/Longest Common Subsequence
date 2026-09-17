@@ -2,12 +2,14 @@
 fun main() {
     val str1 = "abcd"
     val str2 = "ac"
+     val dp = Array(str1.length+1){IntArray(str2.length+1){-1}}
     println("Recurrsion : ${lcs(str1,str2,str1.length,str2.length)}")
- println("Tabulazation : ${lcsTabulazation(str1,str2,str1.length,str2.length)}")
+    println("Memoziation : ${lcsMemoization(str1,str2,str1.length,str2.length,dp)}")
+    println("Tabulazation : ${lcsTabulazation(str1,str2,str1.length,str2.length)}")
 }
 
 //Recurssion TC:O(2^(n+m)) — exponential, very slow,Space: O(n+m) — max depth of the recursion stack
-Space: O(n+m) — max depth of the recursion stack
+//Space: O(n+m) — max depth of the recursion stack
 fun lcs(str1:String,str2:String,n:Int,m:Int):Int{
     if(n == 0 || m == 0){
         return 0
@@ -60,4 +62,3 @@ fun lcsTabulazation(str1:String,str2:String,n:Int,m:Int):Int{
      }
         return dp[n][m]
 }
-
