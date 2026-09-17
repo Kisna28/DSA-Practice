@@ -1,0 +1,127 @@
+//Longest Common SubString.
+fun main() {
+    val str1 = "abcd"
+    val str2 = "acd"
+       val dp = Array(str1.length + 1) {
+        Array(str2.length + 1) {
+            IntArray(str1.length + 1) { -1 }
+        }
+    }
+    println("Tabulazation : ${lcsubStringTab(str1,str2)}")
+    println("Memoziation : ${longestCommonSubstringMemo(str1,str2,str1.length,str2.length,0,dp)}")
+    println("Recurssion : ${longestCommonSubstring(str1,str2,str1.length,str2.length,0)}")
+}
+
+fun longestCommonSubstring(
+    str1: String,
+    str2: String,
+    i: Int,
+    j: Int,
+    count: Int
+): Int {
+
+    if (i == 0 || j == 0) {
+        return count
+    }
+
+    var currentCount = count
+
+    if (str1[i - 1] == str2[j - 1]) {
+        currentCount = longestCommonSubstring(
+            str1,
+            str2,
+            i - 1,
+            j - 1,
+            count + 1
+        )
+    }
+
+    val count1 = longestCommonSubstring(
+        str1,
+        str2,
+        i - 1,
+        j,
+        0
+    )
+
+    val count2 = longestCommonSubstring(
+        str1,
+        str2,
+        i,
+        j - 1,
+        0
+    )
+
+    return maxOf(currentCount, count1, count2)
+}
+fun lcsubStringTab(str1:String,str2:String):Int{
+    val n = str1.length 
+    val m = str2.length
+    val dp = Array(str1.length+1){IntArray(str2.length+1){0}}
+    var ans = 0
+    for(i in 1 until n+1){
+        for(j in 1 until m+1){
+            if(str1[i-1] == str2[j-1]){
+                dp[i][j] = dp[i-1][j-1]+1
+                ans = maxOf(ans,dp[i][j])
+            } else{
+                dp[i][j] = 0
+            }
+        }
+    }
+   
+        return ans
+}
+fun longestCommonSubstringMemo(
+    str1: String,
+    str2: String,
+    i: Int,
+    j: Int,
+    count: Int,
+    dp: Array<Array<IntArray>>
+): Int {
+
+    if (i == 0 || j == 0) {
+        return count
+    }
+
+    if (dp[i][j][count] != -1) {
+        return dp[i][j][count]
+    }
+
+    var currentCount = count
+
+    if (str1[i - 1] == str2[j - 1]) {
+        currentCount = longestCommonSubstringMemo(
+            str1,
+            str2,
+            i - 1,
+            j - 1,
+            count + 1,
+            dp
+        )
+    }
+
+    val count1 = longestCommonSubstringMemo(
+        str1,
+        str2,
+        i - 1,
+        j,
+        0,
+        dp
+    )
+
+    val count2 = longestCommonSubstringMemo(
+        str1,
+        str2,
+        i,
+        j - 1,
+        0,
+        dp
+    )
+
+    dp[i][j][count] = maxOf(currentCount, count1, count2)
+
+    return dp[i][j][count]
+}
+
