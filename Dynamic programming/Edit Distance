@@ -1,0 +1,42 @@
+//Edit Distance.
+
+fun main() {
+   val str1 = "abc"
+    val str2 = "sbd"
+    println("Tabulazation: ${editDistance(str1,str2)}")
+}
+
+
+fun editDistance(str1:String,str2:String):Int{
+    val n = str1.length
+    val m = str2.length
+    val dp = Array(n+1){IntArray(m+1)}
+     for(i in 0 until n+1){
+        for(j in 0 until m+1){
+          if(i == 0){dp[i][j] = j}  
+            if(j == 0){dp[i][j] = i}
+        }
+     }
+    for(i in 1 until n+1){
+        for(j in 1 until m+1){
+            if(str1[i-1] == str2[j-1]){
+                dp[i][j] = dp[i-1][j-1]
+            }else{
+                val add = dp[i][j-1] + 1
+                val del = dp[i-1][j] + 1
+                val rep = dp[i-1][j-1] + 1
+                dp[i][j] = minOf(add,minOf(del,rep))
+            }
+        }
+    }
+    printdp(dp)
+    return dp[n][m]
+}
+fun printdp(dp:Array<IntArray>){
+    for(i in 0 until dp.size){
+        for(j in 0 until dp[i].size){
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
