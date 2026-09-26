@@ -5,12 +5,30 @@ Recursion      | O(3^n)  | O(n) call stack
 Memoization    | O(n^2)  | O(n) dp + O(n) call stack
 Tabulation     | O(n^2)  | O(n) dp, no call stack
  * */
+// NOTE: We also solve using C(n) = (2n)! / ((n + 1)! × n!) this formula and TC: o(n).
 fun main() {
  val n = 4
     val dp = IntArray(n+1){-1}
     println("Recursion: ${catalanRec(n)}")
       println("Memozation: ${catalanMemo(n,dp)}")
       println("Tabulation: ${catalanTab(n)}")
+     println(catalan(n))
+}
+fun catalan(n: Int): Long {
+    val numerator = factorial(2 * n)
+    val denominator = factorial(n + 1) * factorial(n)
+
+    return numerator / denominator
+}
+
+fun factorial(n: Int): Long {
+    var fact = 1L
+
+    for (i in 1..n) {
+        fact *= i
+    }
+
+    return fact
 }
 fun catalanRec(n:Int):Int{
     if(n == 0 || n == 1){
