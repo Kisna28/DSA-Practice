@@ -1,0 +1,47 @@
+//Longest Incresing SubSequence.
+/*
+ * HashSet creation       → O(n)
+Sorting arr2           → O(n log n)
+LCS                    → O(n²)
+--------------------------------
+Total                  → O(n²)
+Space                  → O(n²)
+ * */
+fun main() {
+   val arr = intArrayOf(50,3,10,7,40,80)
+    println("Tabulazation Longest Incresing SubSequence : ${lisTab(arr)}")
+}
+
+fun lisTab(arr:IntArray):Int{
+    val n = arr.size 
+    println(n)
+   val set = HashSet<Int>()
+   for(i in 0 until n){
+       set.add(arr[i])
+   }
+   val arr2 = IntArray(set.size)
+   var i = 0
+    for(num in set){
+        arr2[i] = num
+        i++
+    }
+    arr2.sort() //assending
+   return lcs(arr,arr2)
+}
+fun lcs(arr1:IntArray,arr2:IntArray):Int{
+    val n = arr1.size
+    val m = arr2.size
+    val dp = Array(n+1){IntArray(m+1)}
+    for(i in 1 until n+1){
+        for(j in 1 until m+1){
+            if(arr1[i-1] == arr2[j-1]){
+                dp[i][j] = dp[i-1][j-1]+1
+            }else{
+                val ans1 = dp[i-1][j]
+                val ans2 = dp[i][j-1]
+                dp[i][j] = maxOf(ans1,ans2)
+            }
+        }
+    }
+    return dp[n][m]
+}
