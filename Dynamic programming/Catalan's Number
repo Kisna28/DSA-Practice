@@ -1,0 +1,51 @@
+/*
+ Approach       | Time    | Space
+---------------|---------|--------------------------------
+Recursion      | O(3^n)  | O(n) call stack
+Memoization    | O(n^2)  | O(n) dp + O(n) call stack
+Tabulation     | O(n^2)  | O(n) dp, no call stack
+ * */
+fun main() {
+ val n = 4
+    val dp = IntArray(n+1){-1}
+    println("Recursion: ${catalanRec(n)}")
+      println("Memozation: ${catalanMemo(n,dp)}")
+      println("Tabulation: ${catalanTab(n)}")
+}
+fun catalanRec(n:Int):Int{
+    if(n == 0 || n == 1){
+        return 1
+    }
+    var ans = 0
+    for(i in 0 until n){
+        ans += catalanRec(i) * catalanRec(n-i-1)
+    }
+    return ans
+}
+fun catalanMemo(n:Int,dp:IntArray):Int{
+    if(n == 0 || n == 1){
+        return 1
+    }
+    if(dp[n] != -1){
+        return dp[n]
+    }
+    var ans = 0
+      for (i in 0 until n) {
+        ans += catalanMemo(i, dp) * catalanMemo(n - i - 1, dp)
+    }
+    dp[n] = ans
+    return ans
+}
+fun catalanTab(n:Int):Int{
+     val dp = IntArray(n+1)
+     dp[0] = 1
+    dp[1] = 1
+    for(i in 2 until n+1){
+        for(j in 0 until i){
+            dp[i] += dp[j] * dp[i-j-1]
+        }
+    }
+    return dp[n]
+}
+
+
