@@ -1,0 +1,42 @@
+// This code is same as the catalan Number
+/*
+Mountain Range Problem
+
+Problem:
+Given n pairs of upstrokes (/) and downstrokes (\), count the number of valid mountain ranges that can be formed.
+
+A valid mountain range:
+
+Never goes below the ground level.
+Uses exactly n upstrokes and n downstrokes.
+
+Example:
+
+For n = 3:
+
+/\/\/\
+/\\//\
+/\/\\/
+
+There are 5 valid mountain ranges.
+
+Answer: 5
+*/
+fun main() {
+ val n = 3
+      println("Tabulation: ${mountainrange(n)}")
+}
+
+fun mountainrange(n:Int):Int{
+     val dp = IntArray(n+1)
+     dp[0] = 1
+    dp[1] = 1
+    for(i in 2 until n+1){
+        for(j in 0 until i){
+            dp[i] += dp[j] * dp[i-j-1]
+        }
+    }
+    return dp[n]
+}
+
+
