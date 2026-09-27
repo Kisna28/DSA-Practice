@@ -1,0 +1,39 @@
+fun main() {
+ val arr = intArrayOf(1,6,11,5)
+    println("${minPartition(arr)}")
+}
+
+fun minPartition(nums: IntArray): Int {
+    val n = nums.size
+    val totalSum = nums.sum()
+    println("Total sum = $totalSum and divide by 2 = ${totalSum / 2  }")
+    val target = totalSum / 2     // best case: one subset gets half
+
+    // dp[i][s] = largest subset sum <= s using the first i numbers
+    val dp = Array(n + 1) { IntArray(target + 1) }
+
+    for (i in 1..n) {
+        val num = nums[i - 1]
+        for (s in 1..target) {
+            if (num <= s) {
+                val includeSum = num + dp[i - 1][s - num]   // take num
+                val excludeSum = dp[i - 1][s]               // skip num
+                dp[i][s] = maxOf(includeSum, excludeSum)
+            } else {
+                dp[i][s] = dp[i - 1][s]                     // num too big, skip
+            }
+        }
+    }
+		printdp(dp)
+    val subset1Sum = dp[n][target]          // closest to half, never above it
+    val subset2Sum = totalSum - subset1Sum  // everything else
+    return subset2Sum - subset1Sum          // always >= 0, so no abs needed
+}
+fun printdp(dp:Array<IntArray>){
+    for(i in 0 until dp.size){
+        for(j in 0 until dp[i].size){
+            print("${dp[i][j]}\t")
+        }
+        println()
+    }
+}
