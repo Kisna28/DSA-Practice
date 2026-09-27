@@ -1,0 +1,31 @@
+//O(n²)
+fun main() {
+ val arr = intArrayOf(2,3,1,1,4)
+    println("Min Jumps required = ${minJumps(arr)}")
+}
+
+fun minJumps(nums: IntArray): Int {
+    val n = nums.size
+    val dp = IntArray(n){-1}
+    dp[n-1] = 0 
+    for(i in n-2 downTo 0){
+        val steps = nums[i]
+        var ans = Int.MAX_VALUE
+        for(j in i+1..minOf(i + steps, n - 1)){
+            if(dp[j] != -1){
+                ans = minOf(ans,dp[j]+1)
+            }
+        }
+        if(ans != Int.MAX_VALUE){
+            dp[i] = ans
+        }
+    }
+    printdp(dp)
+  return dp[0]
+}
+fun printdp(dp:IntArray){
+    for(i in 0 until dp.size){
+            print("${dp[i]}\t")
+    }
+    println()
+}
