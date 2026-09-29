@@ -1,0 +1,63 @@
+lateinit var tree: IntArray  
+fun init(n: Int) {
+    tree = IntArray(4 * n)
+}
+fun buildSTree(arr:IntArray,sti:Int,start:Int,end:Int){
+    if(start == end){
+        tree[sti] = arr[start]
+        return 
+    }
+    val mid = (start + end)/2
+    buildSTree(arr,2*sti+1,start,mid)
+    buildSTree(arr,2*sti+2,mid+1,end)
+    tree[sti] = minOf(tree[2*sti+1], tree[2*sti+2])
+}
+
+fun getMinUtils(i:Int,si:Int,sj:Int,qi:Int,qj:Int):Int{ //o(logn)
+    if(qj < si || qi > sj){// non overlapping
+    	return Int.MAX_VALUE
+    }else if(si >= qi && sj <= qj){//complete overlap
+        return tree[i]
+    }else{
+    	val mid = (si + sj)/2
+        val left = getMinUtils(2 * i + 1 , si,mid,qi,qj)
+        val right = getMinUtils(2 * i + 2, mid+1,sj,qi,qj)
+        return minOf(left,right)
+    }    
+}
+fun getMin(arr:IntArray,qi:Int,qj:Int):Int{
+    val n = arr.size
+   return getMinUtils(0,0,n-1,qi,qj)
+}
+fun updateUtil(i:Int,si:Int,sj:Int,idx:Int,newValue:Int){ //O(logn)
+		if(idx > sj || idx < si){return}
+			if(si == sj){
+                tree[i] = newValue
+            }
+    if(si != sj){ //non leaf
+        tree[i] = minOf(tree[i],newValue)
+     val mid = (si + sj)/2
+        updateUtil(2*i+1 , si, mid , idx , newValue) //left
+         updateUtil(2*i+2 , mid+1, sj , idx , newValue) //right
+    }
+   
+}
+
+fun update(arr:IntArray,idx:Int,newValue:Int){
+    val n = arr.size
+    arr[idx] = newValue
+    updateUtil(0,0,n-1,idx,newValue)
+}
+
+fun main() {
+    val arr = intArrayOf(1,2,3,4,5)
+    val n = arr.size
+   init(n)
+   buildSTree(arr,0,0,n-1)
+    println("Min(1, 3) = ${getMin(arr, 1, 3)}")  
+   println(tree.joinToString(" ,"))
+   // update tree
+   update(arr,3,1)
+   println("Min(1, 3) = ${getMin(arr, 1, 3)}")  
+    println(tree.joinToString(" ,"))
+}
