@@ -1,0 +1,94 @@
+fun main() {
+    val mat = arrayOf(
+        intArrayOf(1, 2, 3, 4),
+        intArrayOf(2, 2, 23, 4),
+        intArrayOf(3, 2, 3, 4),
+        intArrayOf(4, 5, 6, 7)
+    )
+
+    println(longestPath(mat))
+    
+    println("Memoziation : ${longestPathMemo(mat)}")
+}
+fun longestPathMemo(mat: Array<IntArray>): Int {
+    val n = mat.size
+    val m = mat[0].size
+
+    val dp = Array(n) { IntArray(m) }
+
+    fun dfs(i: Int, j: Int): Int {
+
+        // Already calculated
+        if (dp[i][j] != 0) {
+            return dp[i][j]
+        }
+
+        // At least the current cell itself
+        dp[i][j] = 1
+
+        // Down
+        if (i + 1 < n && mat[i + 1][j] > mat[i][j]) {
+            dp[i][j] = maxOf(dp[i][j], 1 + dfs(i + 1, j))
+        }
+
+        // Up
+        if (i - 1 >= 0 && mat[i - 1][j] > mat[i][j]) {
+            dp[i][j] = maxOf(dp[i][j], 1 + dfs(i - 1, j))
+        }
+
+        // Right
+        if (j + 1 < m && mat[i][j + 1] > mat[i][j]) {
+            dp[i][j] = maxOf(dp[i][j], 1 + dfs(i, j + 1))
+        }
+
+        // Left
+        if (j - 1 >= 0 && mat[i][j - 1] > mat[i][j]) {
+            dp[i][j] = maxOf(dp[i][j], 1 + dfs(i, j - 1))
+        }
+
+        return dp[i][j]
+    }
+
+    return dfs(0, 0)
+}
+fun longestPath(mat: Array<IntArray>): Int {
+    val n = mat.size
+    val m = mat[0].size
+
+    val dp = Array(n) { IntArray(m) }
+
+    val direction = arrayOf(
+        intArrayOf(-1, 0), // up
+        intArrayOf(1, 0),  // down
+        intArrayOf(0, -1), // left
+        intArrayOf(0, 1)   // right
+    )
+
+    fun dfs(i: Int, j: Int): Int {
+
+        if (dp[i][j] != 0) {
+            return dp[i][j]
+        }
+
+        dp[i][j] = 1
+
+        for (dir in direction) {
+            val ni = i + dir[0]
+            val nj = j + dir[1]
+
+            if (ni in 0 until n &&
+                nj in 0 until m &&
+                mat[ni][nj] > mat[i][j]
+            ) {
+                dp[i][j] = maxOf(
+                    dp[i][j],
+                    1 + dfs(ni, nj)
+                )
+            }
+        }
+
+        return dp[i][j]
+    }
+
+    return dfs(0, 0)
+}
