@@ -1,0 +1,62 @@
+fun main() {
+    val num = 2
+     println("Using Dp: ${balancedParantheses(num)}")
+      
+    val result = generateParentheses(num)
+
+    println("Total ways: ${result.size}")
+    result.forEach {
+        println(it)
+    }
+}
+
+fun balancedParantheses(num:Int):Int{ // O(n²)
+    val dp = IntArray(num+1)
+    dp[0] = 1
+    dp[1] = 1
+    for(i in 2 until num+1){
+        for(j in 0 until i){
+        dp[i] += dp[j] * dp[i-j-1]
+        }
+    }
+    println("Balanced parentheses : ${dp.joinToString(",")}")
+    return dp[num]
+}
+
+fun generateParentheses(n: Int): List<String> { // Time Complexity: O(Cₙ × n)
+    val result = mutableListOf<String>()
+
+    fun backtrack(
+        current: String,
+        open: Int,
+        close: Int
+    ) {
+        // We have used all parentheses
+        if (current.length == 2 * n) {
+            result.add(current)
+            return
+        }
+
+        // Add '(' if we still have some left
+        if (open < n) {
+            backtrack(
+                current + "(",
+                open + 1,
+                close
+            )
+        }
+
+        // Add ')' only if it won't make parentheses invalid
+        if (close < open) {
+            backtrack(
+                current + ")",
+                open,
+                close + 1
+            )
+        }
+    }
+
+    backtrack("", 0, 0)
+
+    return result
+}
